@@ -662,6 +662,7 @@ enyo.kind({
         {
             this.clearVoicemail();
         }
+        console.log("checking firstrun");
         this.checkFirstRun();
     },
     checkFirstRun: function() {
@@ -673,7 +674,7 @@ enyo.kind({
             appInfo = enyo.fetchAppInfo();
         }
         var appver = appInfo ? appInfo.version : "0.0.0";
-        enyo.log("appInfo version " + appInfo.version);
+        console.log("appInfo version " + appInfo.version);
         
         if(true) //prefs.get("firstrun") != appver)
         {
