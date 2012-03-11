@@ -662,23 +662,27 @@ enyo.kind({
         {
             this.clearVoicemail();
         }
-        setTimeout(enyo.bind(this, this.checkFirstRun), 1000);
+        setTimeout(enyo.bind(this, function() { this.checkFirstRun() }), 1000);
     },
     checkFirstRun: function() {
         var appInfo;
+        enyo.log("checkFirstRun");
         try {
             appInfo = JSON.parse(enyo.fetchAppInfo());
         } catch(err) {
             appInfo = enyo.fetchAppInfo();
         }
-        var appver = appInfo ? appInfo["version"] : "0.0.0";
+        var appver = appInfo ? appInfo.version : "0.0.0";
+        enyo.log("appInfo version " + appInfo.version);
         
         if(true) //prefs.get("firstrun") != appver)
         {
             var url = "http://ericbla.de/gvoice-webos/?page_id=141";
             prefs.set("firstrun", appver);
             enyo.windows.addBannerMessage("GVoice: What's New", '{}', "images/google-voice-icon24.png", "/media/internal/ringtones/Triangle (short).mp3")
+            enyo.log("Loading browser to " + url);
             Platform.browser(url, this)();
+            enyo.log("Browser loaded.");
         }        
     },
     debugLogView: function()
