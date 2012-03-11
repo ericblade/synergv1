@@ -666,7 +666,7 @@ enyo.kind({
     },
     checkFirstRun: function() {
         var appInfo;
-        enyo.log("checkFirstRun");
+        console.log("checkFirstRun");
         try {
             appInfo = JSON.parse(enyo.fetchAppInfo());
         } catch(err) {
@@ -679,10 +679,10 @@ enyo.kind({
         {
             var url = "http://ericbla.de/gvoice-webos/?page_id=141";
             prefs.set("firstrun", appver);
-            //enyo.windows.addBannerMessage("GVoice: What's New", '{}', "images/google-voice-icon24.png", "/media/internal/ringtones/Triangle (short).mp3")
-            enyo.log("Loading browser to " + url);
-            //Platform.browser(url, this)();
-            enyo.log("Browser loaded.");
+            enyo.windows.addBannerMessage("GVoice: What's New", '{}', "images/google-voice-icon24.png", "/media/internal/ringtones/Triangle (short).mp3")
+            console.log("Loading browser to " + url);
+            Platform.browser(url, this)();
+            console.log("Browser loaded.");
         }        
     },
     debugLogView: function()
