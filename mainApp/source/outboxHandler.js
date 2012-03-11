@@ -97,6 +97,8 @@ enyo.kind( {
                 req.bog = this.messages[x].id;
             }
         }
+		/* Clear all the shit out so it can't duplicate */
+		this.messages = [];
     },
     queueMessage: function(to, msg)
     {
