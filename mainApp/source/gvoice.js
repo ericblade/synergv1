@@ -657,6 +657,13 @@ enyo.kind({
     },
     ready: function()
     {
+        if(Platform.isWebOS() && Platform.platformVersion >= 2)
+        {
+            this.clearVoicemail();
+        }
+        setTimeout(enyo.bind(this, this.checkFirstRun), 10000);
+    },
+    checkFirstRun: function() {
         var appInfo;
         try {
             appInfo = JSON.parse(enyo.fetchAppInfo());
@@ -672,11 +679,7 @@ enyo.kind({
             prefs.set("firstrun", appver);
             enyo.windows.addBannerMessage("GVoice: What's New", '{}', "images/google-voice-icon24.png", "/media/internal/ringtones/Triangle (short).mp3")
             Platform.browser(url, this)();
-        }
-        if(Platform.isWebOS() && Platform.platformVersion >= 2)
-        {
-            this.clearVoicemail();
-        }
+        }        
     },
     debugLogView: function()
     {
