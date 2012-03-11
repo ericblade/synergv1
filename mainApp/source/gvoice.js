@@ -1849,13 +1849,14 @@ enyo.kind({
             }
             // TODO: We currently have no plan for webOS < 2.0
         }
-        if(!Platform.isWebOS() || !Platform.hasFlash()) /* Try HTML / PhoneGap and hope that our https isn't broken like webOS */
+        // doesn't look like HTML5 Audio will work here, due to needing the cookie and/or the header
+        /*if(!Platform.isWebOS() || !Platform.hasFlash()) 
         {
             this.sound = this.createComponent({ name: "VMPlayer", kind: "PlatformSound", preload: true, audioClass: "media" }, { owner: this });
             this.sound.setSrc("/voice/b/0/media/send_voicemail/" + encodeURI(msgid));
             this.sound.play();
             return;
-        }
+        }*/
         if(Platform.hasFlash())
         {
             var launchtarget = "http://ericbla.de/test.php?swfPath=" + encodeURIComponent(this.PrimaryData.swfPath) +
