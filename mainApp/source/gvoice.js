@@ -1831,7 +1831,7 @@ enyo.kind({
     {        
         if(Platform.isWebOS())
         {
-            if(Platform.platformVersion) >= 2)
+            if(Platform.platformVersion >= 2)
             {
                 this.$.CreateVoicemailDir.call();
                 this.$.newPlayVoicemail.call({
