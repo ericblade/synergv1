@@ -663,7 +663,7 @@ enyo.kind({
             this.clearVoicemail();
         }
         console.log("checking firstrun");
-        this.checkFirstRun();
+        enyo.asyncMethod(this, "checkFirstRun");
     },
     checkFirstRun: function() {
         var appInfo;
