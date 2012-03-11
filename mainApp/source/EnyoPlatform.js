@@ -208,26 +208,27 @@ enyo.kind({
         },
         getReviewURL: function()
         {
-            this.platform || this.setup(); 
+            var appInfo;
             var url = "";
+            
+            appInfo = enyo.fetchAppInfo();
+            if(enyo.isString(appInfo))
+                appInfo = JSON.parse(appInfo);
+                
+            this.platform || this.setup(); 
             switch(Platform.platform) {
                 case "webos":
-                    url = "http://developer.palm.com/appredirect/?packageid=" + enyo.fetchAppId();
+                    url = "http://developer.palm.com/appredirect/?packageid=" + appInfo.id;
                     break;
                 case "android":
-                    url = "market://details?id=" + enyo.fetchAppId();
+                    /* enyo.fetchAppId() appears unreliable here? */
+                    url = "market://details?id=" + appInfo.id;
                     break;
                 case "blackberry":  // intentional fallthrough
                 case "webworks":
-                    var appInfo = enyo.fetchAppInfo();
-                    if(enyo.isString(appInfo))
-                        appInfo = JSON.parse(appInfo);
                     url = "http://appworld.blackberry.com/webstore/content/" + appInfo.appWorldId;
                     break;
                 case "iphone":
-                    var appInfo = enyo.fetchAppInfo();
-                    if(enyo.isString(appInfo))
-                        appInfo = JSON.parse(appInfo);
                     url = "itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id="+appInfo.iTunesAppId;
                     break;
             }
