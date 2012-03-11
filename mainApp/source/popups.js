@@ -885,7 +885,10 @@ enyo.kind(
         {
             this.inherited(arguments);
             var di = enyo.fetchDeviceInfo();
-            var vmAvail = enyo.application.mainApp.Online && di && di["platformVersionMajor"] > 1;
+            //var vmAvail = enyo.application.mainApp.Online && di && di["platformVersionMajor"] > 1;
+            var vmAvail = (Platform.isWebOS() && Platform.platformVersion >= 2) ||
+                          (Platform.isBlackBerry()) ||
+                          (Platform.isAndroid());
             /*if(vmAvail)
             {
                 var ai = enyo.fetchAppInfo();

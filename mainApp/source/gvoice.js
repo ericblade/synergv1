@@ -1828,35 +1828,44 @@ enyo.kind({
         this.openComposePopup(this.clickedPhoneNum);
     },
     playVoicemail: function(msgid)
-    {
-        //this.log(msgid);
-        //this.log(document.cookie);
-        
-        this.$.CreateVoicemailDir.call();
-        if(Platform.isWebOS() && parseFloat(Platform.platformVersion) >= 2)
+    {        
+        if(Platform.isWebOS())
         {
-            this.$.newPlayVoicemail.call({
-                host: "www.google.com",
-                path: "/voice/b/0/media/send_voicemail/" + encodeURI(msgid),
-                method: "GET",
-                cookies: "GALX=" + enyo.application.api.GALX,
-                headers: {
-                    "Authorization":"GoogleLogin auth=" + this.AuthCode
-                },
-                savefile: "/media/internal/.voicemail/vm"+msgid+".mp3",
-                binary: true
-            });
+            if(Platform.platformVersion) >= 2)
+            {
+                this.$.CreateVoicemailDir.call();
+                this.$.newPlayVoicemail.call({
+                    host: "www.google.com",
+                    path: "/voice/b/0/media/send_voicemail/" + encodeURI(msgid),
+                    method: "GET",
+                    cookies: "GALX=" + enyo.application.api.GALX,
+                    headers: {
+                        "Authorization":"GoogleLogin auth=" + this.AuthCode
+                    },
+                    savefile: "/media/internal/.voicemail/vm"+msgid+".mp3",
+                    binary: true
+                });
+                return;                
+            }
+            // TODO: We currently have no plan for webOS < 2.0
+        }
+        if(!Platform.isWebOS() || !Platform.hasFlash()) /* Try HTML / PhoneGap and hope that our https isn't broken like webOS */
+        {
+            this.sound = this.createComponent({ name: "VMPlayer", kind: "PlatformSound", preload: true, audioClass: "media" }, { owner: this });
+            this.sound.setSrc("/voice/b/0/media/send_voicemail/" + encoreURI(msgid));
+            this.sound.play();
             return;
         }
-        //console.error(Platform.isWebOS() + Platform.platformVersion);
-        if(!Platform.isLargeScreen())
+        if(Platform.hasFlash())
         {
             var launchtarget = "http://ericbla.de/test.php?swfPath=" + encodeURIComponent(this.PrimaryData.swfPath) +
                         "&baseUrl=" + encodeURIComponent(this.PrimaryData.baseUrl) + "&conv=" + encodeURIComponent(msgid);
-            enyo.windows.addBannerMessage("Launching Voicemail Browser", '{}', "images/google-voice-icon24.png", "")                    
-            this.$.AppManService.call( { target: launchtarget } );
+            enyo.windows.addBannerMessage("Launching Voicemail Browser", '{}', "images/google-voice-icon24.png", "")
+            Platform.browser(launchtarget, this)();
             return;
         }
+        return;
+        /* keeping this code in here just for the memories, as we don't need it anymore, thank fucking god */
         var flashStr = '<object id="gc-audioPlayer" name="gc-audioPlayer" height="20" width="100%"' +
                 ' type="application/x-shockwave-flash"' +
                 ' movie="' +

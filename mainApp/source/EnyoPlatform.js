@@ -18,7 +18,12 @@
  * 
  * If you are deploying to BlackBerry's App World, set a new parameter in your 
  * appinfo.json called "appWorldId" to your application's id as found in the 
- * App World Dev Portal, for the getReviewURL function.  
+ * App World Dev Portal, for the getReviewURL function.
+ *
+ * To make your browser work in BlackBerry, you'll need to add to config.xml:
+ *   <feature id="blackberry.invoke"/>
+ *   <feature id="blackberry.invoke.BrowserArguments"/>
+ *
  */
 enyo.kind({
     name: "Platform",
@@ -53,7 +58,7 @@ enyo.kind({
             {
                 var deviceInfo = enyo.fetchDeviceInfo();
                 this.platform = "webos";
-                this.platformVersion = deviceInfo ? deviceInfo.platformVersion : "unknown";
+                this.platformVersion = deviceInfo ? parseFloat(deviceInfo.platformVersion) : "unknown";
             }
             else if(typeof blackberry !== "undefined")
             {
@@ -77,7 +82,7 @@ enyo.kind({
                  * pitfalls.
                  */
                 this.platform = device.platform.toLowerCase();
-                this.platformVersion = device.version;
+                this.platformVersion = parseFloat(device.version);
             }
             else
             {
@@ -101,6 +106,12 @@ enyo.kind({
         isWebWorks: function() { this.platform || this.setup(); return this.platform == "webworks"; },
         isiOS: function() { this.platform || this.setup(); return this.platform == "iphone"; },
         isMobile: function() { this.platform || this.setup(); return this.platform != "web"; },
+        hasFlash: function() {
+            this.platform || this.setup();
+            return (this.platform == "webos" && this.platformVersion >= 2) ||
+                    (this.isBlackBerry()) || // TODO: Version check?
+                    (this.platform == "android");
+        },
         
         /* General screen size functions -- tablet vs phone, landscape vs portrait */
         isLargeScreen: function() { return window.innerWidth > 480; },
