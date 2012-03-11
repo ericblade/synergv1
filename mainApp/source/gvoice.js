@@ -142,7 +142,7 @@ enyo.kind({
     windowActivated: function()
     {
         enyo.log("windowActivated", enyo.application.mainApp);
-        if(enyo.application.mainApp)
+        if(typeof enyo.application.mainApp != "undefined")
         {
             enyo.application.mainApp.isForeground = true;
             //enyo.application.mainApp.restartTimedRetrieval();
