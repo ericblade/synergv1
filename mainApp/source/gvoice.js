@@ -1852,7 +1852,7 @@ enyo.kind({
         if(!Platform.isWebOS() || !Platform.hasFlash()) /* Try HTML / PhoneGap and hope that our https isn't broken like webOS */
         {
             this.sound = this.createComponent({ name: "VMPlayer", kind: "PlatformSound", preload: true, audioClass: "media" }, { owner: this });
-            this.sound.setSrc("/voice/b/0/media/send_voicemail/" + encoreURI(msgid));
+            this.sound.setSrc("/voice/b/0/media/send_voicemail/" + encodeURI(msgid));
             this.sound.play();
             return;
         }
