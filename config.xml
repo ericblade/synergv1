@@ -18,7 +18,7 @@
 
   <icon src="mainApp/images/google-voice-icon64.png"/>
 
-  <content src="index.html"/>
+  <content src="index-blackberry.html"/>
 
   <feature id="blackberry.ui.dialog"/>
   <feature id="blackberry.app.event" />
