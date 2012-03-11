@@ -3,7 +3,6 @@ enyo.kind(
         [
             { kind: "Scroller", height: Platform.isLargeScreen() ? "570px" : "360px", style: "background-color: #4185D3;", /*width: Platform.isLargeScreen() ? "460px" : "270px", height: "480px", */components:
                 [
-                    { name: "AppManService", kind: "PalmService", service: "palm://com.palm.applicationManager/", method: "open"},
                     { kind: "VFlexBox", components:
                         [
                             { kind: "HFlexBox", components: 
@@ -166,7 +165,7 @@ enyo.kind(
         [
             { kind: "FadeScroller", height: Platform.isLargeScreen() ? "570px" : "360px",   components:
                 [
-                    { kind: "Group", caption: "Notifications", components:
+                    { name: "NotifyOne", kind: "Group", caption: "Notifications", components:
                         [
                             { kind: "Item", layoutKind: "HFlexLayout", components:
                                 [
@@ -182,10 +181,10 @@ enyo.kind(
                             },
                         ]
                     },
-                    { content: "Refresh times less than 5 minutes will only run when GVoice is open (and in foreground on phones). When the app is closed, it will refresh at a 5-minute minimum.",
+                    { name: "NotifyTwo", content: "Refresh times less than 5 minutes will only run when GVoice is open (and in foreground on phones). When the app is closed, it will refresh at a 5-minute minimum.",
                         className: "enyo-item-ternary"
                     },
-                    { content: "It is not possible to do push notifications without giving your password to a 3rd party.", className: "enyo-item-ternary" },
+                    { name: "NotifyThree", content: "It is not possible to do push notifications without giving your password to a 3rd party.", className: "enyo-item-ternary" },
                     { kind: "Group", caption: "Foreground Refresh", components:
                         [
                             { name: "fgRefreshSlider", kind: "Slider", style: "padding-left: 5px; padding-right: 5px;", onChanging: "fgSliderChange", onChange: "fgSliderChange", minimum: 1, maximum: 30, position: prefs.get("fgRefresh") },
@@ -294,6 +293,12 @@ enyo.kind(
             if( (ai && !ai["plug-ins"]) || !enyo.application.mainApp.ttsPluginReady)
                 this.$.TTSGroup.hide();
                 
+            if(!Platform.isWebOS())
+            {
+                this.$.NotifyOne.hide();
+                this.$.NotifyTwo.hide();
+                this.$.NotifyThree.hide();
+            }
             this.$.fgRefreshSlider.setPosition(prefs.get("fgRefresh"));
             this.$.bgRefreshSlider.setPosition(prefs.get("bgRefresh"));
             this.$.ttsCheckBox.setChecked(prefs.get("ttsdisable") == 1);
@@ -577,7 +582,6 @@ enyo.kind({
 enyo.kind(
         { name: "placeCallPopup", kind: "Dialog", modal: true, dismissWithClick: false, components:
             [
-                { name: "AppManService", kind: "PalmService", service: "palm://com.palm.applicationManager/", method: "open"},
                 { name: "placeCallBox", kind: "Group", className: "input-group-sms", caption: "Place outgoing call", components:
                     [
                         { kind: "HFlexBox", components:
@@ -639,7 +643,7 @@ enyo.kind(
             buyCredit: function()
             {
                 this.$.BuyCreditPopup.openAtCenter();
-                this.$.AppManService.call( { target: "https://www.google.com/voice/b/0#billing" } );
+                Platform.browser("https://www.google.com/voice/b/0#billing", this)();
             },
             creditPurchased: function() {
                 this.doCreditPurchased(this.$.callToNumber.getValue()); // pass it back the number to re-open the call box to
