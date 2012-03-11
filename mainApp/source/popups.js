@@ -643,7 +643,7 @@ enyo.kind(
             buyCredit: function()
             {
                 this.$.BuyCreditPopup.openAtCenter();
-                Platform.browser("https://www.google.com/voice/b/0#billing", this)();
+                Platform.browser("https://www.google.com/voice/b/0#billing?ui=desktop", this)();
             },
             creditPurchased: function() {
                 this.doCreditPurchased(this.$.callToNumber.getValue()); // pass it back the number to re-open the call box to
