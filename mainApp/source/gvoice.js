@@ -1,4 +1,7 @@
 //*** Featured in the "SWEETHEART TIME" App Catalog Featured Apps, February 2012!! ***
+// TODO: Buy Credit button does not work in Android/Blackberry, redirects to mobile page !!
+// TODO: Fix About->Support Email in Android
+// TODO: Implement Online detection in Android/Blackberry ?
 // TODO: Deleting / Archiving a message with a notification should clear the notification
 // TODO: Home/End functions in the big input boxes?
 // TODO: way to search contacts
