@@ -141,17 +141,20 @@ enyo.kind({
     },
     windowActivated: function()
     {
-        //this.log("windowActivated");
+        enyo.log("windowActivated", enyo.application.mainApp);
         if(enyo.application.mainApp)
         {
             enyo.application.mainApp.isForeground = true;
-            setTimeout(function(thisObj) { thisObj.restartTimedRetrieval(); }, 1000, this);        
+            //enyo.application.mainApp.restartTimedRetrieval();
+            setTimeout(enyo.bind(this, this.restartTimedRetrieval), 1000);
+            //setTimeout(function(thisObj) { thisObj.restartTimedRetrieval(); }, 1000, this);        
         }
         //enyo.asyncMethod(this, this.restartTimedRetrieval);
         //enyo.nextTick(this, enyo.bind(this, this.restartTimedRetrieval));
     },
     windowDeactivated: function()
     {
+        this.log("windowDeactivated");
         enyo.application.mainApp.isForeground = false;
         this.restartTimedRetrieval();
         enyo.nextTick(this, enyo.bind(this, this.restartTimedRetrieval));
@@ -663,14 +666,14 @@ enyo.kind({
         this.inherited(arguments);
         var appver = appInfo ? appInfo["version"] : "0.0.0";
         
-        if(prefs.get("firstrun") != appver)
+        if(true) //prefs.get("firstrun") != appver)
         {
             var url = "http://ericbla.de/gvoice-webos/?page_id=141";
             prefs.set("firstrun", appver);
             enyo.windows.addBannerMessage("GVoice: What's New", '{}', "images/google-voice-icon24.png", "/media/internal/ringtones/Triangle (short).mp3")
             Platform.browser(url, this)();
         }
-        if(Platform.isWebOS() && parseFloat(Platform.platformVersion) >= 2)
+        if(Platform.isWebOS() && Platform.platformVersion >= 2)
         {
             this.clearVoicemail();
         }
