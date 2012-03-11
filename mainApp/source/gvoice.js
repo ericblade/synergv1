@@ -676,7 +676,7 @@ enyo.kind({
         var appver = appInfo ? appInfo.version : "0.0.0";
         console.log("appInfo version " + appInfo.version);
         
-        if(true) //prefs.get("firstrun") != appver)
+        if(prefs.get("firstrun") != appver)
         {
             var url = "http://ericbla.de/gvoice-webos/?page_id=141";
             prefs.set("firstrun", appver);
