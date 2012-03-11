@@ -661,7 +661,7 @@ enyo.kind({
         {
             this.clearVoicemail();
         }
-        setTimeout(enyo.bind(this, this.checkFirstRun), 10000);
+        setTimeout(enyo.bind(this, this.checkFirstRun), 1000);
     },
     checkFirstRun: function() {
         var appInfo;
