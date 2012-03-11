@@ -657,6 +657,7 @@ enyo.kind({
     },
     ready: function()
     {
+        this.inherited(arguments);
         if(Platform.isWebOS() && Platform.platformVersion >= 2)
         {
             this.clearVoicemail();
@@ -670,7 +671,6 @@ enyo.kind({
         } catch(err) {
             appInfo = enyo.fetchAppInfo();
         }
-        this.inherited(arguments);
         var appver = appInfo ? appInfo["version"] : "0.0.0";
         
         if(true) //prefs.get("firstrun") != appver)
