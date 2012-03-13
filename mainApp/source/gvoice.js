@@ -640,12 +640,7 @@ enyo.kind({
     ready: function()
     {
         this.inherited(arguments);
-webkitNotifications.requestPermission(function() {
- // Creates a normal notification
- var notification = webkitNotifications.createNotification("http://www.ericbla.de/", "HTML5 notification", "Hi from the webpage");
- notification.show();
- });
-    if(Platform.isWebOS() && Platform.platformVersion >= 2)
+        if(Platform.isWebOS() && Platform.platformVersion >= 2)
         {
             this.clearVoicemail();
         }

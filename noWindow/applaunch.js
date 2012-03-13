@@ -236,43 +236,56 @@ enyo.kind({
     PostNotification: function(msgid, msg, nonamemsg, msgtext)
     {
         this.log();
-        if(!window.PalmSystem)
+        if(window.PalmSystem)
         {
-            return; // TODO: We need to implement notifications on other platforms.. but how?
-        }
-        var ignoreid = msgid.substr(-5) + msgtext.substr(-5); // just use the last 5 characters of the id and the text .. hopefully will work
-        if(this.IgnoreNotificationsList[ignoreid]) {
-            this.log("*** IGNORING POSTNOTIFICATION FOR " + ignoreid);
-            return;
-        }
-        if(!this.NotificationDashboards)
-            this.NotificationDashboards = { };
-        if(!this.NotificationDashboards[0])
-        {
-            this.NotificationDashboards[0] = this.createComponent( {
-                kind: "Dashboard",
-                smallIcon: "images/google-voice-icon24.png",
-                icon: "images/google-voice-icon48.png",
-                onMessageTap: "dashboardTap",
-                onIconTap: "dashboardTap",
-            });
-        }
-        if(!this.NotificationDashboards[msgid] || this.NotificationDashboards[msgid].ignoreid != ignoreid) {
-            this.NotificationDashboards[msgid] = { icon: "mainApp/images/google-voice-icon48.png", smallIcon: "mainApp/images/google-voice-icon24.png", title: msg, text: msgtext, id: msgid, ignoreid: ignoreid };
-            this.NotificationDashboards[0].push(this.NotificationDashboards[msgid]);
-            enyo.windows.addBannerMessage(msg, '{}', "mainApp/images/google-voice-icon24.png", "", this.getAlertPath());
-            if(enyo.application.mainApp && prefs.get("ttsNotificationDisable", true) != 1) // TODO: can't speak until mainApp is loaded :(
-            {
-                enyo.application.mainApp.speak( prefs.get("ttsAnnounceName") == 1 ? msg : nonamemsg );
-                if(prefs.get("ttsAnnounceMessages", true) == 1 && msgtext && msgtext != "")
-                {
-                    enyo.application.mainApp.speak(msgtext); // TODO: Move the speech plugin to here ... 
-                }
-            }
-        }
-        this.NotificationDashboards[0].onDashboardActivated = "dashboardActivated";
-        this.NotificationDashboards[0].onLayerSwipe = "dashboardLayerSwipe";
-        this.NotificationDashboards[0].onUserClose = "dashboardClosed";
+			var ignoreid = msgid.substr(-5) + msgtext.substr(-5); // just use the last 5 characters of the id and the text .. hopefully will work
+			if(this.IgnoreNotificationsList[ignoreid]) {
+				this.log("*** IGNORING POSTNOTIFICATION FOR " + ignoreid);
+				return;
+			}
+			if(!this.NotificationDashboards)
+				this.NotificationDashboards = { };
+			if(!this.NotificationDashboards[0])
+			{
+				this.NotificationDashboards[0] = this.createComponent( {
+					kind: "Dashboard",
+					smallIcon: "images/google-voice-icon24.png",
+					icon: "images/google-voice-icon48.png",
+					onMessageTap: "dashboardTap",
+					onIconTap: "dashboardTap",
+				});
+			}
+			if(!this.NotificationDashboards[msgid] || this.NotificationDashboards[msgid].ignoreid != ignoreid) {
+				this.NotificationDashboards[msgid] = { icon: "mainApp/images/google-voice-icon48.png", smallIcon: "mainApp/images/google-voice-icon24.png", title: msg, text: msgtext, id: msgid, ignoreid: ignoreid };
+				this.NotificationDashboards[0].push(this.NotificationDashboards[msgid]);
+				enyo.windows.addBannerMessage(msg, '{}', "mainApp/images/google-voice-icon24.png", "", this.getAlertPath());
+				if(enyo.application.mainApp && prefs.get("ttsNotificationDisable", true) != 1) // TODO: can't speak until mainApp is loaded :(
+				{
+					enyo.application.mainApp.speak( prefs.get("ttsAnnounceName") == 1 ? msg : nonamemsg );
+					if(prefs.get("ttsAnnounceMessages", true) == 1 && msgtext && msgtext != "")
+					{
+						enyo.application.mainApp.speak(msgtext); // TODO: Move the speech plugin to here ... 
+					}
+				}
+			}
+			this.NotificationDashboards[0].onDashboardActivated = "dashboardActivated";
+			this.NotificationDashboards[0].onLayerSwipe = "dashboardLayerSwipe";
+			this.NotificationDashboards[0].onUserClose = "dashboardClosed";
+		} else if(window.webkitNotifications) {
+			var wkn = window.webkitNotifications;
+			if(wkn.checkPermission()) // 0 = Allowed, 1 = Not Allowed, 2 = Denied
+			{
+				if(!this.NotificationDashboards[msgid]) {
+					try {
+						this.NotificationDashboards[msgid] = wkn.createNotification("mainApp/images/google-voice-icon48.png", msg, msgtext);
+						this.NotificationDashboards[msgid].show();
+						this.NotificationDashboards[0] = "temp holder";
+					} catch(err) { // throw security error
+						// currently ignore
+					}
+				}
+			}
+		}
         this.log("************************ NOTIFICATION POSTED ******************** ");
     },
     dashboardLayerSwipe: function(inSender, layer)
@@ -323,6 +336,12 @@ enyo.kind({
     {
         if(!this.NotificationDashboards || !this.NotificationDashboards[0])
             return;
+		var wkn = window.webkitNotifications;
+		if(wkn) {
+			this.NotificationDashboards[msgid].cancel();
+			delete this.NotificationDashboards[msgid];
+			return;
+		}
         if(this.NotificationDashboards[msgid])
         {
             delete this.NotificationDashboards[msgid];
