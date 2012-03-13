@@ -295,7 +295,7 @@ enyo.kind({
 			{
 				if(!this.NotificationDashboards[msgid]) {
 					try {
-						this.NotificationDashboards[msgid] = wkn.createNotification("mainApp/images/google-voice-icon48.png", msg, msgtext);
+						this.NotificationDashboards[msgid] = wkn.createNotification("https://voice.google.com/", msg, msgtext);
 						this.NotificationDashboards[msgid].show();
 						this.NotificationDashboards[0] = "temp holder";
 						this.log("************************ NOTIFICATION POSTED ******************** ");						
