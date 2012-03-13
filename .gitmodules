@@ -1,3 +1,6 @@
 [submodule "mainApp/EnyoPlatform"]
 	path = mainApp/source/EnyoPlatform
 	url = git://github.com/ericblade/EnyoPlatform.git
+[submodule "mainApp/source/EnyoPlatform"]
+	path = mainApp/source/EnyoPlatform
+	url = f:/src/EnyoPlatform
