@@ -236,24 +236,26 @@ enyo.kind({
     PostNotification: function(msgid, msg, nonamemsg, msgtext)
     {
         this.log();
+		/* Initialize some junk we need */
+		if(!this.NotificationDashboards)
+			this.NotificationDashboards = { };
+		if(!this.NotificationDashboards[0])
+		{
+			this.NotificationDashboards[0] = this.createComponent( {
+				kind: "Dashboard",
+				smallIcon: "images/google-voice-icon24.png",
+				icon: "images/google-voice-icon48.png",
+				onMessageTap: "dashboardTap",
+				onIconTap: "dashboardTap",
+			});
+		}
+		
         if(window.PalmSystem)
         {
 			var ignoreid = msgid.substr(-5) + msgtext.substr(-5); // just use the last 5 characters of the id and the text .. hopefully will work
 			if(this.IgnoreNotificationsList[ignoreid]) {
 				this.log("*** IGNORING POSTNOTIFICATION FOR " + ignoreid);
 				return;
-			}
-			if(!this.NotificationDashboards)
-				this.NotificationDashboards = { };
-			if(!this.NotificationDashboards[0])
-			{
-				this.NotificationDashboards[0] = this.createComponent( {
-					kind: "Dashboard",
-					smallIcon: "images/google-voice-icon24.png",
-					icon: "images/google-voice-icon48.png",
-					onMessageTap: "dashboardTap",
-					onIconTap: "dashboardTap",
-				});
 			}
 			if(!this.NotificationDashboards[msgid] || this.NotificationDashboards[msgid].ignoreid != ignoreid) {
 				this.NotificationDashboards[msgid] = { icon: "mainApp/images/google-voice-icon48.png", smallIcon: "mainApp/images/google-voice-icon24.png", title: msg, text: msgtext, id: msgid, ignoreid: ignoreid };
