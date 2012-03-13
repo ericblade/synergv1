@@ -300,8 +300,10 @@ enyo.kind({
 						this.NotificationDashboards[0] = "temp holder";
 						this.log("************************ NOTIFICATION POSTED ******************** ");						
 					} catch(err) { // throw security error
-						// currently ignore
+						enyo.log("error posting notification:" + err);
 					}
+				} else {
+					enyo.log("duplicate notification");
 				}
 			}
 		} else {
