@@ -8,7 +8,7 @@ if(window.PalmSystem)
 else // if PhoneGap or BlackBerry
 {
     enyo.depends(
-        "mainApp/EnyoPlatform/",
+        "mainApp/source/EnyoPlatform/",
         "mainApp/source/globals.js",
         "noWindow/applaunch.js",
         "mainApp/source/globals.js",
