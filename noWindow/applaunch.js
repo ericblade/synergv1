@@ -291,7 +291,7 @@ enyo.kind({
 		} else if(window.webkitNotifications) {
 			var wkn = window.webkitNotifications;
 			enyo.log("webkitNotifications available, permission=" + wkn.checkPermission());
-			if(wkn.checkPermission()) // 0 = Allowed, 1 = Not Allowed, 2 = Denied
+			if(wkn.checkPermission() === 0) // 0 = Allowed, 1 = Not Allowed, 2 = Denied
 			{
 				if(!this.NotificationDashboards[msgid]) {
 					try {
