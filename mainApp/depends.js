@@ -1,5 +1,5 @@
 enyo.depends(
-    "source/EnyoPlatform/",
+    "EnyoPlatform/",
     "source/globals.js",
     "utilkinds.js",
     "source/contactDetail.js",
