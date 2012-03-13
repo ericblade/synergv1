@@ -640,13 +640,19 @@ enyo.kind({
     ready: function()
     {
         this.inherited(arguments);
+var imgPath, title, message;
+	
+imgPath = "http://icons.iconarchive.com/icons/martin-berube/animal/32/monkey-icon.png";
+title = "Web Notification";
+message = "Sent from the Kitchen Sink app.";
+
+webkitNotifications.createNotification(imgPath, title, message).show();        
         if(Platform.isWebOS() && Platform.platformVersion >= 2)
         {
             this.clearVoicemail();
         }
         console.log("checking firstrun");
         enyo.asyncMethod(this, "checkFirstRun");
-        blackberry.app.showBannerIndicator("mainApp/images/google-voice-icon32.png", 52);
     },
     checkFirstRun: function() {
         var appInfo;
