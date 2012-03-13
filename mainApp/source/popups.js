@@ -295,7 +295,8 @@ enyo.kind(
                 
             if(!Platform.isWebOS())
             {
-                this.$.NotifyOne.hide();
+                if(!window.webkitNotifications)
+                    this.$.NotifyOne.hide();
                 this.$.NotifyTwo.hide();
                 this.$.NotifyThree.hide();
             }
