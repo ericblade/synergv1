@@ -249,6 +249,8 @@ enyo.kind({
 	},
     actuallyPostNotification: function(msgid, msg, nonamemsg, msgtext)
     {
+		var ignoreid = msgid.substr(-5) + msgtext.substr(-5); // just use the last 5 characters of the id and the text .. hopefully will work
+		
         this.log();
 		/* Initialize some junk we need */
 		if(!this.NotificationDashboards)
@@ -266,13 +268,15 @@ enyo.kind({
 		
         if(window.PalmSystem)
         {
-			var ignoreid = msgid.substr(-5) + msgtext.substr(-5); // just use the last 5 characters of the id and the text .. hopefully will work
 			if(this.IgnoreNotificationsList[ignoreid]) {
 				this.log("*** IGNORING POSTNOTIFICATION FOR " + ignoreid);
 				return;
 			}
 			if(!this.NotificationDashboards[msgid] || this.NotificationDashboards[msgid].ignoreid != ignoreid) {
-				this.NotificationDashboards[msgid] = { icon: "mainApp/images/google-voice-icon48.png", smallIcon: "mainApp/images/google-voice-icon24.png", title: msg, text: msgtext, id: msgid, ignoreid: ignoreid };
+				this.NotificationDashboards[msgid] = { icon: "mainApp/images/google-voice-icon48.png",
+														smallIcon: "mainApp/images/google-voice-icon24.png",
+														title: msg, text: msgtext,
+														id: msgid, ignoreid: ignoreid };
 				this.NotificationDashboards[0].push(this.NotificationDashboards[msgid]);
 				enyo.windows.addBannerMessage(msg, '{}', "mainApp/images/google-voice-icon24.png", "", this.getAlertPath());
 				if(enyo.application.mainApp && prefs.get("ttsNotificationDisable", true) != 1) // TODO: can't speak until mainApp is loaded :(
@@ -293,11 +297,20 @@ enyo.kind({
 			enyo.log("webkitNotifications available, permission=" + wkn.checkPermission());
 			if(wkn.checkPermission() === 0) // 0 = Allowed, 1 = Not Allowed, 2 = Denied
 			{
-				if(!this.NotificationDashboards[msgid]) {
+				if(!this.NotificationDashboards[msgid] || this.NotificationDashboards[msgid].ignoreid != ignoreid) {
 					try {
-						this.NotificationDashboards[msgid] = wkn.createNotification("https://voice.google.com/", msg, msgtext);
-						this.NotificationDashboards[msgid].show();
+						var note = wkn.createNotification("https://voice.google.com/", msg, msgtext);
+						note.id = msgid;
+						note.ignoreid = ignoreid;
+						
+						note.onclose = enyo.bind(this, this.dashboardLayerSwipe, note, note);
+						note.onclick = enyo.bind(this, function() { enyo.log("How do we bring the app forward?"); });
+						note.ondisplay = enyo.bind(this, function() { enyo.log("notification ondisplay"); });
+						note.onerror = enyo.bind(this, function() { enyo.log("notification onerror"); });
+						
+						note.show();
 						this.NotificationDashboards[0] = "temp holder";
+						this.NotificationDashboards[msgid] = note;
 						this.log("************************ NOTIFICATION POSTED ******************** ");						
 					} catch(err) { // throw security error
 						enyo.log("error posting notification:" + err);
