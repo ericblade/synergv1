@@ -269,12 +269,14 @@ enyo.kind({
 						enyo.application.mainApp.speak(msgtext); // TODO: Move the speech plugin to here ... 
 					}
 				}
+				this.log("************************ NOTIFICATION POSTED ******************** ");
 			}
 			this.NotificationDashboards[0].onDashboardActivated = "dashboardActivated";
 			this.NotificationDashboards[0].onLayerSwipe = "dashboardLayerSwipe";
 			this.NotificationDashboards[0].onUserClose = "dashboardClosed";
 		} else if(window.webkitNotifications) {
 			var wkn = window.webkitNotifications;
+			enyo.log("webkitNotifications available, permission=" + wkn.checkPermission());
 			if(wkn.checkPermission()) // 0 = Allowed, 1 = Not Allowed, 2 = Denied
 			{
 				if(!this.NotificationDashboards[msgid]) {
@@ -282,13 +284,15 @@ enyo.kind({
 						this.NotificationDashboards[msgid] = wkn.createNotification("mainApp/images/google-voice-icon48.png", msg, msgtext);
 						this.NotificationDashboards[msgid].show();
 						this.NotificationDashboards[0] = "temp holder";
+						this.log("************************ NOTIFICATION POSTED ******************** ");						
 					} catch(err) { // throw security error
 						// currently ignore
 					}
 				}
 			}
+		} else {
+			enyo.log("No known notification system");
 		}
-        this.log("************************ NOTIFICATION POSTED ******************** ");
     },
     dashboardLayerSwipe: function(inSender, layer)
     {
