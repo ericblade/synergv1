@@ -299,7 +299,7 @@ enyo.kind({
 			{
 				if(!this.NotificationDashboards[msgid] || this.NotificationDashboards[msgid].ignoreid != ignoreid) {
 					try {
-						var note = wkn.createNotification("mainApp/images/google-voice-icon24.png", msg, msgtext);
+						var note = wkn.createNotification("mainApp/images/google-voice-icon48.png", msg, msgtext);
 						note.id = msgid;
 						note.ignoreid = ignoreid;
 						
