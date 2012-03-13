@@ -47,22 +47,6 @@
 var inboxButton={ name: "InboxButton", kind: "ActivityButton", caption: "Reload Inbox", onclick: "InboxClick" };
 
 enyo.kind({
-    name: "iScroller",
-    kind: "Control",
-    components: [
-        { name: "client" },
-    ],
-    rendered: function() {
-        this.inherited(arguments);
-        var node = this.parent.hasNode();
-        this.log("node=", node);
-        if(node && !this.scroller)
-            this.scroller = new iScroll(node.id);
-        enyo.nextTick(this.scroller, this.scroller.refresh);
-    },
-});
-
-enyo.kind({
     name: "MyApps.GVoice",
     kind: "VFlexBox",
     className: "default small-font",
@@ -358,7 +342,6 @@ enyo.kind({
                         { name: "leftPane", kind: "Pane", flex: 1, transitionKind:enyo.transitions.LeftRightFlyin, components:
                             [
                                 { name: "indexView", kind: "TransformScroller", flex: 1, horizontal: false, autoHorizontal: false, autoVertical: true, accelerated: Platform.isLargeScreen(), components:
-                                //{ name: "indexView", kind: "iScroller", flex: 1, components:
                                     [
                                         { kind: "HFlexBox", components:
                                             [
@@ -459,7 +442,6 @@ enyo.kind({
                                             ]
                                         },
                                         { name: "overviewScroller", kind: "TransformScroller", flex: 1, autoHorizontal: false, horizontal: false, autoVertical: true, accelerated: true,
-                                        //{ name: "overviewScroller", kind: "iScroller", flex: 1, 
                                         components:
                                             [
                                                 { kind: "VFlexBox", flex: 1, components:
@@ -664,6 +646,7 @@ enyo.kind({
         }
         console.log("checking firstrun");
         enyo.asyncMethod(this, "checkFirstRun");
+        blackberry.app.showBannerIndicator("mainApp/images/google-voice-icon32.png", 52);
     },
     checkFirstRun: function() {
         var appInfo;
