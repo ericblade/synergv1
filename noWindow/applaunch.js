@@ -233,7 +233,21 @@ enyo.kind({
             default: return "/media/internal/ringtones/"+x+" (short).mp3";
         }
     },
-    PostNotification: function(msgid, msg, nonamemsg, msgtext)
+	PostNotification: function(msgid, msg, nonamemsg, msgtext)
+	{
+		var wkn = window.webkitNotifications;
+		if(window.PalmSystem)
+		{
+			this.actuallyPostNotification(msgid, msg, nonamemsg, msgtext);
+		} else if(wkn) {
+			if(wkn.checkPermission()) { // 1 = Not Allowed, 2 = Denied, 0 = Allowed
+				wkn.requestPermission(enyo.bind(this, this.actuallyPostNotification, msgid, msg, nonamemsg, msgtext));
+			} else {
+				this.actuallyPostNotification(msgid, msg, nonamemsg, msgtext);
+			}
+		}
+	},
+    actuallyPostNotification: function(msgid, msg, nonamemsg, msgtext)
     {
         this.log();
 		/* Initialize some junk we need */
