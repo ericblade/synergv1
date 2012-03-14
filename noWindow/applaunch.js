@@ -266,7 +266,7 @@ enyo.kind({
 			});
 		}
 		
-        if(window.PalmSystem)
+        if(true) //window.PalmSystem)
         {
 			if(this.IgnoreNotificationsList[ignoreid]) {
 				this.log("*** IGNORING POSTNOTIFICATION FOR " + ignoreid);

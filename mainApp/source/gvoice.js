@@ -1,4 +1,10 @@
 //*** Featured in the "SWEETHEART TIME" App Catalog Featured Apps, February 2012!! ***
+// TODO: animate the main titlebar off screen after logging in, move it's buttons to the next titlebar
+// * a way to implement bezel swipes?
+//   trap touch events, if touch starts on X = 0 or Y = 0 or X = screen.width or Y = screen.height,
+//   then check direction, allowing for slight movement (about 20 px?) in the other axis
+//   if we go far enough (about 40 px?) in the correct direction, trigger a bezel event?
+//
 // TODO: Buy Credit button does not work in Android/Blackberry, redirects to mobile page !!
 // TODO: Fix About->Support Email in Android
 // TODO: Implement Online detection in Android/Blackberry ?
