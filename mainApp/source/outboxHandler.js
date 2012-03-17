@@ -135,6 +135,7 @@ enyo.kind( {
             {
                 clearInterval(this.timer);
                 this.doAllMessagesSent(this.sentCounter);
+				localStorage["outboxMessages"] = JSON.stringify( [ ] );
                 this.sentCounter = 0;
                 this.timer = 0;
             }

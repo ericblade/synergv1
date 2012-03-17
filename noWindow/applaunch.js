@@ -266,7 +266,7 @@ enyo.kind({
 			});
 		}
 		
-        if(true) //window.PalmSystem)
+        if(window.PalmSystem)
         {
 			if(this.IgnoreNotificationsList[ignoreid]) {
 				this.log("*** IGNORING POSTNOTIFICATION FOR " + ignoreid);
@@ -289,7 +289,7 @@ enyo.kind({
 				}
 				this.log("************************ NOTIFICATION POSTED ******************** ");
 			}
-			this.NotificationDashboards[0].onDashboardActivated = "dashboardActivated";
+			//this.NotificationDashboards[0].onDashboardActivated = "dashboardActivated";
 			this.NotificationDashboards[0].onLayerSwipe = "dashboardLayerSwipe";
 			this.NotificationDashboards[0].onUserClose = "dashboardClosed";
 		} else if(window.webkitNotifications) {
@@ -346,7 +346,7 @@ enyo.kind({
         this.dashboardLayerSwipe(inSender);
         delete this.NotificationDashboards;
     },
-    dashboardActivated: function(dash) {
+    /*dashboardActivated: function(dash) {
         //dash.applyStyle("background-color", "black");
         this.log("**************** DASHBOARD ACTIVATED ***************** ");
         var l;
@@ -359,7 +359,7 @@ enyo.kind({
                 c.$.topSwipeable.applyStyle("background-color", "black");
             }
         }
-    },
+    },*/
     
     dashboardTap: function(inSender, dashProps, inEvent)
     {

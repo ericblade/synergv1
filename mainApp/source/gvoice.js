@@ -1,4 +1,8 @@
 //*** Featured in the "SWEETHEART TIME" App Catalog Featured Apps, February 2012!! ***
+// TODO: messagesSent counter got broken by queue changes. need to redesign the queue to use
+//       a seperate list to hold what's pending vs what actually needs to be resent
+// TODO: Undo messageSent hack that says if(counter == 0) counter = 1 !!!
+// TODO: Add option to turn off "enter to send"
 // TODO: animate the main titlebar off screen after logging in, move it's buttons to the next titlebar
 // * a way to implement bezel swipes?
 //   trap touch events, if touch starts on X = 0 or Y = 0 or X = screen.width or Y = screen.height,
@@ -1618,6 +1622,7 @@ enyo.kind({
     messagesSent: function(inSender, counter)
     {
         var mstr = (counter != 1) ? " messages" : " message";
+        if(counter == 0) counter = 1;
         //var sound = (counter == 1) ? "" : "/media/internal/ringtones/Triangle (short).mp3";
         var sound = "";
         enyo.windows.addBannerMessage(counter + mstr + " sent", '{}', "images/google-voice-icon24.png", "", sound);
