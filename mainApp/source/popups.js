@@ -997,3 +997,19 @@ enyo.kind({
         this.$.client.setContent(msg);
     }
 })
+
+enyo.kind({
+    name: "NotePopup",
+    kind: "Popup",
+    published: {
+        messageIndex: "",
+        messageId: "",
+        note: ""
+    },
+    components: [
+        { name: "NoteText", content: "Note" },
+    ],
+    noteChanged: function() {
+        this.$.NoteText.setContent(this.note);
+    }
+});

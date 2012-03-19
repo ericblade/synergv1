@@ -30,6 +30,16 @@ enyo.kind({
 });
 
 enyo.kind({
+    name: "noteImage",
+    kind: "StatefulImage",
+    stateImages: { "noted": !window.PalmSystem ? "mainApp/images/note.png" : "images/note.png", "unnoted": !window.PalmSystem ? "mainApp/images/unnote.png" : "images/unnote.png" },
+    published: {
+        "messageId": "",
+        "messageIndex": "",
+    }
+})
+
+enyo.kind({
     name: "autoCompleteInput",
     kind: "VFlexBox",
     published: {

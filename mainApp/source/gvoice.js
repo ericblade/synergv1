@@ -290,6 +290,7 @@ enyo.kind({
         { name: "mainSpinner", kind: "SpinnerLarge", style: "position: absolute; top: 400px; left: 350px; z-index: 10;", showing: false },
         //{ name: "fileDownload", kind: "PalmService", service: "palm://com.palm.downloadmanager/", method: "download", onSuccess: "downloadFinished", subscribe: true },
         { name: "outbox", kind: "outboxHandler", onAllMessagesSent: "messagesSent" },
+        { name: "NotePopup", kind: "NotePopup" },
         { name: "LoginPopup", kind: "LoginPopup", onClose: "popupClosed" },
         { kind: "composePopup", onClose: "popupClosed" },
         { kind: "placeCallPopup", onClose: "popupClosed", onCreditPurchased: "RefreshBillingCredit", onCancelCall: "cancelOutgoingCall", onPlaceCall: "actionPlaceCall" },
@@ -422,6 +423,7 @@ enyo.kind({
                                                 { kind: "HFlexBox", components:
                                                     [
                                                         { name: "conversationName", flex: 1, content: "No One" },
+                                                        { name: "conversationNote", kind: "noteImage", onclick: "openNote" },
                                                         { name: "conversationStar", kind: "starImage", onclick: "doStar", },
                                                     ]
                                                 }
@@ -462,7 +464,8 @@ enyo.kind({
                                                             [
                                                                 { name: "overviewTitle", kind: "Divider", className: "gvoice-divider", allowHtml: true, components:
                                                                     [
-                                                                        { name: "overviewStar", kind: "starImage", onclick: "doStar", },
+                                                                        { name: "overviewNote", kind: "noteImage", onclick: "openNote" },
+                                                                        { name: "overviewStar", kind: "starImage", onclick: "doStar" },
                                                                     ]
                                                                 },
                                                                 { kind: "messageListRepeater", onMessageClick: "listItemClick", onLinkClick: "linkClicked" },
@@ -1340,11 +1343,13 @@ enyo.kind({
         this.$.conversationType.setContent(type);
         /*if(Platform.isLargeScreen())
             name = " @ " + name;*/
-        this.$.conversationName.setContent(name + this.MessageIndex[index].note);
+        this.$.conversationName.setContent(name);
         if(this.MessageIndex[index].star)
             this.$.conversationStar.setState("starred");
         else
             this.$.conversationStar.setState("unstarred");
+            
+        this.$.conversationNote.setState(this.MessageIndex[index].note ? "noted" : "unnoted");
         
         this.markMessageRead(this.selectedID);
         if(!Platform.isLargeScreen()) // PRE - switch view to right hand side
@@ -1598,6 +1603,11 @@ enyo.kind({
                 this.$.overviewStar.setState("unstarred");
             this.$.overviewStar.setMessageId(messageIndex.id);
             this.$.overviewStar.setMessageIndex(inRow);
+            
+            this.$.overviewNote.setState(messageIndex.note ? "noted" : "unnoted");
+            this.$.overviewNote.setMessageId(messageIndex.id);
+            this.$.overviewNote.setMessageIndex(inRow);
+            
             this.$.overviewTitle.setCaption(title);
             
             return true;
@@ -2031,6 +2041,19 @@ enyo.kind({
             //this.log("unsetting star");
             inSender.setState("unstarred");
         }
+    },
+    openNote: function(inSender, inEvent)
+    {
+        if(typeof blackberry !== "undefined" && inEvent.cancelable)
+            return true;
+        if(!inSender.messageIndex && !inSender.messageId) {
+            inSender.messageIndex = this.getMessageIndexBId(this.selectedID);
+            inSender.messageId = this.selectedID;
+        }
+        this.$.NotePopup.openAtEvent(inEvent);
+        this.$.NotePopup.setMessageIndex(inSender.messageIndex);
+        this.$.NotePopup.setMessageId(inSender.messageId);
+        this.$.NotePopup.setNote(this.MessageIndex[inSenver.messageIndex].note);
     },
     doAddToContacts: function(name, number, type)
     {
