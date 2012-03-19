@@ -2047,13 +2047,13 @@ enyo.kind({
         if(typeof blackberry !== "undefined" && inEvent.cancelable)
             return true;
         if(!inSender.messageIndex && !inSender.messageId) {
-            inSender.messageIndex = this.getMessageIndexBId(this.selectedID);
+            inSender.messageIndex = this.getMessageIndexById(this.selectedID);
             inSender.messageId = this.selectedID;
         }
         this.$.NotePopup.openAtEvent(inEvent);
         this.$.NotePopup.setMessageIndex(inSender.messageIndex);
         this.$.NotePopup.setMessageId(inSender.messageId);
-        this.$.NotePopup.setNote(this.MessageIndex[inSenver.messageIndex].note);
+        this.$.NotePopup.setNote(this.MessageIndex[inSender.messageIndex].note);
     },
     doAddToContacts: function(name, number, type)
     {
