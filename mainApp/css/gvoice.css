@@ -83,5 +83,6 @@
 .notePopup .noteInput {
 	text-decoration:none;  
 	color:#000;  
-	background:#ffc;  
+	background:#ffc;
+	-webkit-border-image: none;
 }
