@@ -1007,7 +1007,7 @@ enyo.kind({
         note: ""
     },
     components: [
-        { name: "NoteText", kind: "RichText", value: "Note", onChanged: "contentChanged" },
+        { name: "NoteText", kind: "RichText", value: "Note", onchange: "contentChanged" },
     ],
     noteChanged: function() {
         this.$.NoteText.setValue(this.note);
