@@ -61,3 +61,5 @@
     color: DarkGray;
    opacity: 1.0;
 }
+
+.default .noteicon { padding-right: 10px; width: 32px; }

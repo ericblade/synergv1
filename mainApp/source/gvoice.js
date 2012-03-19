@@ -423,7 +423,7 @@ enyo.kind({
                                                 { kind: "HFlexBox", components:
                                                     [
                                                         { name: "conversationName", flex: 1, content: "No One" },
-                                                        { name: "conversationNote", kind: "noteImage", onclick: "openNote" },
+                                                        { name: "conversationNote", className: "noteicon", kind: "noteImage", onclick: "openNote" },
                                                         { name: "conversationStar", kind: "starImage", onclick: "doStar", },
                                                     ]
                                                 }
@@ -464,7 +464,7 @@ enyo.kind({
                                                             [
                                                                 { name: "overviewTitle", kind: "Divider", className: "gvoice-divider", allowHtml: true, components:
                                                                     [
-                                                                        { name: "overviewNote", kind: "noteImage", onclick: "openNote" },
+                                                                        { name: "overviewNote", className: "noteicon", kind: "noteImage", onclick: "openNote" },
                                                                         { name: "overviewStar", kind: "starImage", onclick: "doStar" },
                                                                     ]
                                                                 },
