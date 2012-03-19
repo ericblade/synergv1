@@ -1850,7 +1850,7 @@ enyo.kind({
     saveNote: function(inSender, msgindex, note)
     {
         note = encodeURI(note);
-        this.MessageIndex[msgidex].note = note;
+        this.MessageIndex[msgindex].note = note;
         var params = {
             //id=521c44efc111f5e94dc6204e210ebc1dc25e0fd3&note=TESTNOTETESTNOTE%0Asdfsdfdf&_rnr_se=NmWrGYW5yjuJV6GReaLDrlu8vfI%3D
             id: this.MessageIndex[msgindex].id,
