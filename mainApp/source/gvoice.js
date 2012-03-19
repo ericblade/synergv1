@@ -1859,7 +1859,7 @@ enyo.kind({
         }
         this.$.saveNote.headers = { "Authorization":"GoogleLogin auth="+this.AuthCode };        
         this.$.saveNote.call( params );
-    }
+    },
     playVoicemail: function(msgid)
     {        
         if(Platform.isWebOS())
