@@ -1,4 +1,6 @@
 //*** Featured in the "SWEETHEART TIME" App Catalog Featured Apps, February 2012!! ***
+// TODO: there is a https://www.google.com/voice/b/0/settings/getDoNotDisturb/ returns {"ok":true,"data":{"enabled":false}}
+// TODO: make applaunch.setAlarm use the app id instead of hard code!!
 // TODO: messagesSent counter got broken by queue changes. need to redesign the queue to use
 //       a seperate list to hold what's pending vs what actually needs to be resent
 // TODO: Undo messageSent hack that says if(counter == 0) counter = 1 !!!
@@ -1338,7 +1340,7 @@ enyo.kind({
         this.$.conversationType.setContent(type);
         /*if(Platform.isLargeScreen())
             name = " @ " + name;*/
-        this.$.conversationName.setContent(name);
+        this.$.conversationName.setContent(name + this.MessageIndex[index].note);
         if(this.MessageIndex[index].star)
             this.$.conversationStar.setState("starred");
         else
@@ -2603,3 +2605,17 @@ Request Method:GET
 // /inbox/savenote POST id=msgid, _rnr_se=rnr_se, note=note text
 // /inbox/deletenote/ POST id=msgid _rnr_se
 // /inbox/block/ POST blocked=1/0, id=msgid, _rnr_se
+/*
+ <json>
+ <![CDATA[
+    {"messages":
+        {"521c44efc111f5e94dc6204e210ebc1dc25e0fd3":
+            {"id":"521c44efc111f5e94dc6204e210ebc1dc25e0fd3",
+            "phoneNumber":"+17347326045",
+            "displayNumber":"(734) 732-6045",
+            "startTime":"1332112874997",
+            "displayStartDateTime":"3/18/12 7:21 PM",
+            "displayStartTime":"7:21 PM",
+            "relativeStartTime":"3 minutes ago",
+            "note":"TESTNOTETESTNOTE\n","isRead":true,"isSpam":false,"isTrash":false,"star":false,"messageText":"Started with 36d in the big sigh no winner","labels":["inbox","sms","all"],"type":11,"children":""},"e1cbd97247cea7fbaf6bfc2f6065a3c7fa45ec28":{"id":"e1cbd97247cea7fbaf6bfc2f6065a3c7fa45ec28","phoneNumber":"+1288472","displayNumber":"+1288472","startTime":"1332080185141","displayStartDateTime":"3/18/12 10:16 AM","displayStartTime":"10:16 AM","relativeStartTime":"9 hours ago","note":"","isRead":true,"isSpam":false,"isTrash":false,"star":false,"messageText":"Your ADP TotalPay Card ending in 7227 has a balance of: 426.93. Do not respond, msg&data rates may apply","labels":["inbox","sms","all"],"type":10,"children":""},"9b52fece7c6f1af150ea78e4bab0512444f0e3fe":{"id":"9b52fece7c6f1af150ea78e4bab0512444f0e3fe","phoneNumber":"+19852531804","displayNumber":"(985) 253-1804","startTime":"1332045386896","displayStartDateTime":"3/18/12 12:36 AM","displayStartTime":"12:36 AM","relativeStartTime":"18 hours ago","note":"","isRead":true,"isSpam":false,"isTrash":false,"star":false,"messageText":"So why you keep making fun of me?","labels":["inbox","sms","all"],"type":10,"children":""},"6ff5917e0daeb8e60d1c52071a08726ef3a3b11c":{"id":"6ff5917e0daeb8e60d1c52071a08726ef3a3b11c","phoneNumber":"+17347326045","displayNumber":"(734) 732-6045","startTime":"1332015654377","displayStartDateTime":"3/17/12 4:20 PM","displayStartTime":"4:20 PM","relativeStartTime":"27 hours ago","note":"","isRead":true,"isSpam":false,"isTrash":false,"star":false,"messageText":"Can you look and see if there are any uhaul or ryder or budget rental truck/van places open?","labels":["inbox","sms","all"],"type":10,"children":""},"26a90ec14cfad3fdac4969e075e715e1b096e1f3":{"id":"26a90ec14cfad3fdac4969e075e715e1b096e1f3","phoneNumber":"+17346799257","displayNumber":"(734) 679-9257","startTime":"1332010418313","displayStartDateTime":"3/17/12 2:53 PM","displayStartTime":"2:53 PM","relativeStartTime":"28 hours ago","note":"","isRead":true,"isSpam":false,"isTrash":false,"star":false,"messageText":"Happy st. Pattys day..are u drinking beer today","labels":["inbox","sms","all"],"type":10,"children":""},"0e3abaa91bd77003c9a60501533a12ada46f3549":{"id":"0e3abaa91bd77003c9a60501533a12ada46f3549","phoneNumber":"+17079925233","displayNumber":"(707) 992-5233","startTime":"1332002581984","displayStartDateTime":"3/17/12 12:43 PM","displayStartTime":"12:43 PM","relativeStartTime":"30 hours ago","note":"","isRead":true,"isSpam":false,"isTrash":false,"star":false,"messageText":"Test","labels":["inbox","sms","all"],"type":11,"children":""},"aeb47793f92aa8bb1e6587531022dbc0dff58c70":{"id":"aeb47793f92aa8bb1e6587531022dbc0dff58c70","phoneNumber":"+1288472","displayNumber":"+1288472","startTime":"1331993875942","displayStartDateTime":"3/17/12 10:17 AM","displayStartTime":"10:17 AM","relativeStartTime":"33 hours ago","note":"","isRead":true,"isSpam":false,"isTrash":false,"star":false,"messageText":"Your ADP TotalPay Card ending in 7227 has a balance of: 426.93. Do not respond, msg&data rates may apply","labels":["inbox","sms","all"],"type":10,"children":""},"a2b8dbea288e1238d53789b52a59785960bebafd":{"id":"a2b8dbea288e1238d53789b52a59785960bebafd","phoneNumber":"+17347326045","displayNumber":"(734) 732-6045","startTime":"1331966198406","displayStartDateTime":"3/17/12 2:36 AM","displayStartTime":"2:36 AM","relativeStartTime":"40 hours ago","note":"","isRead":true,"isSpam":false,"isTrash":false,"star":false,"messageText":"Ugh. I really hope things pick up, i've only made 49 bucks.","labels":["inbox","sms","all"],"type":10,"children":""},"004368af75434472669624fbe7197996cc80d742":{"id":"004368af75434472669624fbe7197996cc80d742","phoneNumber":"+17346799257","displayNumber":"(734) 679-9257","startTime":"1331948872556","displayStartDateTime":"3/16/12 9:47 PM","displayStartTime":"9:47 PM","relativeStartTime":"45 hours ago","note":"","isRead":true,"isSpam":false,"isTrash":false,"star":false,"messageText":"Goodmorning eric..are u awake?","labels":["inbox","sms","all"],"type":10,"children":""},"3cae2ff4ea6f51970d9a2ea3c7958af09e65cd9d":{"id":"3cae2ff4ea6f51970d9a2ea3c7958af09e65cd9d","phoneNumber":"+19852531804","displayNumber":"(985) 253-1804","startTime":"1331948182756","displayStartDateTime":"3/16/12 9:36 PM","displayStartTime":"9:36 PM","relativeStartTime":"45 hours ago","note":"","isRead":true,"isSpam":false,"isTrash":false,"star":false,"messageText":"Hi, what ya doing?","labels":["inbox","sms","all"],"type":10,"children":""}},"totalSize":93,"unreadCounts":{"all":0,"inbox":0,"missed":0,"placed":0,"received":0,"recorded":0,"sms":0,"spam":0,"starred":0,"trash":0,"unread":0,"voicemail":0},"resultsPerPage":10}]]></json>
+*/
