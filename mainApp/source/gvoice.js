@@ -1,4 +1,5 @@
 //*** Featured in the "SWEETHEART TIME" App Catalog Featured Apps, February 2012!! ***
+// TODO: need to figure out a way to update the Note status preferably without redrawing the entire freaking canvas when adding/removing a note
 // TODO: there is a https://www.google.com/voice/b/0/settings/getDoNotDisturb/ returns {"ok":true,"data":{"enabled":false}}
 // TODO: make applaunch.setAlarm use the app id instead of hard code!!
 // TODO: messagesSent counter got broken by queue changes. need to redesign the queue to use
@@ -1850,15 +1851,15 @@ enyo.kind({
     },
     saveNote: function(inSender, msgindex, note)
     {
-        note = encodeURI(note);
         this.MessageIndex[msgindex].note = note;
+        note = encodeURI(note);
         var params = {
             //id=521c44efc111f5e94dc6204e210ebc1dc25e0fd3&note=TESTNOTETESTNOTE%0Asdfsdfdf&_rnr_se=NmWrGYW5yjuJV6GReaLDrlu8vfI%3D
             id: this.MessageIndex[msgindex].id,
             "note": note,
             _rnr_se: this.PrimaryData._rnr_se,
         }
-        this.$.saveNote.headers = { "Authorization":"GoogleLogin auth="+this.AuthCode };        
+        this.$.saveNote.headers = { "Authorization":"GoogleLogin auth="+this.AuthCode };
         this.$.saveNote.call( params );
     },
     playVoicemail: function(msgid)
@@ -2069,6 +2070,9 @@ enyo.kind({
         this.$.NotePopup.setMessageIndex(inSender.messageIndex);
         this.$.NotePopup.setMessageId(inSender.messageId);
         this.$.NotePopup.setNote(this.MessageIndex[inSender.messageIndex].note);
+        inEvent.preventDefault();
+        inEvent.stopPropagation();
+        return true;
     },
     doAddToContacts: function(name, number, type)
     {
