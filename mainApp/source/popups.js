@@ -1007,9 +1007,12 @@ enyo.kind({
         note: ""
     },
     components: [
-        { name: "NoteText", content: "Note" },
+        { name: "NoteText", kind: "RichText", value: "Note", onChanged: "contentChanged" },
     ],
     noteChanged: function() {
-        this.$.NoteText.setContent(this.note);
+        this.$.NoteText.setValue(this.note);
+    },
+    contentChanged: function() {
+        enyo.log("Note edited, new content: ", this.$.NoteText.getValue());
     }
 });

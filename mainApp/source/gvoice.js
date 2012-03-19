@@ -290,7 +290,7 @@ enyo.kind({
         { name: "mainSpinner", kind: "SpinnerLarge", style: "position: absolute; top: 400px; left: 350px; z-index: 10;", showing: false },
         //{ name: "fileDownload", kind: "PalmService", service: "palm://com.palm.downloadmanager/", method: "download", onSuccess: "downloadFinished", subscribe: true },
         { name: "outbox", kind: "outboxHandler", onAllMessagesSent: "messagesSent" },
-        { name: "NotePopup", kind: "NotePopup" },
+        { name: "NotePopup", kind: "NotePopup", className: "notePopup" },
         { name: "LoginPopup", kind: "LoginPopup", onClose: "popupClosed" },
         { kind: "composePopup", onClose: "popupClosed" },
         { kind: "placeCallPopup", onClose: "popupClosed", onCreditPurchased: "RefreshBillingCredit", onCancelCall: "cancelOutgoingCall", onPlaceCall: "actionPlaceCall" },
