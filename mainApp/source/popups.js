@@ -1001,6 +1001,9 @@ enyo.kind({
 enyo.kind({
     name: "NotePopup",
     kind: "Popup",
+    events: {
+        onNoteSaved: ""
+    },
     published: {
         messageIndex: "",
         messageId: "",
@@ -1013,6 +1016,7 @@ enyo.kind({
         this.$.NoteText.setValue(this.note);
     },
     contentChanged: function() {
-        enyo.log("Note edited, new content: ", this.$.NoteText.getValue());
+        //enyo.log("Note edited, new content: ", this.$.NoteText.getValue());
+        this.doNoteSaved(this.messageIndex, note);
     }
 });

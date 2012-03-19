@@ -267,6 +267,7 @@ enyo.kind({
                 { name: "getInbox",       method: "GET",  onSuccess: "InboxReceived",       onFailure: "InboxFailed",       url: "https://www.google.com/voice/inbox/recent/inbox" },
                 { name: "messageSearch",  method: "GET",  onSuccess: "InboxReceived",       onFailure: "InboxFailed",       url: "https://www.google.com/voice/inbox/search" },
                 { name: "CallNumber",     method: "POST", onSuccess: "CallSent",            onFailure: "CallFailed",        url: "https://www.google.com/voice/call/connect/" },
+                { name: "saveNote",     method: "POST", onSuccess: "noteSaved",            onFailure: "noteSaveFailed",        url: "https://www.google.com/voice/inbox/savenote/" },
                 { name: "callCancel",     method: "POST", onSuccess: "CallCancelled",       onFailure: "CallCancelFailed",  url: "https://www.google.com/voice/call/cancel/" },
                 { name: "markRead", method: "POST", onSuccess: "MarkReadSuccess", onFailure: "MarkReadFailed", url:"https://www.google.com/voice/inbox/mark/" /*"https://www.google.com/voice/m/mark",*/ },
                 { name: "archiveMessages",       method: "POST", onSuccess: "archiveSuccess",     onFailure: "archiveFailed",    url: "https://www.google.com/voice/inbox/archiveMessages/", },
@@ -290,7 +291,7 @@ enyo.kind({
         { name: "mainSpinner", kind: "SpinnerLarge", style: "position: absolute; top: 400px; left: 350px; z-index: 10;", showing: false },
         //{ name: "fileDownload", kind: "PalmService", service: "palm://com.palm.downloadmanager/", method: "download", onSuccess: "downloadFinished", subscribe: true },
         { name: "outbox", kind: "outboxHandler", onAllMessagesSent: "messagesSent" },
-        { name: "NotePopup", kind: "NotePopup", className: "notePopup" },
+        { name: "NotePopup", kind: "NotePopup", className: "notePopup", onNoteSaved: "saveNote" },
         { name: "LoginPopup", kind: "LoginPopup", onClose: "popupClosed" },
         { kind: "composePopup", onClose: "popupClosed" },
         { kind: "placeCallPopup", onClose: "popupClosed", onCreditPurchased: "RefreshBillingCredit", onCancelCall: "cancelOutgoingCall", onPlaceCall: "actionPlaceCall" },
@@ -1846,6 +1847,19 @@ enyo.kind({
     {
         this.openComposePopup(this.clickedPhoneNum);
     },
+    saveNote: function(inSender, msgindex, note)
+    {
+        note = encodeURI(note);
+        this.MessageIndex[msgidex].note = note;
+        var params = {
+            //id=521c44efc111f5e94dc6204e210ebc1dc25e0fd3&note=TESTNOTETESTNOTE%0Asdfsdfdf&_rnr_se=NmWrGYW5yjuJV6GReaLDrlu8vfI%3D
+            id: this.MessageIndex[msgindex].id,
+            "note": note,
+            _rnr_se: this.PrimaryData._rnr_se,
+        }
+        this.$.saveNote.headers = { "Authorization":"GoogleLogin auth="+this.AuthCode };        
+        this.$.saveNote.call( params );
+    }
     playVoicemail: function(msgid)
     {        
         if(Platform.isWebOS())
