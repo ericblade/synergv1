@@ -1017,6 +1017,6 @@ enyo.kind({
     },
     contentChanged: function() {
         //enyo.log("Note edited, new content: ", this.$.NoteText.getValue());
-        this.doNoteSaved(this.messageIndex, note);
+        this.doNoteSaved(this.messageIndex, this.$.NoteText.getValue());
     }
 });
