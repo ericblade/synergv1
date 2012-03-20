@@ -370,9 +370,9 @@ enyo.kind({
                                             [
                                                 { name: "IndexListItem", className: "indexitem", kind: "SwipeableItem", confirmCaption: "Delete", onConfirm: "swipeDelete", layoutKind: "VFlexLayout", components:
                                                     [
+                                                                { name: "IndexImage", style: "display: inline;", kind: "HtmlContent", allowHtml: true, className: "avatar" },
                                                         { kind: "HFlexBox", components:
                                                             [
-                                                                { name: "IndexImage", style: "display: inline;", kind: "HtmlContent", allowHtml: true, className: "avatar" },
                                                                 { kind: "VFlexBox" , pack: "center", flex: 1, components:
                                                                     [
                                                                         { name: "IndexName", /*style: "display: inline;"*/ },
