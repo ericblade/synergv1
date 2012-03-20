@@ -196,9 +196,17 @@ enyo.kind({
 				var dt = new Date(unixTime * 1000);
 				var month = dt.getMonth();
 				var day = dt.getDay();
-				if(month < 10) month = "0" + month;
-				if(day < 10) day = "0" + day;
-				time = dt.getMonth() + "/" + dt.getDay() + "/" + dt.getFullYear() + " " + dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+				var hours = dt.getHours();
+				var minutes = dt.getMinutes();
+				var seconds = dt.getSeconds();
+				
+				if(parseInt(month) < 10) month = "0" + month;
+				if(parseInt(day) < 10) day = "0" + day;
+				if(parseInt(hours) < 10) hours = "0" + hours;
+				if(parseInt(minutes) < 10) minutes = "0" + minutes;
+				if(parseInt(seconds) < 10) seconds = "0" + seconds;
+				
+				time = month + "/" + day + "/" + dt.getFullYear() + " " + hours + ":" + minutes + ":" + seconds;
 			}
 			enyo.error("**** Set Alarm for ", time, bg);
             if(window.PalmSystem)
