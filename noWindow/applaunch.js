@@ -427,6 +427,7 @@ enyo.kind({
     },
     InboxReceived: function(inSender, inResponse)
     {
+		var bForwardToApp = false;
         //this.log(inResponse);
         this.log();
         var i = inResponse.indexOf("<json><!")+14;
@@ -479,6 +480,7 @@ enyo.kind({
                 }
                 if(!this.MessageIndex[index].isRead)
                 {
+					bForwardToApp = true;
                     var type = "text";
                     if(this.MessageIndex[index].isVoicemail)
                         type = "voicemail";
@@ -493,7 +495,12 @@ enyo.kind({
                 }
                 index++;
             }
-        }        
+        }
+		if(bForwardToApp)
+		{
+			// HACK: forward all the crap we already did anyway over to the main app.. sigh.
+			enyo.application.mainApp.InboxReceived(inSender, inResponse);
+		}
     },
     displayNameOrNumber: function(index)
     {
