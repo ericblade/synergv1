@@ -251,6 +251,16 @@ enyo.kind(
                             }
                         ]
                     },
+                    { kind: "Group", flex: 1, caption: "Input", components:
+                        [
+                            { kind: "Item", layoutKind: "HFlexLayout", components:
+                                [
+                                    { content: "Enter sends message", flex: 1, },
+                                    { name: "enterSendCheckBox", kind: "CheckBox" },
+                                ]
+                            }
+                        ]
+                    },
                     { name: "RestartNotifier", kind: "TimedNotification", msg: "Restart GVoice for changes to take effect.", lazy: false },
                     { kind: "Button", caption: "OK", className: "enyo-button-affirmative", onclick: "close" },
                     { kind: "Divider", caption: "" }
@@ -309,6 +319,7 @@ enyo.kind(
             this.$.ttsNameCheckBox.setChecked(prefs.get("ttsAnnounceName") == 1);
             this.$.ttsMessageCheckBox.setChecked(prefs.get("ttsAnnounceMessages") == 1);
             this.$.smallFontsCheckBox.setChecked(prefs.get("smallFonts") == 1);
+            this.$.enterSendCheckBox.setChecked(prefs.get("enterSends") == 1);
         },
         close: function()
         {
@@ -324,6 +335,7 @@ enyo.kind(
                 prefs.set("ttsAnnounceMessages", this.$.ttsMessageCheckBox.checked ? 1 : 0);
                 prefs.set("smallFonts", this.$.smallFontsCheckBox.checked ? 1 : 0);
                 prefs.set("newMessageNotifyDisable", this.$.newMessageNotificationsCheckBox.checked ? 0 : 1);
+                prefs.set("enterSends", this.$.enterSendCheckBox.checked ? 0 : 1);
                     
                 this.doPrefsChanged();
                             this.log("newMessageNotifyDisable == ", prefs.get("newMessageNotifyDisable"));
@@ -494,7 +506,7 @@ enyo.kind(
             },
             messageInputKeypress: function(inSender, inEvent)
             {
-                if(inEvent && inEvent.keyCode == 13)
+                if(inEvent && inEvent.keyCode == 13 && prefs.get("enterSends") == 1)
                     this.sendComposedMessage();
                 return true;
             },

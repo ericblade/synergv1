@@ -26,7 +26,7 @@
 //      pop a web browser.  
 // TODO: Investigate a Popup option to automatically enable keyboard when opening the Compose popup?
 // TODO: Ignore auto-refresh if Offline, or if typing?
-// TODO: Dashboard window for webOS notifications faster than 5 minutes. (or use "at" in the alarm .. ??)
+// TODO: Dashboard window for webOS notifications faster than 5 minutes. 
 // TODO: use our file downloader to download and cache icons? might solve the icon images with 2-step problem?
 // TODO: UNblock gives the same warning as BLOCK.. ?
 // TODO: not run Text-To-Speech if notifier switch is off
@@ -652,6 +652,7 @@ enyo.kind({
         this.$.quickComposeInput.hide();
         
         prefs.def("smallFonts", 1);
+        prefs.def("enterSends", 1);
         enyo.asyncMethod(this, "delayedStartup");
     },
     ready: function()
@@ -2112,7 +2113,7 @@ enyo.kind({
     quickComposeKeypress: function(inSender, inEvent)
     {
         var x = this.$.quickComposeInput.getValue();
-        if(inEvent && inEvent.keyCode == 13)
+        if(inEvent && inEvent.keyCode == 13 && prefs.get("enterSends") == 1)
         {
             this.doQuickCompose(x);
             return true;
