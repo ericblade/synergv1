@@ -335,7 +335,7 @@ enyo.kind(
                 prefs.set("ttsAnnounceMessages", this.$.ttsMessageCheckBox.checked ? 1 : 0);
                 prefs.set("smallFonts", this.$.smallFontsCheckBox.checked ? 1 : 0);
                 prefs.set("newMessageNotifyDisable", this.$.newMessageNotificationsCheckBox.checked ? 0 : 1);
-                prefs.set("enterSends", this.$.enterSendCheckBox.checked ? 0 : 1);
+                prefs.set("enterSends", this.$.enterSendCheckBox.checked ? 1 : 0);
                     
                 this.doPrefsChanged();
                             this.log("newMessageNotifyDisable == ", prefs.get("newMessageNotifyDisable"));
