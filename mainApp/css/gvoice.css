@@ -39,13 +39,13 @@
 .default .gvoice-inbox-message-alt { background-color: #DFDFFF !important; }
 .default .gvoice-inbox-message-self { background-color: #CFCFDF; padding-left: 25px; }
 
-.default .indexitem { padding: none; margin: none; background-color: #CFCFDF; }
+.default .indexitem { padding-left: 3px; padding-right: 1px; margin-right: 1px; margin-left: 0px; background-color: #CFCFDF; }
 .default .indexselected {
     font-weight: bold;
     background-color: #ADADCE;
 }
 
-.default .avatar { padding: none; margin: none; }
+.default .avatar { padding-right: 2px; width: 42px; }
 .default .timestamp { padding-right: 10px; }
 
 .enyo-search-input-search {

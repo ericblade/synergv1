@@ -354,7 +354,7 @@ enyo.kind({
                         },
                         { name: "leftPane", kind: "Pane", flex: 1, transitionKind:enyo.transitions.LeftRightFlyin, components:
                             [
-                                { name: "indexView", kind: "TransformScroller", flex: 1, horizontal: false, autoHorizontal: false, autoVertical: true, accelerated: Platform.isLargeScreen(), components:
+                                { name: "indexView", kind: "TransformScroller", horizontal: false, autoHorizontal: false, autoVertical: true, accelerated: Platform.isLargeScreen(), components:
                                     [
                                         { kind: "HFlexBox", components:
                                             [
@@ -366,13 +366,13 @@ enyo.kind({
                                                 },
                                             ]
                                         },
-                                        { name: "IndexList", kind: "VirtualRepeater", flex: 1, onSetupRow: "getIndexListItem", onclick: "IndexListClick", onmousehold: "indexHold", accelerated: Platform.isLargeScreen(), components:
+                                        { name: "IndexList", kind: "VirtualRepeater", onSetupRow: "getIndexListItem", onclick: "IndexListClick", onmousehold: "indexHold", accelerated: Platform.isLargeScreen(), components:
                                             [
-                                                { name: "IndexListItem", className: "indexitem", kind: "SwipeableItem", confirmCaption: "Delete", onConfirm: "swipeDelete", layoutKind: "VFlexLayout", components:
+                                                { name: "IndexListItem", className: "indexitem", kind: "SwipeableItem", confirmCaption: "Delete", onConfirm: "swipeDelete", components:
                                                     [
-                                                                { name: "IndexImage", style: "display: inline;", kind: "HtmlContent", allowHtml: true, className: "avatar" },
                                                         { kind: "HFlexBox", components:
                                                             [
+                                                                { name: "IndexImage", kind: "enyo.Image", className: "avatar" },
                                                                 { kind: "VFlexBox" , pack: "center", flex: 1, components:
                                                                     [
                                                                         { name: "IndexName", /*style: "display: inline;"*/ },
@@ -382,7 +382,6 @@ enyo.kind({
                                                                 },
                                                             ]
                                                         },
-
                                                     ]
                                                 },
                                             ]
@@ -410,7 +409,7 @@ enyo.kind({
                         }
                     ]   
                 },
-                { name: "right", kind:"ThreeWaySlidingView", flex: 1, peekWidth: 65, edgeDragging: false, dragAnywhere: false, components:
+                { name: "right", kind:"ThreeWaySlidingView", flex: 1, peekWidth: 50, edgeDragging: false, dragAnywhere: false, components:
                     [
                         useInternalWebView() ? { name: "HackWebViewX", kind: "WebView", height: "1px", width: "1px", showing: false } : {},
                         { name: "rightPane", flex: 1, onSelectView: "viewChange", kind: "Pane", transitionKind:enyo.transitions.Simple, components:
@@ -1481,7 +1480,8 @@ enyo.kind({
                 this.$.IndexImage.hide();
             }
             else {
-                this.$.IndexImage.setContent('<img src="' + msgindex.Portrait.src + '">');
+                //this.$.IndexImage.setContent('<img src="' + msgindex.Portrait.src + '" class="avatar">');
+                this.$.IndexImage.setSrc(msgindex.Portrait.src);
             }
             
             if(prefs.get("smallFonts") == 1)
