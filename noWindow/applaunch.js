@@ -190,7 +190,7 @@ enyo.kind({
         setAlarm: function() // TODO: need to make this accept an incoming time, and set "in" to that
         {
 			var bg = prefs.get("bgRefresh");
-			var time = bg < (5 * 60 * 1000) ? "00:05:00" : secondsToTime(prefs.get("bgRefresh"));
+			var time = (bg < 5) ? "00:05:00" : secondsToTime(bg * 60);
 			enyo.error("**** Set Alarm for ", time, bg);
             if(window.PalmSystem)
             {
