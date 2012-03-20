@@ -7,7 +7,6 @@
 // TODO: messagesSent counter got broken by queue changes. need to redesign the queue to use
 //       a seperate list to hold what's pending vs what actually needs to be resent
 // TODO: Undo messageSent hack that says if(counter == 0) counter = 1 !!!
-// TODO: Add option to turn off "enter to send"
 // TODO: animate the main titlebar off screen after logging in, move it's buttons to the next titlebar
 // * a way to implement bezel swipes?
 //   trap touch events, if touch starts on X = 0 or Y = 0 or X = screen.width or Y = screen.height,
@@ -61,8 +60,9 @@ var inboxButton={ name: "InboxButton", kind: "ActivityButton", caption: "Reload 
 
 enyo.kind({
     name: "MyApps.GVoice",
-    kind: "VFlexBox",
-    className: "default small-font",
+    //kind: "VFlexBox",
+    kind: "Control",
+    className: "enyo-fit default small-font",
     published: {
         windowParams: null,
     },
