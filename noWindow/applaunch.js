@@ -194,7 +194,11 @@ enyo.kind({
 			if(bg < 5) {
 				var unixTime = parseInt((new Date).getTime() / 1000) + (bg * 60);
 				var dt = new Date(unixTime * 1000);
-				time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+				var month = dt.getMonth();
+				var day = dt.getDay();
+				if(month < 10) month = "0" + month;
+				if(day < 10) day = "0" + day;
+				time = dt.getMonth() + "/" + dt.getDay() + "/" + dt.getFullYear() + " " + dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
 			}
 			enyo.error("**** Set Alarm for ", time, bg);
             if(window.PalmSystem)
@@ -518,8 +522,8 @@ enyo.kind({
                 index++;
             }
         }
-		enyo.error("Launcher bForwardToApp", bForwardToApp, enyo.application.mainApp, enyo.application.mainApp.$.boxPicker.getValue(), parseInt(enyo.application.mainApp.$.pagePicker));
-		if(bForwardToApp && enyo.application.mainApp && enyo.application.mainApp.$.boxPicker.getValue() == "Inbox" && parseInt(enyo.application.mainApp.$.pagePicker) == 1)
+		enyo.error("Launcher bForwardToApp", bForwardToApp, enyo.application.mainApp, enyo.application.mainApp.$.boxPicker.getValue(), parseInt(enyo.application.mainApp.$.pagePicker.getValue()));
+		if(bForwardToApp && enyo.application.mainApp && enyo.application.mainApp.$.boxPicker.getValue() == "Inbox" && parseInt(enyo.application.mainApp.$.pagePicker.getValue()) == 1)
 		{
 			// HACK: forward all the crap we already did anyway over to the main app.. sigh.
 			enyo.application.mainApp.InboxReceived(inSender, inResponse);
