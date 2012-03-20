@@ -193,8 +193,8 @@ enyo.kind({
 			var time = (bg < 5) ? "00:05:00" : secondsToTime(bg * 60);
 			if(bg < 5) {
 				var dt = new Date(Date.now() + (bg * 60 * 1000));
-				var month = dt.getMonth();
-				var day = dt.getDay();
+				var month = parseInt(dt.getMonth()) + 1;
+				var day = dt.getDate();
 				var hours = dt.getHours();
 				var minutes = dt.getMinutes();
 				var seconds = dt.getSeconds();
