@@ -191,7 +191,7 @@ enyo.kind({
         {
 			var bg = prefs.get("bgRefresh");
 			var time = bg < (5 * 60 * 1000) ? "00:05:00" : secondsToTime(prefs.get("bgRefresh"));
-			enyo.error("**** Set Alarm for ", time);
+			enyo.error("**** Set Alarm for ", time, bg);
             if(window.PalmSystem)
             {
                 this.$.setRefreshTimer.call({
