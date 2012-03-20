@@ -382,9 +382,9 @@ enyo.kind({
                                                                 },
                                                                 { kind: "HFlexBox", align: "start", components:
                                                                     [
-                                                                        { name: "NoteIndicator", kind: "enyo.Image", src: window.PalmSystem ? "images/note.png" : "mainApp/images/note.png", width: "16px", showing: true },
-                                                                        { name: "VoiceMailIndicator", kind: "enyo.Image", src: window.PalmSystem ? "images/Blade_voice2.png" : "mainApp/images/Blade_voice2.png", width: "16px", showing: true },
-                                                                        { name: "StarIndicator", kind: "enyo.Image", src: window.PalmSystem ? "images/star.png" : "mainApp/images/star.png", width: "16px", showing: true },
+                                                                        { name: "NoteIndicator", className: "indicator", kind: "enyo.Image", src: window.PalmSystem ? "images/note.png" : "mainApp/images/note.png", showing: false },
+                                                                        { name: "VoiceMailIndicator", className: "indicator", kind: "enyo.Image", src: window.PalmSystem ? "images/Blade_voice2.png" : "mainApp/images/Blade_voice2.png", showing: false },
+                                                                        { name: "StarIndicator", className: "indicator", kind: "enyo.Image", src: window.PalmSystem ? "images/star.png" : "mainApp/images/star.png", showing: false },
                                                                     ]
                                                                 },
                                                             ]
@@ -1501,6 +1501,13 @@ enyo.kind({
             this.$.IndexName.setContent(this.displayNameOrNumber(inIndex));
             this.$.IndexLocation.setContent(msgindex.Location);
             this.$.IndexTime.setContent(msgindex.displayStartDateTime);
+            
+            if(this.MessageIndex[inIndex].isVoicemail)
+                this.$.VoiceMailIndicator.setShowing(true);
+            if(this.MessageIndex[inIndex].note.length > 0)
+                this.$.NoteIndicator.setShowing(true);
+            if(this.MessageIndex[inIndex].star)
+                this.$.StarIndicator.setShowing(true);
             
             this.$.IndexTime.setContent(this.MessageIndex[inIndex].displayStartTime);
             if(!msgindex.isRead)
