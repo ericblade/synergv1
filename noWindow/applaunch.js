@@ -496,7 +496,7 @@ enyo.kind({
                 index++;
             }
         }
-		if(bForwardToApp)
+		if(bForwardToApp && enyo.application.mainApp && enyo.application.mainApp.$.boxPicker.getValue() == "Inbox" && parseInt(enyo.application.mainApp.$.pagePicker) == 1)
 		{
 			// HACK: forward all the crap we already did anyway over to the main app.. sigh.
 			enyo.application.mainApp.InboxReceived(inSender, inResponse);
