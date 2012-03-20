@@ -60,9 +60,8 @@ var inboxButton={ name: "InboxButton", kind: "ActivityButton", caption: "Reload 
 
 enyo.kind({
     name: "MyApps.GVoice",
-    //kind: "VFlexBox",
-    kind: "Control",
-    className: "enyo-fit default app small-font",
+    kind: "VFlexBox",
+    className: "enyo-fit default small-font",
     published: {
         windowParams: null,
     },
@@ -288,8 +287,7 @@ enyo.kind({
         { name: "DeleteVoicemailDir", kind: "PalmService", service: "palm://com.ericblade.googlevoiceapp.service/", method: "deleteVoicemailDir" }, /* Assume Success! */
         { name: "newMarkRead", kind: "PalmService", service: "palm://com.ericblade.googlevoiceapp.service/", method: "httpsRequest", onFailure: "newMarkReadFailed", onSuccess: "newMarkReadSucceed", },
         { name: "newPlayVoicemail", kind: "PalmService", service: "palm://com.ericblade.googlevoiceapp.service/", method: "httpsRequest", onFailure: "newPlayVoicemailFailed", onSuccess: "newPlayVoicemailSucceed" },
-        // TODO: Why doesn't this show up?
-        { name: "mainSpinner", kind: "SpinnerLarge", style: "position: absolute; top: 400px; left: 350px; z-index: 10;", showing: false },
+        { name: "mainSpinner", kind: "SpinnerLarge", style: "position: absolute; top: 45%; left: 45%; z-index: 10;", showing: false },
         //{ name: "fileDownload", kind: "PalmService", service: "palm://com.palm.downloadmanager/", method: "download", onSuccess: "downloadFinished", subscribe: true },
         { name: "outbox", kind: "outboxHandler", onAllMessagesSent: "messagesSent" },
         { name: "NotePopup", kind: "NotePopup", className: "notePopup", onNoteSaved: "saveNote" },
