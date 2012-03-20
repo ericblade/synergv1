@@ -358,7 +358,7 @@ enyo.kind({
                                     [
                                         { kind: "HFlexBox", components:
                                             [
-                                                !window.PalmSystem && !Platform.isLargeScreen() ? { name: "MenuButton", kind: "Button", caption: "Menu", onclick: "openAppMenuHandler" } : {},        
+                                                !Platform.hasMenu() && !Platform.isLargeScreen() ? { name: "MenuButton", kind: "Button", caption: "Menu", onclick: "openAppMenuHandler" } : {},        
                                                 { name: "messageSearchInput", flex: 1, hint: "Search", className: "searchbar", kind: "RoundedSearchInput", style: "height: 38px; max-height: 38px", onkeypress: Platform.isLargeScreen() ? "messageSearchKeypress" : "", onkeyup: Platform.isLargeScreen() ? "" : "messageSearchKeypress", onclick: "messageSearchClick", components:
                                                     [
                                                         { kind: "Image", src: (!window.PalmSystem) ? "mainApp/images/searchicon24.png" : "images/searchicon24.png" },
