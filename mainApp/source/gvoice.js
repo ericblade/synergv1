@@ -24,10 +24,9 @@
 // TODO: "Back" button is showing up when hitting "Contacts" even on phones .. 
 // TODO: at startup, before doing anything, run a check for an "announcement" file of some kind at ericbla.de, if one exists and has updated information,
 //      pop a web browser.  
-// TODO: Fix "About" buttons on all non-webOS platforms
 // TODO: Investigate a Popup option to automatically enable keyboard when opening the Compose popup?
 // TODO: Ignore auto-refresh if Offline, or if typing?
-// TODO: Dashboard window for webOS notifications faster than 5 minutes.
+// TODO: Dashboard window for webOS notifications faster than 5 minutes. (or use "at" in the alarm .. ??)
 // TODO: use our file downloader to download and cache icons? might solve the icon images with 2-step problem?
 // TODO: UNblock gives the same warning as BLOCK.. ?
 // TODO: not run Text-To-Speech if notifier switch is off

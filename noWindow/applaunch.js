@@ -191,19 +191,38 @@ enyo.kind({
         {
 			var bg = prefs.get("bgRefresh");
 			var time = (bg < 5) ? "00:05:00" : secondsToTime(bg * 60);
+			if(bg < 5) {
+				var unixTime = parseInt((new Date).getTime() / 1000) + (bg * 60);
+				var dt = new Date(unixTime * 1000);
+				time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+			}
 			enyo.error("**** Set Alarm for ", time, bg);
             if(window.PalmSystem)
             {
-                this.$.setRefreshTimer.call({
-                    "key": "com.ericblade.gvoicerefreshtimer",
-                    "in": time,
-                    "uri": "palm://com.palm.applicationManager/launch",
-                    "params": enyo.json.stringify(
-                        {
-                            'id':'com.ericblade.googlevoiceapp',
-                            'params': { 'action' : 'checkNewMessages' },
-                        })
-                });
+				if(bg < 5) {
+					this.$.setRefreshTimer.call({
+						"key": "com.ericblade.gvoicerefreshtimer",
+						"at": time,
+						"uri": "palm://com.palm.applicationManager/launch",
+						"params": enyo.json.stringify(
+							{
+								'id':'com.ericblade.googlevoiceapp',
+								'params': { 'action' : 'checkNewMessages' },
+							})
+					});
+					
+				} else {
+					this.$.setRefreshTimer.call({
+						"key": "com.ericblade.gvoicerefreshtimer",
+						"in": time,
+						"uri": "palm://com.palm.applicationManager/launch",
+						"params": enyo.json.stringify(
+							{
+								'id':'com.ericblade.googlevoiceapp',
+								'params': { 'action' : 'checkNewMessages' },
+							})
+					});
+				}
             }
         },
         stupid: function(x) {
