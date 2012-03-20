@@ -62,7 +62,7 @@ enyo.kind({
     name: "MyApps.GVoice",
     //kind: "VFlexBox",
     kind: "Control",
-    className: "enyo-fit default small-font",
+    className: "enyo-fit default app small-font",
     published: {
         windowParams: null,
     },

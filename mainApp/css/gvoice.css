@@ -86,3 +86,8 @@
 	color:#000;  
 	background:#ffc;
 }
+
+.default .app {
+	width: 100%;
+	height: 100%;
+}
