@@ -339,7 +339,7 @@ enyo.kind({
         
         { name: "slidingPane", kind: "SlidingPane", onSelectView: "viewChange", flex: 1, components:
             [
-                { name: "left", style: "width: 170px;", edgeDragging: true, kind:"SlidingView", components:
+                { name: "left", style: "width: 200px;", edgeDragging: true, kind:"SlidingView", components:
                     [
                         { name: "LeftHeader", kind: "Header", className: "pane-header", components:
                             [
@@ -378,6 +378,13 @@ enyo.kind({
                                                                         { name: "IndexName", /*style: "display: inline;"*/ },
                                                                         { name: "IndexLocation", className: "enyo-item-ternary" },                                                            
                                                                         { name: "IndexTime", className: "enyo-item-ternary" }
+                                                                    ]
+                                                                },
+                                                                { kind: "HFlexBox", align: "start", components:
+                                                                    [
+                                                                        { name: "NoteIndicator", kind: "enyo.Image", src: window.PalmSystem ? "images/note.png" : "mainApp/images/note.png", width: "16px", showing: true },
+                                                                        { name: "VoiceMailIndicator", kind: "enyo.Image", src: window.PalmSystem ? "images/Blade_voice2.png" : "mainApp/images/Blade_voice2.png", width: "16px", showing: true },
+                                                                        { name: "StarIndicator", kind: "enyo.Image", src: window.PalmSystem ? "images/star.png" : "mainApp/images/star.png", width: "16px", showing: true },
                                                                     ]
                                                                 },
                                                             ]
