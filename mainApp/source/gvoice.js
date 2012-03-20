@@ -996,19 +996,22 @@ enyo.kind({
     },
     scrollLeftToBottom: function()
     {
-        this.$.indexView.scrollToBottom();
+        //this.$.indexView.scrollToBottom();
+        this.$.indexView.scrollTo(this.$.indexView.getBoundaries().bottom, 0);
     },
     scrollToNew: function() {
         //this.$.rightScroller.scrollToBottom();
         //this.log();
-        this.$.conversationScroller.scrollToBottom();
+        //this.$.conversationScroller.scrollToBottom();
+        this.$.conversationScroller.scrollTo(this.$.conversationScroller.getBoundaries().bottom, 0);
         this.$.overviewScroller.scrollTo(0,0);
     },
     scrollRightToBottom: function()
     {
          // TODO: make sure this function only affects the view that we are actually in.. derp derp.
         //this.$.rightScroller.scrollToBottom();
-        this.$.conversationScroller.scrollToBottom();
+        //this.$.conversationScroller.scrollToBottom();
+        this.$.conversationScroller.scrollTo(this.$.conversationScroller.getBoundaries().bottom, 0);
         this.$.overviewScroller.scrollToBottom();
     },
     InboxClick: function(inSender, inEvent)
@@ -2342,7 +2345,7 @@ enyo.kind({
                         break;
                     case "conversationView":
                         this.$.PhoneTabs.setValue(2);
-                        this.$.conversationScroller.scrollToBottom();
+                        this.$.conversationScroller.scrollTo(this.$.conversationScroller.getBoundaries().bottom, 0);
                         break;
                     default:
                         this.$.PhoneTabs.setValue(10);
