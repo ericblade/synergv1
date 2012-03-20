@@ -192,7 +192,7 @@ enyo.kind({
 			var bg = prefs.get("bgRefresh");
 			var time = (bg < 5) ? "00:05:00" : secondsToTime(bg * 60);
 			if(bg < 5) {
-				if(bg < 3) bg = 3;
+				if(bg < 5) bg = 5;
 				var dt = new Date(Date.now() + (bg * 60 * 1000));
 				var month = parseInt(dt.getMonth()) + 1;
 				var day = dt.getDate();
