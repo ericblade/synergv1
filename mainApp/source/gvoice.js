@@ -372,6 +372,7 @@ enyo.kind({
                                                     [
                                                         { kind: "HFlexBox", components:
                                                             [
+                                                                { name: "IndexImage", style: "display: inline;", kind: "HtmlContent", allowHtml: true, className: "avatar" },
                                                                 { kind: "VFlexBox" , pack: "center", flex: 1, components:
                                                                     [
                                                                         { name: "IndexName", /*style: "display: inline;"*/ },
@@ -379,7 +380,6 @@ enyo.kind({
                                                                         { name: "IndexTime", className: "enyo-item-ternary" }
                                                                     ]
                                                                 },
-                                                                { name: "IndexImage", style: "display: inline;", kind: "HtmlContent", allowHtml: true, className: "avatar" },
                                                             ]
                                                         },
 
