@@ -2342,6 +2342,7 @@ enyo.kind({
                         break;
                     case "conversationView":
                         this.$.PhoneTabs.setValue(2);
+                        this.$.conversationScroller.scrollToBottom();
                         break;
                     default:
                         this.$.PhoneTabs.setValue(10);
