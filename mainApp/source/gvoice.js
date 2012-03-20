@@ -1,4 +1,5 @@
 //*** Featured in the "SWEETHEART TIME" App Catalog Featured Apps, February 2012!! ***
+// TODO: Reset Alarm when changing bgRefresh preference
 // TODO: need to figure out a way to update the Note status preferably without redrawing the entire freaking canvas when adding/removing a note
 //       difficulty: don't have access to the StatefulImage that started the chain to set it
 // TODO: there is a https://www.google.com/voice/b/0/settings/getDoNotDisturb/ returns {"ok":true,"data":{"enabled":false}}
@@ -16,7 +17,6 @@
 // TODO: Buy Credit button does not work in Android/Blackberry, redirects to mobile page !!
 // TODO: Fix About->Support Email in Android
 // TODO: Implement Online detection in Android/Blackberry ?
-// TODO: Deleting / Archiving a message with a notification should clear the notification
 // TODO: Home/End functions in the big input boxes?
 // TODO: way to search contacts
 // TODO: translate names into numbers in recipient boxes
@@ -1694,6 +1694,7 @@ enyo.kind({
     {
         var index = this.$.deletePopup.msgindex;
         this.deleteMessage(this.MessageIndex[index].id, permanent);
+        this.clearNotificationsFor(this.MessageIndex[index].id);        
         if(this.MessageIndex[index].id == this.selectedID)
             this.resetSelectedID();
         this.$.deletePopup.close();
@@ -1725,6 +1726,7 @@ enyo.kind({
             this.resetSelectedID();
         this.$.archiveMessages.headers = { "Authorization":"GoogleLogin auth="+this.AuthCode };
         this.$.archiveMessages.call(params);
+        this.clearNotificationsFor(this.MessageIndex[index].id);        
         setTimeout(enyo.bind(this, this.RetrieveInbox), 100);
     },
     ListenButtonClick: function(inSender, inEvent)
