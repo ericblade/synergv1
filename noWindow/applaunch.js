@@ -189,11 +189,14 @@ enyo.kind({
         },
         setAlarm: function() // TODO: need to make this accept an incoming time, and set "in" to that
         {
+			var bg = prefs.get("bgRefresh");
+			var time = bg < (5 * 60 * 1000) ? "00:05:00" : secondsToTime(prefs.get("bgRefresh"));
+			enyo.error("**** Set Alarm for ", time);
             if(window.PalmSystem)
             {
                 this.$.setRefreshTimer.call({
                     "key": "com.ericblade.gvoicerefreshtimer",
-                    "in": "00:05:00",
+                    "in": time,
                     "uri": "palm://com.palm.applicationManager/launch",
                     "params": enyo.json.stringify(
                         {
@@ -800,4 +803,19 @@ enyo.kind({
             //enyo.application.mainApp.doLogout();
         }
     },
-})
+});
+
+function secondsToTime(secs)
+{
+    var hours = Math.floor(secs / (60 * 60));
+   
+    var divisor_for_minutes = secs % (60 * 60);
+    var minutes = Math.floor(divisor_for_minutes / 60);
+ 
+    var divisor_for_seconds = divisor_for_minutes % 60;
+    var seconds = Math.ceil(divisor_for_seconds);
+
+    if(hours > 0)
+        return (hours < 10 ? "0" : "") + hours+":" + (minutes < 10 ? "0" : "") + minutes+":"+(seconds < 10 ? "0" : "") + seconds;
+    return (minutes < 10 ? "0" : "") + minutes+":" + (seconds < 10 ? "0" : "") + seconds;
+}
