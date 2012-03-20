@@ -180,10 +180,10 @@ enyo.kind({
             this.log("timer check");
         },
         startTimer: function(x) {
-            if(!localStorage["fgRefresh"]) localStorage["fgRefresh"] = 2;
-            if(!localStorage["bgRefresh"]) localStorage["bgRefresh"] = 5;
+			prefs.def("fgRefresh", 2);
+			prefs.def("bgRefresh", 5);
             
-            var interval = enyo.application.mainApp.isForeground ? localStorage["fgRefresh"] : localStorage["bgRefresh"];
+            var interval = enyo.application.mainApp.isForeground ? prefs.get("fgRefresh") : prefs.get("bgRefresh");
             if(!this.timerInterval || this.timerInterval === 0)
                 this.timerInterval = setInterval(this.sendMessageToApp, 60 * interval * 1000);
         },
@@ -816,7 +816,6 @@ function secondsToTime(secs)
     var divisor_for_seconds = divisor_for_minutes % 60;
     var seconds = Math.ceil(divisor_for_seconds);
 
-    if(hours > 0)
-        return (hours < 10 ? "0" : "") + hours+":" + (minutes < 10 ? "0" : "") + minutes+":"+(seconds < 10 ? "0" : "") + seconds;
+    return (hours < 10 ? "0" : "") + hours+":" + (minutes < 10 ? "0" : "") + minutes+":"+(seconds < 10 ? "0" : "") + seconds;
     return (minutes < 10 ? "0" : "") + minutes+":" + (seconds < 10 ? "0" : "") + seconds;
 }

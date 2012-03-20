@@ -1,5 +1,6 @@
 //*** Featured in the "SWEETHEART TIME" App Catalog Featured Apps, February 2012!! ***
 // TODO: need to figure out a way to update the Note status preferably without redrawing the entire freaking canvas when adding/removing a note
+//       difficulty: don't have access to the StatefulImage that started the chain to set it
 // TODO: there is a https://www.google.com/voice/b/0/settings/getDoNotDisturb/ returns {"ok":true,"data":{"enabled":false}}
 // TODO: make applaunch.setAlarm use the app id instead of hard code!!
 // TODO: messagesSent counter got broken by queue changes. need to redesign the queue to use
