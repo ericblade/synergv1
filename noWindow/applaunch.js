@@ -191,7 +191,7 @@ enyo.kind({
         {
 			var bg = prefs.get("bgRefresh");
 			var time = (bg < 5) ? "00:05:00" : secondsToTime(bg * 60);
-			if(bg < 5) {
+			/*if(bg < 5) {
 				if(bg < 4) bg = 4;
 				var dt = new Date(Date.now() + (bg * 60 * 1000));
 				var month = parseInt(dt.getMonth()) + 1;
@@ -207,11 +207,11 @@ enyo.kind({
 				if(parseInt(seconds) < 10) seconds = "0" + seconds;
 				
 				time = month + "/" + day + "/" + dt.getFullYear() + " " + hours + ":" + minutes + ":" + seconds;
-			}
+			}*/
 			enyo.error("**** Set Alarm for ", time, bg);
             if(window.PalmSystem)
             {
-				if(bg < 5) {
+				/*if(bg < 5) {
 					this.$.setRefreshTimer.call({
 						"key": "com.ericblade.gvoicerefreshtimer",
 						"at": time,
@@ -223,7 +223,7 @@ enyo.kind({
 							})
 					});
 					
-				} else {
+				} else {*/
 					this.$.setRefreshTimer.call({
 						"key": "com.ericblade.gvoicerefreshtimer",
 						"in": time,
@@ -234,7 +234,7 @@ enyo.kind({
 								'params': { 'action' : 'checkNewMessages' },
 							})
 					});
-				}
+				//}
             }
         },
         stupid: function(x) {
