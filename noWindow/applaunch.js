@@ -270,7 +270,7 @@ enyo.kind({
 	PostNotification: function(msgid, msg, nonamemsg, msgtext)
 	{
 		var wkn = window.webkitNotifications;
-		if(window.PalmSystem)
+		if(window.PalmSystem || (typeof plugins !== "undefined" && plugins.localNotification) )
 		{
 			this.actuallyPostNotification(msgid, msg, nonamemsg, msgtext);
 		} else if(wkn) {
@@ -279,27 +279,7 @@ enyo.kind({
 			} else {
 				this.actuallyPostNotification(msgid, msg, nonamemsg, msgtext);
 			}
-		} else if(typeof plugins !== "undefined" && plugins.localNotification) {
-			var bFound;
-			for(var x in plugins.localNotifications)
-			{
-				if(plugins.localNotifications[x].id == msgid)
-				{
-					bFound = true;
-					break;
-				}
-			}
-			if(!bFound)
-			{
-				plugins.localNotification.add({
-					date: new Date(),
-					message: msg + "\r\n" + msgtext,
-					ticker: "Hmm.. what does the ticker line do?  I wonder.  Maybe I should read the documentation.",
-					repeatDaily: false,
-					id: msgid
-				});
-			}
-		}
+		} 
 	},
     actuallyPostNotification: function(msgid, msg, nonamemsg, msgtext)
     {
@@ -373,7 +353,21 @@ enyo.kind({
 					enyo.log("duplicate notification");
 				}
 			}
-		} else {
+		} else if(typeof plugins !== "undefined" && plugins.localNotification) {
+			this.NotificationDashboards[0] = "temp holder";
+			if(!this.NotificationDashboards[msgid] || this.NotificationDashboards[msgid].ignoreid != ignoreid) {
+				this.NotificationDashboards[msgid] = 1;
+				plugins.localNotification.add({
+					date: new Date(),
+					message: msg + "\r\n" + msgtext,
+					ticker: "Hmm.. what does the ticker line do?  I wonder.  Maybe I should read the documentation.",
+					repeatDaily: false,
+					id: msgid
+				});
+			}
+		}
+		else 
+		{
 			enyo.log("No known notification system");
 		}
     },
