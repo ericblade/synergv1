@@ -279,6 +279,14 @@ enyo.kind({
 			} else {
 				this.actuallyPostNotification(msgid, msg, nonamemsg, msgtext);
 			}
+		} else if(typeof plugins !== "undefined" && plugins.localNotification) {
+			plugins.localNotification.add({
+				date: new Date(),
+				message: msg + "\r\n" + msgtext,
+				ticker: "Hmm.. what does the ticker line do?  I wonder.  Maybe I should read the documentation.",
+				repeatDaily: false,
+				id: msgid
+			});
 		}
 	},
     actuallyPostNotification: function(msgid, msg, nonamemsg, msgtext)
