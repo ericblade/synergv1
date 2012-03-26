@@ -280,13 +280,25 @@ enyo.kind({
 				this.actuallyPostNotification(msgid, msg, nonamemsg, msgtext);
 			}
 		} else if(typeof plugins !== "undefined" && plugins.localNotification) {
-			plugins.localNotification.add({
-				date: new Date(),
-				message: msg + "\r\n" + msgtext,
-				ticker: "Hmm.. what does the ticker line do?  I wonder.  Maybe I should read the documentation.",
-				repeatDaily: false,
-				id: msgid
-			});
+			var bFound;
+			for(var x in plugins.localNotifications)
+			{
+				if(plugins.localNotifications[x].id == msgid)
+				{
+					bFound = true;
+					break;
+				}
+			}
+			if(!bFound)
+			{
+				plugins.localNotification.add({
+					date: new Date(),
+					message: msg + "\r\n" + msgtext,
+					ticker: "Hmm.. what does the ticker line do?  I wonder.  Maybe I should read the documentation.",
+					repeatDaily: false,
+					id: msgid
+				});
+			}
 		}
 	},
     actuallyPostNotification: function(msgid, msg, nonamemsg, msgtext)
