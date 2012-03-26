@@ -419,6 +419,12 @@ enyo.kind({
 			delete this.NotificationDashboards[msgid];
 			return;
 		}
+		if(typeof plugins !== "undefined" && plugins.localNotification)
+		{
+			plugins.localNotification.cancel(msgid);
+			delete this.NotificationDashboards[msgid];
+			return;
+		}
         if(this.NotificationDashboards[msgid])
         {
             delete this.NotificationDashboards[msgid];
