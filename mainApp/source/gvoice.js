@@ -1880,6 +1880,8 @@ enyo.kind({
         }
         this.$.saveNote.headers = { "Authorization":"GoogleLogin auth="+this.AuthCode };
         this.$.saveNote.call( params );
+        /* just hope for no race condition here .. :) */
+        enyo.nextTick(this, this.RetrieveInbox);
     },
     playVoicemail: function(msgid)
     {        
