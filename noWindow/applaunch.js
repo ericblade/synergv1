@@ -224,13 +224,23 @@ enyo.kind({
 					});
 					
 				} else {*/
+				    var appid = enyo.fetchAppInfo();
+					if(typeof appid == "object")
+					    appid = appid.id;
+					else
+					    appid = JSON.parse(appid).id;
+					if(!appid || appid == "")
+					{
+						enyo.error("**** APPID UNKNOWN, ASSUMING WE'RE GVOICE PRE!!!");
+						appid = "com.ericblade.gvoicepre";
+					}
 					this.$.setRefreshTimer.call({
 						"key": "com.ericblade.gvoicerefreshtimer",
 						"in": time,
 						"uri": "palm://com.palm.applicationManager/launch",
 						"params": enyo.json.stringify(
 							{
-								'id':'com.ericblade.googlevoiceapp',
+								'id':appid,
 								'params': { 'action' : 'checkNewMessages' },
 							})
 					});
