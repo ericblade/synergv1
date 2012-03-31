@@ -173,7 +173,7 @@ enyo.kind(
                                     { name: "newMessageNotificationsCheckBox", kind: "CheckBox", },
                                 ]
                             },
-                            { kind: "Item", layoutKind: "HFlexLayout", components:
+                            { name: "AlertItem", kind: "Item", layoutKind: "HFlexLayout", components:
                                 [
                                     { content: "Alert Tone", flex: 1, },
                                     { name: "AlertPicker", kind: "Picker", value: prefs.get("gvAlertTone"), onChange: "selectAlert",
@@ -283,11 +283,11 @@ enyo.kind(
         },
         selectAlert: function(inSender)
         {
+            prefs.set("gvAlertTone", this.$.AlertPicker.getValue());
             if(enyo.application.launcher)
             {
                 enyo.application.launcher.playAlertSound();
             }
-            prefs.set("gvAlertTone", this.$.AlertPicker.getValue());
         },
         fgSliderChange: function()
         {
@@ -342,7 +342,12 @@ enyo.kind(
             if(!Platform.isWebOS())
             {
                 if(!window.webkitNotifications && !window.plugins && !window.plugins.localNotification)
+                {
                     this.$.NotifyOne.hide();
+                }
+                if(Platform.isAndroid()) {
+                    this.$.AlertItem.hide();
+                }
                 this.$.NotifyTwo.hide();
                 this.$.NotifyThree.hide();
             }

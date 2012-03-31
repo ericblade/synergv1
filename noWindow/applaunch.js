@@ -390,7 +390,7 @@ enyo.kind({
 					repeatDaily: false,
 					id: msgid
 				});
-				this.playAlertSound();
+				//this.playAlertSound();
 			}
 		}
 		else 
