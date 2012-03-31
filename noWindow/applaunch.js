@@ -271,11 +271,17 @@ enyo.kind({
         },
     getAlertPath: function() {
         var x = prefs.get("gvAlertTone");
-        switch(x) {
-            case "None": return "";
-            case "Default": return "Bell"; // non-existant one should give us a "ding"
-            default: return "/media/internal/ringtones/"+x+" (short).mp3";
-        }
+		if(!x || x == "" || x == "None")
+		    return "";
+		if(window.PalmSystem)
+		{
+			switch(x) {
+				case "Default": return "Bell"; // non-existant one should give us a "ding"
+				default: return "/media/internal/ringtones/"+x+" (short).mp3";
+			}
+		}
+		var path = window.PalmSystem ? "" : "mainApp/";
+		return path + "sounds/" + x + ".mp3";
     },
 	PostNotification: function(msgid, msg, nonamemsg, msgtext)
 	{
@@ -379,6 +385,10 @@ enyo.kind({
 		else 
 		{
 			enyo.log("No known notification system");
+		}
+		if(!window.PalmSystem)
+		{
+			this.createComponent({ name: "AlertSound", kind: "PlatformSound", preload: true, src: this.getAlertPath() }, { owner: this }).play();
 		}
     },
     dashboardLayerSwipe: function(inSender, layer)

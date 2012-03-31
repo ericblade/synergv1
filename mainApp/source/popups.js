@@ -176,7 +176,10 @@ enyo.kind(
                             { kind: "Item", layoutKind: "HFlexLayout", components:
                                 [
                                     { content: "Alert Tone", flex: 1, },
-                                    { name: "AlertPicker", kind: "Picker", value: prefs.get("gvAlertTone"), onChange: "selectAlert", items: ["None", "Default", "Anticipation", "Cymbells", "Duclimer", "Flurry", "Rain Dance", "Shimmer", "Subtle", "Triangle", "Vibes"] },
+                                    { name: "AlertPicker", kind: "Picker", value: prefs.get("gvAlertTone"), onChange: "selectAlert",
+                                        items: window.PalmSystem ? ["None", "Default", "Anticipation", "Cymbells", "Duclimer", "Flurry", "Rain Dance", "Shimmer", "Subtle", "Triangle", "Vibes"]
+                                                                : [ "None", "Default" ] // see ready function for more
+                                    },
                                 ]
                             },
                         ]
@@ -266,9 +269,19 @@ enyo.kind(
                     { kind: "Divider", caption: "" }
                 ]
             }
-        ],
-        
+        ],        
         events: { "onPrefsChanged": ""},
+        
+        ready: function()
+        {
+            var alerts = this.$.AlertPicker.items;
+            this.inherited(arguments);
+            alerts.push("BeepBeep-De-Beep");
+            alerts.push("DingDong");
+            alerts.push("Modem_Sound");
+            alerts.push("Sparrow");
+            this.$.AlertPicker.setItems(alerts);
+        },
         selectAlert: function(inSender)
         {
             prefs.set("gvAlertTone", this.$.AlertPicker.getValue());
@@ -305,7 +318,7 @@ enyo.kind(
                 
             if(!Platform.isWebOS())
             {
-                if(!window.webkitNotifications)
+                if(!window.webkitNotifications && !window.plugins && !window.plugins.localNotification)
                     this.$.NotifyOne.hide();
                 this.$.NotifyTwo.hide();
                 this.$.NotifyThree.hide();
