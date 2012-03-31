@@ -286,7 +286,7 @@ enyo.kind({
 				case "Subtle":
 				case "Triangle":
 				case "Vibes":
-				default: return "/media/internal/ringtones/"+x+" (short).mp3";
+				    return "/media/internal/ringtones/"+x+" (short).mp3";
 			}
 		}
 		//var path = window.PalmSystem ? "" : "mainApp/";
