@@ -289,7 +289,9 @@ enyo.kind({
 				default: return "/media/internal/ringtones/"+x+" (short).mp3";
 			}
 		}
-		var path = window.PalmSystem ? "" : "mainApp/";
+		//var path = window.PalmSystem ? "" : "mainApp/";
+		// since the sound is played from the launcher, we don't need to conditionally prefix
+		var path = "mainApp/";
 		return path + "sounds/" + x + ".mp3";
     },
 	PostNotification: function(msgid, msg, nonamemsg, msgtext)
@@ -337,6 +339,7 @@ enyo.kind({
 														title: msg, text: msgtext,
 														id: msgid, ignoreid: ignoreid };
 				this.NotificationDashboards[0].push(this.NotificationDashboards[msgid]);
+				enyo.error("Playing alert", enyo.getAlertPath());
 				enyo.windows.addBannerMessage(msg, '{}', "mainApp/images/google-voice-icon24.png", "", this.getAlertPath());
 				if(enyo.application.mainApp && prefs.get("ttsNotificationDisable", true) != 1) // TODO: can't speak until mainApp is loaded :(
 				{
