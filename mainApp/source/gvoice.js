@@ -1436,6 +1436,8 @@ enyo.kind({
             return false;
         if(this.$.conversationScroller.isScrolling && this.$.conversationScroller.isScrolling())
             return false;
+        if(typeof blackberry !== "undefined" && inEvent.cancelable)
+            return false;
         
         var id = inMessageId ? inMessageId : inSender.messageId;
         var index = this.getMessageIndexById(id);
