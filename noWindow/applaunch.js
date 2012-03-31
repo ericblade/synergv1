@@ -403,10 +403,7 @@ enyo.kind({
     },
 	playAlertSound: function()
 	{
-		if(!window.PalmSystem)
-		{
-			this.createComponent({ name: "AlertSound", kind: "PlatformSound", preload: true, src: this.getAlertPath() }, { owner: this }).play();
-		}
+		this.createComponent({ name: "AlertSound", kind: "PlatformSound", preload: true, src: this.getAlertPath() }, { owner: this }).play();
 	},
     dashboardLayerSwipe: function(inSender, layer)
     {
