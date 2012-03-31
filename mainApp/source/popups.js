@@ -176,7 +176,7 @@ enyo.kind(
                             { name: "AlertItem", kind: "Item", layoutKind: "HFlexLayout", components:
                                 [
                                     { content: "Alert Tone", flex: 1, },
-                                    { name: "AlertPicker", kind: "Picker", value: prefs.get("gvAlertTone"), onChange: "selectAlert",
+                                    { name: "AlertPicker", kind: "ListSelector", value: prefs.get("gvAlertTone"), onChange: "selectAlert",
                                         items: window.PalmSystem ? ["None", "Default", "Anticipation", "Cymbells", "Dulcimer", "Flurry", "Rain Dance", "Shimmer", "Subtle", "Triangle", "Vibes"]
                                                                 : [ "None", "Default" ] // see ready function for more
                                     },
