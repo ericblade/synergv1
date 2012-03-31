@@ -177,7 +177,7 @@ enyo.kind(
                                 [
                                     { content: "Alert Tone", flex: 1, },
                                     { name: "AlertPicker", kind: "Picker", value: prefs.get("gvAlertTone"), onChange: "selectAlert",
-                                        items: window.PalmSystem ? ["None", "Default", "Anticipation", "Cymbells", "Duclimer", "Flurry", "Rain Dance", "Shimmer", "Subtle", "Triangle", "Vibes"]
+                                        items: window.PalmSystem ? ["None", "Default", "Anticipation", "Cymbells", "Dulcimer", "Flurry", "Rain Dance", "Shimmer", "Subtle", "Triangle", "Vibes"]
                                                                 : [ "None", "Default" ] // see ready function for more
                                     },
                                 ]
