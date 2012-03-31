@@ -272,6 +272,10 @@ enyo.kind(
         ],        
         events: { "onPrefsChanged": ""},
         
+        open: function()
+        {
+            // this function left intentionally blank
+        },
         ready: function()
         {
             this.inherited(arguments);
@@ -298,11 +302,14 @@ enyo.kind(
             this.inherited(arguments);
             
             var alerts = this.$.AlertPicker.items;
-            alerts.push("BeepBeep-De-Beep");
-            alerts.push("DingDong");
-            alerts.push("Modem_Sound");
-            alerts.push("Sparrow");
-            this.$.AlertPicker.setItems(alerts);
+            if(! ("BeepBeep-De-Beep" in alerts) )
+            {
+                alerts.push("BeepBeep-De-Beep");
+                alerts.push("DingDong");
+                alerts.push("Modem_Sound");
+                alerts.push("Sparrow");
+                this.$.AlertPicker.setItems(alerts);
+            }
             
             //enyo.application.debuglog("prefs: fgRefresh=" + localStorage["fgRefresh"] + " bgRefresh=" + localStorage["bgRefresh"]);
             //this.log("prefs: fgRefresh=" + localStorage["fgRefresh"] + " bgRefresh=" + localStorage["bgRefresh"]);
