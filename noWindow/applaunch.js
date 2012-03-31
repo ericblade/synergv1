@@ -277,6 +277,15 @@ enyo.kind({
 		{
 			switch(x) {
 				case "Default": return "Bell"; // non-existant one should give us a "ding"
+				case "Anticipation":
+				case "Cymbells":
+				case "Dulcimer":
+				case "Flurry":
+				case "Rain Dance":
+				case "Shimmer":
+				case "Subtle":
+				case "Triangle":
+				case "Vibes":
 				default: return "/media/internal/ringtones/"+x+" (short).mp3";
 			}
 		}
@@ -361,7 +370,8 @@ enyo.kind({
 						note.show();
 						this.NotificationDashboards[0] = "temp holder";
 						this.NotificationDashboards[msgid] = note;
-						this.log("************************ NOTIFICATION POSTED ******************** ");						
+						this.log("************************ NOTIFICATION POSTED ******************** ");
+						this.playAlertSound();
 					} catch(err) { // throw security error
 						enyo.log("error posting notification:" + err);
 					}
@@ -380,17 +390,21 @@ enyo.kind({
 					repeatDaily: false,
 					id: msgid
 				});
+				this.playAlertSound();
 			}
 		}
 		else 
 		{
 			enyo.log("No known notification system");
 		}
+    },
+	playAlertSound: function()
+	{
 		if(!window.PalmSystem)
 		{
 			this.createComponent({ name: "AlertSound", kind: "PlatformSound", preload: true, src: this.getAlertPath() }, { owner: this }).play();
 		}
-    },
+	},
     dashboardLayerSwipe: function(inSender, layer)
     {
         var ignoreid;

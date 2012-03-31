@@ -283,6 +283,10 @@ enyo.kind(
         },
         selectAlert: function(inSender)
         {
+            if(enyo.application.launcher)
+            {
+                enyo.application.launcher.playAlertSound();
+            }
             prefs.set("gvAlertTone", this.$.AlertPicker.getValue());
         },
         fgSliderChange: function()
@@ -303,7 +307,16 @@ enyo.kind(
             this.inherited(arguments);
             
             var alerts = this.$.AlertPicker.items;
-            if(! ("BeepBeep-De-Beep" in alerts) )
+            for(var x in alerts)
+            {
+                if(alerts[x] == "BeepBeep-De-Beep")
+                {
+                    break;
+                } else {
+                    x = undefined;
+                }
+            }
+            if(!x)
             {
                 alerts.push("BeepBeep-De-Beep");
                 alerts.push("DingDong");
