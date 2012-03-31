@@ -419,7 +419,7 @@ enyo.kind({
                 },
                 { name: "right", kind:"ThreeWaySlidingView", flex: 1, peekWidth: 50, edgeDragging: false, dragAnywhere: false, components:
                     [
-                        useInternalWebView() ? { name: "HackWebViewX", kind: "WebView", height: "1px", width: "1px", showing: false } : {},
+                        useInternalWebView() ? { name: "HackWebViewX", kind: "WebView", height: "1px", width: "1px", showing: false } : { kind: "Component" },
                         { name: "rightPane", flex: 1, onSelectView: "viewChange", kind: "Pane", transitionKind:enyo.transitions.Simple, components:
                             [
                                 { name: "conversationView", kind: "VFlexBox", components:
@@ -1434,6 +1434,9 @@ enyo.kind({
     {
         if(this.$.overviewScroller.isScrolling && this.$.overviewScroller.isScrolling())
             return false;
+        if(this.$.conversationScroller.isScrolling && this.$.conversationScroller.isScrolling())
+            return false;
+        
         var id = inMessageId ? inMessageId : inSender.messageId;
         var index = this.getMessageIndexById(id);
         ////this.log(inSender, ".", inEvent, ".", inMessageId);
