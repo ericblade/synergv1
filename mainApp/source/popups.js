@@ -271,10 +271,11 @@ enyo.kind(
             }
         ],        
         events: { "onPrefsChanged": ""},
-        
-        open: function()
+
+        finishOpen: function()
         {
-            // this function left intentionally blank
+            this.renderOpen();
+            this.showHideScrim(this.isOpen);
         },
         ready: function()
         {
