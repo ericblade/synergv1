@@ -436,7 +436,7 @@ enyo.kind({
                                                 }
                                             ]
                                         },
-                                        { name: "conversationScroller", flex: 1, kind: "TransformScroller", autoHorizontal: true, autoVertical: true, accelerated: Platform.isLargeScreen(), components:
+                                        { name: "conversationScroller", flex: 1, kind: "TransformScroller", autoHorizontal: true, autoVertical: true, vertical: true, accelerated: Platform.isLargeScreen(), components:
                                             [
                                                 { name: "conversationList", kind: "VirtualRepeater", onSetupRow: "getConversationListItem", onclick: "listItemClick", accelerated: Platform.isLargeScreen(), components:
                                                     [
