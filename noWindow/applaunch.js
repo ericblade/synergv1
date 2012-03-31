@@ -339,7 +339,7 @@ enyo.kind({
 														title: msg, text: msgtext,
 														id: msgid, ignoreid: ignoreid };
 				this.NotificationDashboards[0].push(this.NotificationDashboards[msgid]);
-				enyo.error("Playing alert", enyo.getAlertPath());
+				enyo.error("Playing alert", this.getAlertPath());
 				enyo.windows.addBannerMessage(msg, '{}', "mainApp/images/google-voice-icon24.png", "", this.getAlertPath());
 				if(enyo.application.mainApp && prefs.get("ttsNotificationDisable", true) != 1) // TODO: can't speak until mainApp is loaded :(
 				{
