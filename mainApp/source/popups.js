@@ -284,6 +284,7 @@ enyo.kind(
         selectAlert: function(inSender)
         {
             prefs.set("gvAlertTone", this.$.AlertPicker.getValue());
+            enyo.error("gvAlertTone=", this.$.AlertPicker.getValue());
             if(enyo.application.launcher)
             {
                 enyo.application.launcher.playAlertSound();
