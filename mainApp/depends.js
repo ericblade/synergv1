@@ -1,5 +1,6 @@
 enyo.depends(
     "source/EnyoPlatform/",
+    "source/EnyoTextArea.js",
     "source/globals.js",
     "utilkinds.js",
     "source/contactDetail.js",

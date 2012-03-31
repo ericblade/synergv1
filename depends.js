@@ -10,6 +10,7 @@ else // if PhoneGap or BlackBerry
 {
     enyo.depends(
         "mainApp/source/EnyoPlatform/",
+        "mainApp/source/EnyoTextArea.js",
         "mainApp/source/globals.js",
         "noWindow/applaunch.js",
         "mainApp/source/globals.js",

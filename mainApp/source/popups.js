@@ -1022,7 +1022,7 @@ enyo.kind({
         note: ""
     },
     components: [
-        { name: "NoteText", kind: "RichText", value: "Note", className: "noteInput", onchange: "contentChanged" },
+        { name: "NoteText", kind: Platform.isWebOS() ? "RichText" : "Textarea", value: "Note", className: "noteInput", onchange: "contentChanged" },
     ],
     noteChanged: function() {
         this.$.NoteText.setValue(this.note);

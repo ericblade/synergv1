@@ -1,4 +1,5 @@
 //*** Featured in the "SWEETHEART TIME" App Catalog Featured Apps, February 2012!! ***
+// I just installed GVoice on my Pre3 but the pages appear super zoomed out. The text is so small it almost unreadable. Is this a known issue/is there any way to fix this? Also, when making a call is there any way to type in the contact’s name rather than his/her phone number?
 // TODO: Reset Alarm when changing bgRefresh preference
 // TODO: need to figure out a way to update the Note status preferably without redrawing the entire freaking canvas when adding/removing a note
 //       difficulty: don't have access to the StatefulImage that started the chain to set it
