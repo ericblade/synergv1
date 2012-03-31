@@ -324,6 +324,7 @@ enyo.kind(
                 alerts.push("Modem_Sound");
                 alerts.push("Sparrow");
                 this.$.AlertPicker.setItems(alerts);
+                this.$.AlertPicker.setValue(prefs.get("gvAlertTone"));
             }
             
             //enyo.application.debuglog("prefs: fgRefresh=" + localStorage["fgRefresh"] + " bgRefresh=" + localStorage["bgRefresh"]);
