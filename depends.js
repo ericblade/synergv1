@@ -2,7 +2,7 @@ if(window.PalmSystem)
 {
     enyo.depends(
         "mainApp/source/globals.js",
-        "mainApp/source/EnyoPlatform/EnyoPlatform.js",
+        "mainApp/source/EnyoPlatform/",
         "noWindow/applaunch.js"
     );
 }
