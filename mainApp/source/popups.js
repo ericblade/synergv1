@@ -274,13 +274,7 @@ enyo.kind(
         
         ready: function()
         {
-            var alerts = this.$.AlertPicker.items;
             this.inherited(arguments);
-            alerts.push("BeepBeep-De-Beep");
-            alerts.push("DingDong");
-            alerts.push("Modem_Sound");
-            alerts.push("Sparrow");
-            this.$.AlertPicker.setItems(alerts);
         },
         selectAlert: function(inSender)
         {
@@ -302,6 +296,14 @@ enyo.kind(
         afterOpen: function()
         {
             this.inherited(arguments);
+            
+            var alerts = this.$.AlertPicker.items;
+            alerts.push("BeepBeep-De-Beep");
+            alerts.push("DingDong");
+            alerts.push("Modem_Sound");
+            alerts.push("Sparrow");
+            this.$.AlertPicker.setItems(alerts);
+            
             //enyo.application.debuglog("prefs: fgRefresh=" + localStorage["fgRefresh"] + " bgRefresh=" + localStorage["bgRefresh"]);
             //this.log("prefs: fgRefresh=" + localStorage["fgRefresh"] + " bgRefresh=" + localStorage["bgRefresh"]);
             //this.log(localStorage["ttsdisable"], localStorage["ttsNotificationDisable"], localStorage["ttsAnnounceName"]);
