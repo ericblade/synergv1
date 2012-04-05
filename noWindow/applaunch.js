@@ -357,9 +357,11 @@ enyo.kind({
 		} else if(window.webkitNotifications) {
 			var wkn = window.webkitNotifications;
 			enyo.log("webkitNotifications available, permission=" + wkn.checkPermission());
-			if(wkn.checkPermission() === 0) // 0 = Allowed, 1 = Not Allowed, 2 = Denied
+			if(!this.NotificationDashboards[msgid] || this.NotificationDashboards[msgid].ignoreid != ignoreid) 
 			{
-				if(!this.NotificationDashboards[msgid] || this.NotificationDashboards[msgid].ignoreid != ignoreid) {
+			    this.playAlertSound();
+				if(wkn.checkPermission() === 0) // 0 = Allowed, 1 = Not Allowed, 2 = Denied
+				{
 					try {
 						var note = wkn.createNotification("mainApp/images/google-voice-icon48.png", msg, msgtext);
 						note.id = msgid;
@@ -374,7 +376,6 @@ enyo.kind({
 						this.NotificationDashboards[0] = "temp holder";
 						this.NotificationDashboards[msgid] = note;
 						this.log("************************ NOTIFICATION POSTED ******************** ");
-						this.playAlertSound();
 					} catch(err) { // throw security error
 						enyo.log("error posting notification:" + err);
 					}
@@ -403,7 +404,9 @@ enyo.kind({
     },
 	playAlertSound: function()
 	{
-		this.createComponent({ name: "AlertSound", kind: "PlatformSound", preload: true, src: this.getAlertPath() }, { owner: this }).play();
+		var path = this.getAlertPath();
+		if(path && path != "")
+		    this.createComponent({ name: "AlertSound", kind: "PlatformSound", preload: true, src: this.getAlertPath() }, { owner: this }).play();
 	},
     dashboardLayerSwipe: function(inSender, layer)
     {
