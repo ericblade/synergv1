@@ -301,6 +301,7 @@ enyo.kind({
 		{
 			this.actuallyPostNotification(msgid, msg, nonamemsg, msgtext);
 		} else if(wkn) {
+			this.playAlertSound();
 			if(wkn.checkPermission()) { // 1 = Not Allowed, 2 = Denied, 0 = Allowed
 				wkn.requestPermission(enyo.bind(this, this.actuallyPostNotification, msgid, msg, nonamemsg, msgtext));
 			} else {
@@ -359,7 +360,7 @@ enyo.kind({
 			enyo.log("webkitNotifications available, permission=" + wkn.checkPermission());
 			if(!this.NotificationDashboards[msgid] || this.NotificationDashboards[msgid].ignoreid != ignoreid) 
 			{
-			    this.playAlertSound();
+			    //this.playAlertSound();
 				if(wkn.checkPermission() === 0) // 0 = Allowed, 1 = Not Allowed, 2 = Denied
 				{
 					try {
@@ -406,7 +407,7 @@ enyo.kind({
 	{
 		var path = this.getAlertPath();
 		if(path && path != "")
-		    this.createComponent({ name: "AlertSound", kind: "PlatformSound", preload: true, src: this.getAlertPath() }, { owner: this }).play();
+			this.createComponent({ name: "AlertSound", kind: "PlatformSound", preload: true, src: this.getAlertPath() }, { owner: this }).play();
 	},
     dashboardLayerSwipe: function(inSender, layer)
     {
