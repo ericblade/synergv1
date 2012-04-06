@@ -303,7 +303,9 @@ enyo.kind({
 		} else if(wkn) {
 			this.playAlertSound();
 			if(wkn.checkPermission()) { // 1 = Not Allowed, 2 = Denied, 0 = Allowed
-				wkn.requestPermission(enyo.bind(this, this.actuallyPostNotification, msgid, msg, nonamemsg, msgtext));
+				enyo.nextTick(this, function() {
+					wkn.requestPermission(enyo.bind(this, this.actuallyPostNotification, msgid, msg, nonamemsg, msgtext));
+				});
 			} else {
 				this.actuallyPostNotification(msgid, msg, nonamemsg, msgtext);
 			}
