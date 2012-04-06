@@ -305,7 +305,7 @@ enyo.kind({
 			if(wkn.checkPermission()) { // 1 = Not Allowed, 2 = Denied, 0 = Allowed
 				setTimeout(function() {
 					wkn.requestPermission(enyo.bind(this, this.actuallyPostNotification, msgid, msg, nonamemsg, msgtext));
-				}, 1000);
+				}, 2000);
 			} else {
 				this.actuallyPostNotification(msgid, msg, nonamemsg, msgtext);
 			}
