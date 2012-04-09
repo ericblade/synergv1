@@ -590,8 +590,9 @@ enyo.kind({
                 index++;
             }
         }
-		enyo.error("Launcher bForwardToApp", bForwardToApp, enyo.application.mainApp, enyo.application.mainApp.$.boxPicker.getValue(), parseInt(enyo.application.mainApp.$.pagePicker.getValue()));
-		if(bForwardToApp && enyo.application.mainApp && enyo.application.mainApp.$.boxPicker.getValue() == "Inbox" && parseInt(enyo.application.mainApp.$.pagePicker.getValue()) == 1)
+		//enyo.error("Launcher bForwardToApp", bForwardToApp, enyo.application.mainApp, enyo.application.mainApp.$.boxPicker.getValue(), parseInt(enyo.application.mainApp.$.pagePicker.getValue()));
+		var app = enyo.application.mainApp;
+		if(bForwardToApp && app && app.$ && app.$.boxPicker && app.$.pagePicker && app.$.boxPicker.getValue() == "Inbox" && parseInt(app.$.pagePicker.getValue()) == 1)
 		{
 			// HACK: forward all the crap we already did anyway over to the main app.. sigh.
 			enyo.application.mainApp.InboxReceived(inSender, inResponse);
