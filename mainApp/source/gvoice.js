@@ -709,7 +709,7 @@ enyo.kind({
         }
     
         var runcount = parseInt(prefs.get("runcount"));
-        enyo.log("runcount=", runcount, "reviewed=", prefs.get("reviewed"));
+        enyo.log(prefs.get("runcount"), "runcount=", runcount, "reviewed=", prefs.get("reviewed"));
         if(runcount < 10 && !prefs.get("reviewed"))
         {
             this.$.ReviewPopup.open();
