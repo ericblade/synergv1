@@ -252,13 +252,17 @@ enyo.kind({
     ringerSwitchChange: function(inSender, inResponse)
     {
         this.log(inResponse);
+        if(inResponse.key == "ringer")
+        {
+            this.ringerStatus = (state == "up");
+        }
     },
     ttsPluginReady: false,
     components:
     [
         { name: "ttsPlugin", kind: enyo.Hybrid, width: 0, height: 0, executable: "sdltts", takeKeyboardFocus: false, onPluginReady: "handlePluginReady" },
         { name: "ConnectionService", kind: "PalmService", service: "palm://com.palm.connectionmanager/", method: "getStatus", onSuccess: "connectionStatusChange", subscribe: true},
-        { name: "RingerSwitchService", kind: "PalmService", service: "palm://com.palm.keys/switches", method: "status", subscribe: true, onSuccess: "ringerSwitchChange" },
+                { name: "RingerSwitchService", kind: "PalmService", service: "palm://com.palm.keys/switches", method: "status", onSuccess: "ringerSwitchChange" },
         { name: "AppManService", kind: "PalmService", service: "palm://com.palm.applicationManager/", method: "open"},
         { kind: /*"ApplicationEvents"*/ "maklesoft.cross.ApplicationEvents",
           onBack: "goBack", onLoad: "windowLoaded", onWindowRotated: "windowRotated",
@@ -564,7 +568,7 @@ enyo.kind({
     },
     speak: function(str)
     {
-        if(prefs.get("ttsdisable") != -1 && this.ttsPluginReady)
+        if(prefs.get("ttsdisable") != -1 && this.ttsPluginReady && this.ringerStatus)
         {
             try {
                 this.$.ttsPlugin.callPluginMethodDeferred(null, "playAudio", str);    
@@ -624,6 +628,7 @@ enyo.kind({
     },
     rendered: function() {
         this.inherited(arguments);
+        this.ringerStatus = true;        
         this.AuthCode = "";
         this.Messages = [];
         this.MessageIndex = [];
@@ -675,7 +680,8 @@ enyo.kind({
         {
             if(Platform.platformVersion >= 2)
                 this.clearVoicemail();
-            this.$.RingerSwitchService.call({ get: "ringer" });
+            this.$.RingerSwitchService.call({ get: "ringer" }, { subscribe: false });
+            this.$.RingerSwitchService.call({ subscribe: true }, { subscribe: true });
         }
         console.log("checking firstrun");
         enyo.asyncMethod(this, "checkFirstRun");
