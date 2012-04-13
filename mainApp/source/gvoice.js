@@ -254,7 +254,7 @@ enyo.kind({
         this.log(inResponse);
         if(inResponse.key == "ringer")
         {
-            this.ringerStatus = (state == "up");
+            this.ringerStatus = (inResponse.state == "up");
         }
     },
     ttsPluginReady: false,
@@ -709,6 +709,7 @@ enyo.kind({
         }
         
         var runcount = parseInt(prefs.get("runcount"));
+        enyo.log("runcount=", runcount, "reviewed=", prefs.get("reviewed"));
         if(runcount < 10 && !prefs.get("reviewed"))
         {
             this.$.ReviewPopup.open();
