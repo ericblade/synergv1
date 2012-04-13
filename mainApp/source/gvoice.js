@@ -671,9 +671,11 @@ enyo.kind({
     ready: function()
     {
         this.inherited(arguments);
-        if(Platform.isWebOS() && Platform.platformVersion >= 2)
+        if(Platform.isWebOS())
         {
-            this.clearVoicemail();
+            if(Platform.platformVersion >= 2)
+                this.clearVoicemail();
+            this.$.RingerSwitchService.call();
         }
         console.log("checking firstrun");
         enyo.asyncMethod(this, "checkFirstRun");
