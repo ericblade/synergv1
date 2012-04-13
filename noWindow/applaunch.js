@@ -57,6 +57,7 @@ enyo.kind({
 		this.inherited(arguments);
                 prefs.def("ignoreNotificationList", { });
                 prefs.def("gvAlertTone", "Default");
+				prefs.def("runcount", 0);
                 try {
                     var changedList;
                     this.IgnoreNotificationsList = enyo.json.parse(prefs.get("ignoreNotificationsList"));

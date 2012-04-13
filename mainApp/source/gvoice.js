@@ -707,7 +707,7 @@ enyo.kind({
             Platform.browser(url, this)();
             console.log("Browser loaded.");
         }
-        
+    
         var runcount = parseInt(prefs.get("runcount"));
         enyo.log("runcount=", runcount, "reviewed=", prefs.get("reviewed"));
         if(runcount < 10 && !prefs.get("reviewed"))
