@@ -249,11 +249,16 @@ enyo.kind({
         //this.log(inSender, inResponse);
         this.$.AppManService.call( { target: inResponse.file } );  
     },
+    ringerSwitchChange: function(inSender, inResponse)
+    {
+        this.log(inResponse);
+    },
     ttsPluginReady: false,
     components:
     [
         { name: "ttsPlugin", kind: enyo.Hybrid, width: 0, height: 0, executable: "sdltts", takeKeyboardFocus: false, onPluginReady: "handlePluginReady" },
         { name: "ConnectionService", kind: "PalmService", service: "palm://com.palm.connectionmanager/", method: "getStatus", onSuccess: "connectionStatusChange", subscribe: true},
+        { name: "RingerSwitchService", kind: "PalmService", service: "palm://com.palm.keys/switches", method: "status", subscribe: true, onSuccess: "ringerSwitchChange" },
         { name: "AppManService", kind: "PalmService", service: "palm://com.palm.applicationManager/", method: "open"},
         { kind: /*"ApplicationEvents"*/ "maklesoft.cross.ApplicationEvents",
           onBack: "goBack", onLoad: "windowLoaded", onWindowRotated: "windowRotated",
