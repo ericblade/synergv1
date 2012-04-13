@@ -675,7 +675,7 @@ enyo.kind({
         {
             if(Platform.platformVersion >= 2)
                 this.clearVoicemail();
-            this.$.RingerSwitchService.call();
+            this.$.RingerSwitchService.call({ get: "ringer" });
         }
         console.log("checking firstrun");
         enyo.asyncMethod(this, "checkFirstRun");
