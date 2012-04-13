@@ -709,7 +709,7 @@ enyo.kind({
         }
         
         var runcount = parseInt(prefs.get("runcount"));
-        if(prefs.get("runcount") < 10 && !prefs.get("reviewed"))
+        if(runcount < 10 && !prefs.get("reviewed"))
         {
             this.$.ReviewPopup.open();
         }
