@@ -1,3 +1,46 @@
+enyo.kind({
+    name: "ReviewPopup", kind: "Dialog", layoutKind: "VFlexLayout", components:
+        [
+            { kind: "Scroller", height: Platform.isLargeScreen() ? "570px" : "360px", style: "background-color: #4185D3;", components:
+                [
+                    { kind: "VFlexBox", components:
+                        [
+                            { content: "When an app has good reviews in your app store, it encourages more people to support that app." },
+                            { content: "With more support, the developer can spend more of their time working to bring you fixes and new features." },
+                            { content: "If you have already reviewed GVoice, I thank you very much, and tapping the Review button should make this message go away forever." },
+                            { content: "If you have not, please take a few moments to write a review." },
+                            { name: "ReviewLink", kind: "Item", onclick: "linkClicked", url: "review", layoutKind: "HFlexLayout", components:
+                                [
+                                    { kind: enyo.Image, src: !window.PalmSystem ? "mainApp/images/star.png" : "images/star.png" },                                    
+                                    { kind: "Spacer" },
+                                    { content: "Review GVoice :) " },
+                                    { kind: "Spacer" },
+                                ]
+                            },
+                            { name: "LaterLink", kind: "Item", content: "Later", onclick: "clickLater" },
+                        ]
+                    }
+                ]
+            }
+        ],
+    linkClicked: function(inSender, inEvent) // TODO: Move this to an event that gets passed down to the main app's link clicker handler thingee
+    {
+        if(typeof blackberry !== "undefined" && inEvent.cancelable)
+            return;
+        
+        if(inSender.url == "review") {
+            inSender.url = Platform.getReviewURL();
+        }
+        prefs.set("reviewed", true);
+        Platform.browser(inSender.url, this)();
+        return;
+    },
+    clickLater: function(inSender, inEvent)
+    {
+        prefs.set("runcount", 0);
+    }
+});
+
 enyo.kind(
     { name: "aboutPopup", kind: "Dialog", layoutKind: "VFlexLayout", components:
         [

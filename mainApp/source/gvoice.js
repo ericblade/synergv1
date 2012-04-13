@@ -303,6 +303,7 @@ enyo.kind({
         { name: "mainSpinner", kind: "SpinnerLarge", style: "position: absolute; top: 45%; left: 45%; z-index: 10;", showing: false },
         //{ name: "fileDownload", kind: "PalmService", service: "palm://com.palm.downloadmanager/", method: "download", onSuccess: "downloadFinished", subscribe: true },
         { name: "outbox", kind: "outboxHandler", onAllMessagesSent: "messagesSent" },
+        { name: "ReviewPopup", kind: "ReviewPopup" },
         { name: "NotePopup", kind: "NotePopup", className: "notePopup", onNoteSaved: "saveNote" },
         { name: "LoginPopup", kind: "LoginPopup", onClose: "popupClosed" },
         { kind: "composePopup", onClose: "popupClosed" },
@@ -705,7 +706,14 @@ enyo.kind({
             console.log("Loading browser to " + url);
             Platform.browser(url, this)();
             console.log("Browser loaded.");
-        }        
+        }
+        
+        var runcount = parseInt(prefs.get("runcount"));
+        if(prefs.get("runcount") < 10 && !prefs.get("reviewed"))
+        {
+            this.$.ReviewPopup.open();
+        }
+        prefs.set("runcount", runcount + 1);
     },
     debugLogView: function()
     {
