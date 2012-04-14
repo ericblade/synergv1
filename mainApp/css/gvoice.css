@@ -95,7 +95,7 @@
 	}
 }
 
-@media all and (max-width: 321px) {
+@media all and (min-width: 321px) {
 	.menu-grid {
 		text-align: center;
 		width: auto;
