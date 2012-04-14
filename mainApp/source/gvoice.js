@@ -24,7 +24,6 @@
 //      pop a web browser.  
 // TODO: Investigate a Popup option to automatically enable keyboard when opening the Compose popup?
 // TODO: Ignore auto-refresh if Offline, or if typing?
-// TODO: Dashboard window for webOS notifications faster than 5 minutes. 
 // TODO: use our file downloader to download and cache icons? might solve the icon images with 2-step problem?
 // TODO: UNblock gives the same warning as BLOCK.. ?
 // TODO: turn off voicemail transcription, leave a few voicemails, figure out why we can't listen to htem (probably has to do with us checking for transcription to decide if we can or not)

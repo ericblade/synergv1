@@ -262,7 +262,7 @@ enyo.kind({
             //if(enyo.application.mainAppWindow && enyo.application.mainAppWindow.name)
             //    enyo.application.mainAppWindow.postMessage("retrieveInbox", "*");
 			enyo.application.quickMessageCheck = true;
-			this.checkNewMessages();			
+			enyo.application.launcher.checkNewMessages();
         },
  
 	something: function () {
