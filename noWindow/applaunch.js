@@ -259,8 +259,10 @@ enyo.kind({
             this.timerInterval = 0;
         },
         sendMessageToApp: function() {
-            if(enyo.application.mainAppWindow && enyo.application.mainAppWindow.name)
-                enyo.application.mainAppWindow.postMessage("retrieveInbox", "*");
+            //if(enyo.application.mainAppWindow && enyo.application.mainAppWindow.name)
+            //    enyo.application.mainAppWindow.postMessage("retrieveInbox", "*");
+			enyo.application.quickMessageCheck = true;
+			this.checkNewMessages();			
         },
  
 	something: function () {
