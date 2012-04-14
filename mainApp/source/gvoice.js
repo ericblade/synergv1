@@ -329,15 +329,15 @@ enyo.kind({
                     //{ name: "ContactsTab", icon: "images/contacts2.png", }, // 4 tabs looks like crap on a pre
                 ]
             },
-        { name: "AppMenu", kind: "AppMenu", lazy: false, components:
+        { name: "AppMenu", kind: "AppMenu", lazy: false, className: "enyo-grid", components:
             [
-                { caption: "About", onclick: "openAbout", lazy: false },
-                { name: "DNDMenu", caption: "DnD: ", onclick: "toggleDND", disabled: true, lazy: false, },
-                { name: "reloadInboxMenu", caption: "Reload Inbox", onclick: "InboxClick", disabled: true, lazy: false, },
-                { caption: "Preferences", onclick: "openPreferences", lazy: false },
-                { caption: "Debug Log", onclick: "debugLogView", lazy: false },
+                { caption: "About", className: "enyo-grid-div", onclick: "openAbout", lazy: false },
+                { name: "DNDMenu", className: "enyo-grid-div", caption: "DnD: ", onclick: "toggleDND", disabled: true, lazy: false, },
+                { name: "reloadInboxMenu", className: "enyo-grid-div", caption: "Reload Inbox", onclick: "InboxClick", disabled: true, lazy: false, },
+                { caption: "Preferences", className: "enyo-grid-div", onclick: "openPreferences", lazy: false },
+                { caption: "Debug Log", className: "enyo-grid-div", onclick: "debugLogView", lazy: false },
                 useInternalWebView() ? { caption: "Voice Web View", onclick: "showWebView", lazy: false } : {},
-                { caption: "Logout", onclick: "doLogoutMenu", lazy: false, }
+                { caption: "Logout", className: "enyo-grid-div", onclick: "doLogoutMenu", lazy: false, }
             ]
         },
         
