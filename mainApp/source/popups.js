@@ -634,6 +634,7 @@ enyo.kind(
                     this.$.messageInput.forceFocus();
                 else
                     this.$.recipientInput.forceFocus();
+                enyo.error("messageInput kind", this.$.messageInput.name)
             },
             closeComposePopup: function()
             {
