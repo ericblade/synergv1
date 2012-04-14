@@ -88,11 +88,13 @@
 	background:#ffc;
 }
 
-.menu-grid {
-	text-align: center;
-	width: auto;
-	min-width: 10%;
-	max-width: 20%;
+@media all and (min-width: 401px) {
+	.menu-grid {
+		text-align: center;
+		width: auto;
+		min-width: 10%;
+		max-width: 20%;
+	}
 }
 
 @media all and (max-width: 400px) {
