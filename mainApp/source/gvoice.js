@@ -329,7 +329,7 @@ enyo.kind({
                     //{ name: "ContactsTab", icon: "images/contacts2.png", }, // 4 tabs looks like crap on a pre
                 ]
             },
-        { name: "AppMenu", kind: "AppMenu", lazy: false, className: "enyo-grid", components:
+        { name: "AppMenu", kind: "AppMenu", lazy: false, style: "width: 100%;", className: "enyo-grid", components:
             [
                 { caption: "About", className: "enyo-grid-div", onclick: "openAbout", lazy: false },
                 { name: "DNDMenu", className: "enyo-grid-div", caption: "DnD: ", onclick: "toggleDND", disabled: true, lazy: false, },
