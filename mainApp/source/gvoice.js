@@ -679,12 +679,12 @@ enyo.kind({
     },
     checkFirstRun: function() {
         var appInfo;
-        if(Platform.isAndroid())
+        /*if(Platform.isAndroid())
         {
             this.$.indexView.setAccelerated(false);
             this.$.conversationScroller.setAccelerated(false);
             this.$.overviewScroller.setAccelerated(false);
-        }
+        }*/
         console.log("checkFirstRun");
         try {
             appInfo = JSON.parse(enyo.fetchAppInfo());
