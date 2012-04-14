@@ -562,7 +562,7 @@ enyo.kind(
                         },
                         { name: "sendMessageCaption", content: "Message", className: "login-box-caption", },
                         { name: "messageInput",
-                            kind: Platform.isLargeScreen() ? (Platform.isWebOS() ? "RichText" : "Textarea") : "Input",
+                            kind: Platform.isLargeScreen() ? (window.PalmSystem ? "RichText" : "Textarea") : "Input",
                             onfocus: "hideDialpad",
                             oninput: "messageInput",
                             alwaysLooksFocused: true,
