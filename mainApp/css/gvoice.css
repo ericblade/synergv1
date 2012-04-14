@@ -89,6 +89,7 @@
 }
 
 .menu-grid {
+	text-align: center;
 	width: auto;
 	max-width: 300px;
 	min-width: 100px;
