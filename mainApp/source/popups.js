@@ -631,9 +631,9 @@ enyo.kind(
                 this.$.messageInput.setValue(msg);
                 // initialize the text counter
                 this.messageInput();
-                if(this.$.messageInput.kind != "Input" && Platform.isLargeScreen())
+                if(Platform.isLargeScreen())
                 {
-                    this.$.messageInput.applyStyle("height", "20%");
+                    this.$.messageInput.applyStyle("height", "30%");
                 }
                 if(rcpt)
                     this.$.messageInput.forceFocus();
