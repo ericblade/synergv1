@@ -2,8 +2,6 @@
 //Does this app have the option to group by person instead of the ever so annoying conversation thread? 
 // I just installed GVoice on my Pre3 but the pages appear super zoomed out. The text is so small it almost unreadable. Is this a known issue/is there any way to fix this? Also, when making a call is there any way to type in the contact’s name rather than his/her phone number?
 // TODO: Reset Alarm when changing bgRefresh preference
-// TODO: need to figure out a way to update the Note status preferably without redrawing the entire freaking canvas when adding/removing a note
-//       difficulty: don't have access to the StatefulImage that started the chain to set it
 // TODO: there is a https://www.google.com/voice/b/0/settings/getDoNotDisturb/ returns {"ok":true,"data":{"enabled":false}}
 // TODO: messagesSent counter got broken by queue changes. need to redesign the queue to use
 //       a seperate list to hold what's pending vs what actually needs to be resent

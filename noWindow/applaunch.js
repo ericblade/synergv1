@@ -191,6 +191,9 @@ enyo.kind({
         setAlarm: function() // TODO: need to make this accept an incoming time, and set "in" to that
         {
 			var bg = prefs.get("bgRefresh");
+			if(bg < 5) {
+				this.createMessageCheckDash();
+			}
 			var time = (bg < 5) ? "00:05:00" : secondsToTime(bg * 60);
 			/*if(bg < 5) {
 				if(bg < 4) bg = 4;
@@ -311,6 +314,21 @@ enyo.kind({
 				this.actuallyPostNotification(msgid, msg, nonamemsg, msgtext);
 			}
 		} 
+	},
+	createMessageCheckDash: function()
+	{
+		if(this.messageCheckDash)
+		    return;
+		this.messageCheckDash = this.createComponent( {
+			kind: "Dashboard",
+			smallIcon: "images/google-voice-icon24.png",
+			icon: "images/google-voice-icon48.png",
+			//onMessageTap: "dashboardTap",
+			//onIconTap: "dashboardTap",
+		});
+		var x = { icon: "mainApp/images/google-voice-icon48.png",
+				  smallIcon: "mainApp/images/google-voice-icon24.png",
+				  title: "GVoice Notification Panel", text: "Swipe to close GVoice and return to 5 minute notification minimum" };
 	},
     actuallyPostNotification: function(msgid, msg, nonamemsg, msgtext)
     {
