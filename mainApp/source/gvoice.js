@@ -7,7 +7,6 @@
 // TODO: need to figure out a way to update the Note status preferably without redrawing the entire freaking canvas when adding/removing a note
 //       difficulty: don't have access to the StatefulImage that started the chain to set it
 // TODO: there is a https://www.google.com/voice/b/0/settings/getDoNotDisturb/ returns {"ok":true,"data":{"enabled":false}}
-// TODO: make applaunch.setAlarm use the app id instead of hard code!!
 // TODO: messagesSent counter got broken by queue changes. need to redesign the queue to use
 //       a seperate list to hold what's pending vs what actually needs to be resent
 // TODO: Undo messageSent hack that says if(counter == 0) counter = 1 !!!
@@ -32,7 +31,6 @@
 // TODO: Dashboard window for webOS notifications faster than 5 minutes. 
 // TODO: use our file downloader to download and cache icons? might solve the icon images with 2-step problem?
 // TODO: UNblock gives the same warning as BLOCK.. ?
-// TODO: not run Text-To-Speech if notifier switch is off
 // TODO: turn off voicemail transcription, leave a few voicemails, figure out why we can't listen to htem (probably has to do with us checking for transcription to decide if we can or not)
 // TODO: Android gap is apparently keyboard space without the keyboard.
 // TODO:invalidopcode: also, i would suggest that when a user is typing a text message that you might want to disable the auto-refresh, because when it refreshes it freezes the text box which is kindof annoying when your trying to type a message
@@ -55,9 +53,6 @@
 // TODO: add option to use device's dialar to make calls (ie, dont' go through GVoice)
 // TODO: Just Type search connect to GVoice Search
 // TODO: Optional 3-panel display, with the center panel becoming the Overview ?
-/*2:06:23 AM) Kris Venden: not an issue on Touchpad cause you already see them in the overview and you do label the differences there
-(2:06:37 AM) Kris Venden: but on the phones, all we see is the inbox unless we go to overview tab
-(2:07:05 AM) Kris Venden: wonder about a tiny phone icon or different color or something for voicemails vs. text messages in inbox*/
 // TODO: add support for google calendar thing?
 
 var inboxButton={ name: "InboxButton", kind: "ActivityButton", caption: "Reload Inbox", onclick: "InboxClick" };

@@ -561,11 +561,21 @@ enyo.kind(
                             ]
                         },
                         { name: "sendMessageCaption", content: "Message", className: "login-box-caption", },
-                        { name: "messageInput", onfocus: "hideDialpad", oninput: "messageInput", alwaysLooksFocused: true, hint: "Enter Message", className: "login-input", kind: "Input", onkeypress: "messageInputKeypress", onkeyup: "messageInputKeypress" },
+                        { name: "messageInput",
+                            kind: Platform.isLargeScreen() ? (Platform.isWebOS() ? "RichText" : "Textarea") : "Input",
+                            onfocus: "hideDialpad",
+                            oninput: "messageInput",
+                            alwaysLooksFocused: true,
+                            hint: "Enter Message",
+                            className: "login-input",
+                            onkeypress: "messageInputKeypress",
+                            onkeyup: "messageInputKeypress"
+                        },
                         { layoutKind: "HFlexLayout", components:
                             [
                                 { kind: "Spacer", },
                                 { name: "composeSendButton",className: "enyo-button-affirmative", kind: "Button", caption: "Send", onclick: "sendComposedMessage" },
+                                { kind: "Spacer", },
                                 { name: "composeCancelButton",className: "enyo-button-negative", kind: "Button", caption: "Cancel", onclick: "closeComposePopup" },
                                 { kind: "Spacer", },
                             ]
