@@ -1,18 +1,18 @@
 enyo.kind({
     name: "ReviewPopup", kind: "Popup", height: "80%", width: "95%", components:
         [
-            { kind: "VFlexBox", height: "100%", components:
+            { kind: "VFlexBox", height: "100%", style: "background-color: #4185D3;", components:
                 [
-                    { kind: "Scroller", flex: 1, style: "background-color: #4185D3;", components:
+                    { kind: "Scroller", flex: 1, components:
                         [
-                            { kind: "VFlexBox", style: "color: white;", components:
+                            { kind: "VFlexBox", style: "color: white; text-align: center;", components:
                                 [
                                     { content: "When an app has good reviews in your app store, it encourages more people to support that app." },
-                                    { content: " " },
+                                    { nodeTag: "P" },
                                     { content: "With more support, the developer can spend more of their time working to bring you fixes and new features." },
-                                    { content: " " },
+                                    { nodeTag: "P" },
                                     { content: "If you have already reviewed GVoice, I thank you very much, and tapping the Review button should make this message go away forever." },
-                                    { content: " " },
+                                    { nodeTag: "P" },
                                     { content: "If you have not, please take a few moments to write a review." },
                                 ]
                             }
