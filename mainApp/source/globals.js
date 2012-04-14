@@ -6,8 +6,8 @@ prefs = {
     },
     get: function(prop)
     {
-        var x = localStorage.getItem(prop);
-        return x ? x : enyo.getCookie(prop);
+        var x = localStorage || localStorage.getItem(prop);
+        return x || enyo.getCookie(prop);
     },
     del: function(prop)
     {
