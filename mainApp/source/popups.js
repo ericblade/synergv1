@@ -240,7 +240,7 @@ enyo.kind(
                             },
                         ]
                     },
-                    { name: "NotifyTwo", content: "Refresh times less than 5 minutes will only run when GVoice is open. When the app is closed, it will refresh at a 5-minute minimum." + (window.PalmSystem ? " A Dashboard Panel will open to allow refresh rates faster than 5 minutes. When closed, refresh rate will return to minimum 5 minutes." : ""),
+                    { name: "NotifyTwo", content: "Refresh times less than 5 minutes will only run when GVoice is open. When the app is closed, it will refresh at a 5-minute minimum." + (window.PalmSystem ? " A Dashboard Panel will open to allow refresh rates faster than 5 minutes. When closed, refresh rate will return to minimum 5 minutes.  Refresh times of less than 5 minutes may have adverse effects on battery time." : ""),
                         className: "enyo-item-ternary"
                     },
                     { name: "NotifyThree", content: "It is not possible to do push notifications without giving your password to a 3rd party.", className: "enyo-item-ternary" },
