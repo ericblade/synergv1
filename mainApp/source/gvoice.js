@@ -349,7 +349,7 @@ enyo.kind({
                             [
                                 { kind: "PickerGroup", label: "", components:
                                     [
-                                        { name: "boxPicker", value: "Inbox", onChange: "selectBox", className: "box-picker", items: ["Inbox", "All", "Voicemail", "SMS", "Recorded", "Placed", "Received", "Missed", "Starred", "Spam", "Trash", "Search"] },
+                                        { name: "boxPicker", kind: "ListSelector", value: "Inbox", onChange: "selectBox", className: "box-picker", items: ["Inbox", "All", "Voicemail", "SMS", "Recorded", "Placed", "Received", "Missed", "Starred", "Spam", "Trash", "Search"] },
                                         { name: "pagePicker", label: "Page", className: "page-picker", kind: "IntegerPicker", onChange: "selectPage", min: 1, max: 10 },
                                     ]
                                 },
