@@ -1,7 +1,7 @@
 enyo.kind({
-    name: "ReviewPopup", kind: "Popup", layoutKind: "VFlexLayout", components:
+    name: "ReviewPopup", kind: "Popup", components:
         [
-            { kind: "VFlexBox", flex: 1, components:
+            { kind: "VFlexBox", height: "80%",  components:
                 [
                     { kind: "Scroller", flex: 1, style: "background-color: #4185D3;", components:
                         [
