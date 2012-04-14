@@ -7,7 +7,7 @@ prefs = {
     get: function(prop)
     {
         var x = localStorage && localStorage.getItem(prop);
-        return x || (document.cookie && enyo.getCookie(prop));
+        return x || (document && document.cookie && enyo.getCookie(prop));
     },
     del: function(prop)
     {
