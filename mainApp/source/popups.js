@@ -1,5 +1,5 @@
 enyo.kind({
-    name: "ReviewPopup", kind: "Popup", height: "80%", components:
+    name: "ReviewPopup", kind: "Popup", height: "80%", width: "95%", components:
         [
             { kind: "VFlexBox", height: "100%", components:
                 [
