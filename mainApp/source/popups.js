@@ -240,7 +240,7 @@ enyo.kind(
                             },
                         ]
                     },
-                    { name: "NotifyTwo", content: "Refresh times less than 5 minutes will only run when GVoice is open (and in foreground on phones). When the app is closed, it will refresh at a 5-minute minimum.",
+                    { name: "NotifyTwo", content: "Refresh times less than 5 minutes will only run when GVoice is open. When the app is closed, it will refresh at a 5-minute minimum." + (window.PalmSystem ? " A Dashboard Panel will open to allow refresh rates faster than 5 minutes. When closed, refresh rate will return to minimum 5 minutes." : ""),
                         className: "enyo-item-ternary"
                     },
                     { name: "NotifyThree", content: "It is not possible to do push notifications without giving your password to a 3rd party.", className: "enyo-item-ternary" },
@@ -352,8 +352,14 @@ enyo.kind(
         },
         bgSliderChange: function()
         {
-            prefs.set("bgRefresh", this.$.bgRefreshSlider.getPosition());
-            this.$.bgSliderLabel.setContent(prefs.get("bgRefresh") + "&nbsp;" + pluralize("minute", prefs.get("bgRefresh")));
+            var x = this.$.bgRefreshSlider.getPosition();
+            prefs.set("bgRefresh", x);
+            this.$.bgSliderLabel.setContent(x + "&nbsp;" + pluralize("minute", x));
+            if(x < 5)
+            {
+                if(enyo.application.launcher)
+                    enyo.application.launcher.createMessageCheckDash();
+            }
         },
         NotifyRestart: function() {
             this.$.RestartNotifier.open();

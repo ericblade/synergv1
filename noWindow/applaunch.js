@@ -317,7 +317,7 @@ enyo.kind({
 	},
 	createMessageCheckDash: function()
 	{
-		if(this.messageCheckDash)
+		if(this.messageCheckDash || !window.PalmSystem)
 		    return;
 		this.messageCheckDash = this.createComponent( {
 			kind: "Dashboard",
