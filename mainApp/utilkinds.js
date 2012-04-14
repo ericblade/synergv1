@@ -74,6 +74,9 @@ enyo.kind({
         this.$.InputBox.setAutoKeyModifier(this.autoKeyModifier);
         //this.$.Scroller.createComponent( { kind: "ScrollFades", name:"fades", isChrome:true, owner:this });
     },
+    forceFocus: function() {
+        this.$.InputBox.forceFocus();
+    },
     /*scrolled: function(sender) {
         this.$.fades.showHideFades(this.$.Scroller);
     },*/
