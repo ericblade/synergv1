@@ -50,6 +50,7 @@ enyo.kind({
     clickLater: function(inSender, inEvent)
     {
         prefs.set("runcount", 0);
+        this.close();
     }
 });
 
