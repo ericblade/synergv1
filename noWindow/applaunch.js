@@ -399,7 +399,7 @@ enyo.kind({
 						
 						note.show();
 						this.NotificationDashboards[0] = "temp holder";
-						this.NotificationDashboards[ignoreid] = note;
+						this.NotificationDashboards[ignoreid] = { "ignoreid": ignoreid };
 						this.log("************************ NOTIFICATION POSTED ******************** ");
 					} catch(err) { // throw security error
 						enyo.log("error posting notification:" + err);
