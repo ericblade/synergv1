@@ -23,7 +23,7 @@
     "noWindow": true,    
     "title": "GVoice",
     "uiRevision": "2",
-    "version": "1.0.3",
+    "version": "1.0.5",
     "id": "com.ericblade.googlevoiceapp",
     "tapToShareSupported": false,
     "appWorldId": "86606",
