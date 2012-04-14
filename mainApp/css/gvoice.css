@@ -95,9 +95,9 @@
 	max-width: 20%;
 }
 
-@media all and (max-width: 400px) and (min-width: 200px) {
+@media all and (max-width: 400px) {
 	.menu-grid {
 		text-align: center;
-		width: 45%;
+		width: 100px;
 	}
 }
