@@ -1,5 +1,5 @@
 enyo.kind({
-    name: "ReviewPopup", kind: "Dialog", layoutKind: "VFlexLayout", components:
+    name: "ReviewPopup", kind: "Popup", layoutKind: "VFlexLayout", components:
         [
             { kind: "VFlexBox", flex: 1, components:
                 [
