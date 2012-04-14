@@ -329,15 +329,15 @@ enyo.kind({
                     //{ name: "ContactsTab", icon: "images/contacts2.png", }, // 4 tabs looks like crap on a pre
                 ]
             },
-        { name: "AppMenu", kind: "AppMenu", lazy: false, style: "width: 100%;", className: "enyo-grid", components:
+        { name: "AppMenu", kind: "AppMenu", lazy: false, style: "-webkit-transition: all 0.5s ease-in-out; width: 100%;", className: "enyo-grid", components:
             [
-                { caption: "About", style: "width: auto;", className: "enyo-grid-div", onclick: "openAbout", lazy: false },
-                { name: "DNDMenu", style: "width: auto;", className: "enyo-grid-div", caption: "DnD: ", onclick: "toggleDND", disabled: true, lazy: false, },
-                { name: "reloadInboxMenu", style: "width: auto;", className: "enyo-grid-div", caption: "Reload Inbox", onclick: "InboxClick", disabled: true, lazy: false, },
-                { caption: "Preferences", style: "width: auto;", className: "enyo-grid-div", onclick: "openPreferences", lazy: false },
-                { caption: "Debug Log", style: "width: auto;", className: "enyo-grid-div", onclick: "debugLogView", lazy: false },
+                { caption: "About", className: "enyo-grid-div menu-grid", onclick: "openAbout", lazy: false },
+                { name: "DNDMenu", className: "enyo-grid-div menu-grid", caption: "DnD: ", onclick: "toggleDND", disabled: true, lazy: false, },
+                { name: "reloadInboxMenu", className: "enyo-grid-div menu-grid", caption: "Reload Inbox", onclick: "InboxClick", disabled: true, lazy: false, },
+                { caption: "Preferences", className: "enyo-grid-div menu-grid", onclick: "openPreferences", lazy: false },
+                { caption: "Debug Log", className: "enyo-grid-div menu-grid", onclick: "debugLogView", lazy: false },
                 //useInternalWebView() ? { caption: "Voice Web View", onclick: "showWebView", lazy: false } : {},
-                { caption: "Logout", style: "width: auto;", className: "enyo-grid-div", onclick: "doLogoutMenu", lazy: false, }
+                { caption: "Logout", className: "enyo-grid-div menu-grid", onclick: "doLogoutMenu", lazy: false, }
             ]
         },
         

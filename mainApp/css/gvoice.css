@@ -87,3 +87,9 @@
 	color:#000;  
 	background:#ffc;
 }
+
+.menu-grid {
+	width: auto;
+	max-width: 300px;
+	min-width: 100px;
+}
