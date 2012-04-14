@@ -382,7 +382,7 @@ enyo.kind({
 		} else if(window.webkitNotifications) {
 			var wkn = window.webkitNotifications;
 			enyo.log("webkitNotifications available, permission=" + wkn.checkPermission());
-			if(!this.NotificationDashboards[msgid] || this.NotificationDashboards[msgid].ignoreid != ignoreid) 
+			if(!this.NotificationDashboards[ignoreid] || this.NotificationDashboards[ignoreid].ignoreid != ignoreid) 
 			{
 			    //this.playAlertSound();
 				if(wkn.checkPermission() === 0) // 0 = Allowed, 1 = Not Allowed, 2 = Denied
@@ -399,7 +399,7 @@ enyo.kind({
 						
 						note.show();
 						this.NotificationDashboards[0] = "temp holder";
-						this.NotificationDashboards[msgid] = note;
+						this.NotificationDashboards[ignoreid] = note;
 						this.log("************************ NOTIFICATION POSTED ******************** ");
 					} catch(err) { // throw security error
 						enyo.log("error posting notification:" + err);
@@ -410,8 +410,8 @@ enyo.kind({
 			}
 		} else if(typeof plugins !== "undefined" && plugins.localNotification) {
 			this.NotificationDashboards[0] = "temp holder";
-			if(!this.NotificationDashboards[msgid] || this.NotificationDashboards[msgid].ignoreid != ignoreid) {
-				this.NotificationDashboards[msgid] = 1;
+			if(!this.NotificationDashboards[ignoreid] || this.NotificationDashboards[ignoreid].ignoreid != ignoreid) {
+				this.NotificationDashboards[ignoreid] = { "ignoreid": ignoreid };
 				plugins.localNotification.add({
 					date: new Date(),
 					message: msg + "\r\n" + msgtext,
