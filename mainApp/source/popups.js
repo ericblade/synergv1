@@ -629,7 +629,12 @@ enyo.kind(
                 this.$.recipientInput.setSuggestlist(enyo.application.mainApp.AutoCompleteNumbers);
                 this.$.recipientInput.setValue(rcpt);
                 this.$.messageInput.setValue(msg);
+                // initialize the text counter
                 this.messageInput();
+                if(this.$.messageInput.kind != "Input" && Platform.isLargeScreen())
+                {
+                    this.$.messageInput.applyStyle("height", "20%");
+                }
                 if(rcpt)
                     this.$.messageInput.forceFocus();
                 else
