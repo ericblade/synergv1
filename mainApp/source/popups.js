@@ -572,6 +572,7 @@ enyo.kind(
                             //kind: Platform.isLargeScreen() ? (window.PalmSystem ? "RichText" : "Textarea") : "Input",
                             kind: (window.PalmSystem ? "RichText" : "Textarea"),
                             rows: "3",
+                            style: "height: 3em;",
                             onfocus: "hideDialpad",
                             oninput: "messageInput",
                             alwaysLooksFocused: true,
@@ -579,7 +580,6 @@ enyo.kind(
                             className: "login-input",
                             onkeypress: "messageInputKeypress",
                             onkeyup: "messageInputKeypress",
-                            styled: false
                         },
                         { layoutKind: "HFlexLayout", components:
                             [
