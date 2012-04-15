@@ -53,7 +53,7 @@ enyo.kind({
             this.log(res);
         },
 	create: function (inSender, inEvent) {
-            this.USESYNERGY = false;
+            this.USESYNERGY = true;
 		this.inherited(arguments);
                 prefs.def("ignoreNotificationList", { });
                 prefs.def("gvAlertTone", "Default");
