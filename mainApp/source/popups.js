@@ -578,7 +578,8 @@ enyo.kind(
                             hint: "Enter Message",
                             className: "login-input",
                             onkeypress: "messageInputKeypress",
-                            onkeyup: "messageInputKeypress"
+                            onkeyup: "messageInputKeypress",
+                            styled: false
                         },
                         { layoutKind: "HFlexLayout", components:
                             [
