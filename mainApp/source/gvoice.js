@@ -1,4 +1,5 @@
 //*** Featured in the "SWEETHEART TIME" App Catalog Featured Apps, February 2012!! ***
+//  invalidopcode: hey EricBlade how about an auto-reply that you could sent up for certain contacts when its in DnD mode?
 //Does this app have the option to group by person instead of the ever so annoying conversation thread? 
 // I just installed GVoice on my Pre3 but the pages appear super zoomed out. The text is so small it almost unreadable. Is this a known issue/is there any way to fix this? Also, when making a call is there any way to type in the contact’s name rather than his/her phone number?
 // TODO: Reset Alarm when changing bgRefresh preference
