@@ -54,6 +54,8 @@ enyo.kind({
                 "capabilityProviders":[{"id":"com.ericblade.googlevoiceapp.sms","capability":"PHONE"}],
                 "_id":"++Hs9+gGfJF3eKSa"},"returnValue":true} */
             this.log(res);
+			this.SynergyAccount = res["_id"];
+			this.log("***************** SYNERGY ACCOUNT ID=", this.SynergyAccount);
         },
         synergyAccountFailed: function(inSender, res)
         {
@@ -604,6 +606,7 @@ enyo.kind({
                     this.Messages[index].id = this.MessageIndex[index].id;
 					db = { "objects": [{
 						_kind: "com.ericblade.googlevoiceapp.immessage:1",
+						accountId: this.SynergyAccount,
 						localTimestamp: this.MessageIndex[index].startTime,
 						flags: { read: this.MessageIndex[index].isRead },
 						messageText: this.Messages[index][i].SentMessage,
