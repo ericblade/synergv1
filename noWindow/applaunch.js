@@ -30,7 +30,7 @@ enyo.kind({
                     { name: "getLogin",       method: "POST", onSuccess: "LoginReceived",       onFailure: "LoginFailed",       url: "https://www.google.com/accounts/ClientLogin" },
                 ]
             },
-			{ name: "dbService", kind: "PalmService", service: "com.palm.db", method: "put", onSuccess: "onDbSuccess", onFailure: "onDbFailure" },
+			{ name: "dbService", kind: "PalmService", service: "palm://com.palm.db/", method: "put", onSuccess: "onDbSuccess", onFailure: "onDbFailure" },
 // Application events handlers
 		{kind: "ApplicationEvents", 
 			// we want to be able to save prefs or 
