@@ -13,7 +13,14 @@ enyo.kind({
         enyo.application.mainApp.isForeground = false;
         enyo.application.mainApp.restartTimedRetrieval();
     },
-        
+    onDbSuccess: function(inSender, inResponse)
+	{
+		this.log(inResponse);
+	},
+	onDbFailure: function(inSender, inResponse)
+	{
+		this.log(inResponse);
+	},
 	components: [
             { name: "api", kind: "GoogleVoiceAPI", onLoggedIn: "LoggedIn" },
             { kind: "WebService", onFailure: "webFailure", components:
@@ -23,6 +30,7 @@ enyo.kind({
                     { name: "getLogin",       method: "POST", onSuccess: "LoginReceived",       onFailure: "LoginFailed",       url: "https://www.google.com/accounts/ClientLogin" },
                 ]
             },
+			{ name: "dbService", kind: "PalmService", service: "com.palm.db", method: "put", onSuccess: "onDbSuccess", onFailure: "onDbFailure" },
 // Application events handlers
 		{kind: "ApplicationEvents", 
 			// we want to be able to save prefs or 
@@ -87,7 +95,7 @@ enyo.kind({
                                                     //{ "id": "com.ericblade.googlevoiceapp.text", "capability":"MESSAGING", "capabilitySubtype": "SMS"},
                                                     {"id": "com.ericblade.googlevoiceapp.im", "capability":"MESSAGING" }],
                             "username": "blade.eric",
-                            "alias": "GVoice",
+                            "alias": "blade.eric @ GVoice",
                             "credentials": { "common": {"password":"password", "authToken":"authToken"} },
                             "config": { "ip": "8.8.8.8" }
                         } 
@@ -544,6 +552,7 @@ enyo.kind({
     InboxReceived: function(inSender, inResponse)
     {
 		var bForwardToApp = false;
+		var db = { };
         //this.log(inResponse);
 		enyo.error("Launcher InboxReceived");
         var i = inResponse.indexOf("<json><!")+14;
@@ -593,6 +602,17 @@ enyo.kind({
                     this.Messages[index][i].UniqueID = this.MessageIndex[index].id + this.Messages[index][i].SentTime + this.Messages[index][i].SentBy;
                     this.Messages[index][i].id = this.MessageIndex[index].id;
                     this.Messages[index].id = this.MessageIndex[index].id;
+					db = { "object": [{
+						_kind: "com.ericblade.googlevoiceapp.immessage:1",
+						localTimestamp: this.MessageIndex[index].startTime,
+						flags: { read: this.MessageIndex[index].isRead },
+						messageText: this.Messages[index][i].SentMessage,
+						from: { addr: this.MessageIndex[index].displayNumber },
+						to: { addr: "blade.eric" },
+						serviceName: "type_gvoice",
+						username: "blade.eric"
+					}] };
+					this.$.dbService.call(db);
                 }
                 if(!this.MessageIndex[index].isRead)
                 {
