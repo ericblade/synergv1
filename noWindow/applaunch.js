@@ -602,7 +602,7 @@ enyo.kind({
                     this.Messages[index][i].UniqueID = this.MessageIndex[index].id + this.Messages[index][i].SentTime + this.Messages[index][i].SentBy;
                     this.Messages[index][i].id = this.MessageIndex[index].id;
                     this.Messages[index].id = this.MessageIndex[index].id;
-					db = { "object": [{
+					db = { "objects": [{
 						_kind: "com.ericblade.googlevoiceapp.immessage:1",
 						localTimestamp: this.MessageIndex[index].startTime,
 						flags: { read: this.MessageIndex[index].isRead },
@@ -612,6 +612,7 @@ enyo.kind({
 						serviceName: "type_gvoice",
 						username: "blade.eric"
 					}] };
+					this.log("sending to database", db);
 					this.$.dbService.call(db);
                 }
                 if(!this.MessageIndex[index].isRead)
