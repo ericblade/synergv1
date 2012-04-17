@@ -657,10 +657,11 @@ enyo.kind({
 						accountId: this.SynergyAccount,
 						localTimestamp: this.MessageIndex[index].startTime,
 						folder: "inbox",
+						status: "successful",
 						flags: { read: this.MessageIndex[index].isRead, visible: true },
 						messageText: this.Messages[index][i].SentMessage,
 						from: { addr: this.MessageIndex[index].displayNumber },
-						to: { addr: "blade.eric" },
+						to: [{ addr: "blade.eric" }],
 						serviceName: "type_gvoice",
 						username: "blade.eric"
 					}] };
