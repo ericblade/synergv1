@@ -679,7 +679,6 @@ enyo.kind({
 						from: { addr: this.MessageIndex[index].displayNumber },
 						to: [{ addr: "blade.eric" }],
 						serviceName: "type_gvoice",
-						flags: { visible: true },
 						username: "blade.eric"
 					}] };
 					this.log("sending to database", db);
