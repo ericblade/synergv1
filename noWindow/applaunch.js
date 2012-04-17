@@ -47,8 +47,9 @@ enyo.kind({
 					enyo.application.mainApp.$.outbox.queueMessage(inResponse.results[x].to.addr, inResponse.results[x].messageText);
 				}
 			}
-			if(enyo.application.mainApp)
-			    enyo.application.mainApp.$.outbox.timedMessageSend();
+			// queue automatically sends when online or sets timer when not
+			//if(enyo.application.mainApp)
+			//    enyo.application.mainApp.$.outbox.timedMessageSend();
 		}
 		this.log(inResponse);
 	},

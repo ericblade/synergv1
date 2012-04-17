@@ -111,7 +111,7 @@ enyo.kind( {
     },
     queueMessage: function(to, msg)
     {
-        enyo.log("queueMessage");
+        enyo.log("queueMessage", to, msg);
         this.messages.push({ to:to, msg:msg, id:parseInt(localStorage["outMsgId"]) });
         var id = parseInt(localStorage["outMsgId"]) + 1;
         localStorage["outMsgId"] = id+'';
