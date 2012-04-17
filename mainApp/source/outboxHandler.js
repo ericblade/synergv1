@@ -74,9 +74,18 @@ enyo.kind( {
         enyo.log("timedMessageSend");
         if(!this.messages || this.messages.length == 0)
         {
-            clearInterval(this.timer);
-            this.timer = 0;
-            return;
+			// reload messages from the localStorage, in case we've been changed, such as due to messaging app sending us something
+			// note that this could race condition, if we had a memory stored one and a local storage stored one .. derp
+			if(localStorage["outboxMessages"])
+			    this.messages = enyo.json.parse(localStorage["outboxMessages"]);
+			else
+			    this.messages = [];
+			if(this.messages.length == 0)
+			{
+				clearInterval(this.timer);
+				this.timer = 0;
+				return;
+			}
         }
         if(!enyo.application.mainApp.PrimaryData)
             return; // run it again next time maybe they've logged in by then

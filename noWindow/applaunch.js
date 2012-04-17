@@ -35,6 +35,17 @@ enyo.kind({
 				},
 				"watch": true,
 			});
+		} else if(inResponse.results)
+		{
+			for(var x in inResponse.results)
+			{
+				if(enyo.application.mainApp)
+				{
+					enyo.application.mainApp.$.outbox.queueMessage(inResponse.results[x].to.addr, inResponse.results[x].messageText);
+				}
+			}
+			if(enyo.application.mainApp)
+			    enyo.application.mainApp.$.outbox.timedMessageSend();
 		}
 		this.log(inResponse);
 	},
