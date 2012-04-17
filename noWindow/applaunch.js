@@ -23,7 +23,7 @@ enyo.kind({
 	},
 	outboxMessage: function(inSender, inResponse)
 	{
-		if(inResponse.fired === true)
+		if(inResponse.fired)
 		{
 			this.$.outboxWatch.call({
 				"query":
@@ -37,7 +37,7 @@ enyo.kind({
 			});
 		} else if(inResponse.results)
 		{
-			for(var x in inResponse.results)
+			for(var x = 0; x < inResponse.results.length; x++)
 			{
 				this.log(enyo.application.mainApp, "spooling message", inResponse.results[x])
 				if(enyo.application.mainApp)
