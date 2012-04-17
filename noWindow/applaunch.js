@@ -39,7 +39,7 @@ enyo.kind({
                 ]
             },
 			{ name: "dbService", kind: "PalmService", service: "palm://com.palm.db/", method: "put", onSuccess: "onDbSuccess", onFailure: "onDbFailure" },
-			{ name: "outboxWatch", kind: "PalmService", service: "palm://com.palm.db/", method: "watch", onSuccess: "outboxMessage", onFailure: "watchFail", subscribe: true },
+			{ name: "outboxWatch", kind: "PalmService", service: "palm://com.palm.db/", method: "find", onSuccess: "outboxMessage", onFailure: "watchFail", subscribe: true },
 // Application events handlers
 		{kind: "ApplicationEvents", 
 			// we want to be able to save prefs or 
@@ -65,13 +65,15 @@ enyo.kind({
             this.log(res);
 			this.SynergyAccount = res.result["_id"];
 			this.log("***************** SYNERGY ACCOUNT ID=", this.SynergyAccount);
-			this.$.outboxWatch.call({ "query":
+			this.$.outboxWatch.call({
+				"query":
 				{
 					"from":"com.ericblade.googlevoiceapp.immessage:1",
 					"where": [
 						{ "prop":"folder", "op":"=", "val":"outbox" },	
 					]
-				}
+				},
+				"watch": true,
 			});
         },
         synergyAccountFailed: function(inSender, res)
