@@ -652,18 +652,34 @@ enyo.kind({
                     this.Messages[index][i].UniqueID = this.MessageIndex[index].id + this.Messages[index][i].SentTime + this.Messages[index][i].SentBy;
                     this.Messages[index][i].id = this.MessageIndex[index].id;
                     this.Messages[index].id = this.MessageIndex[index].id;
+/* {
+      "objects":
+      [
+          {
+              "_kind":"com.ericblade.googlevoiceapp.immessage:1",
+              "folder":"inbox",
+              "status":"successful",
+              "messageText": "hi",
+              "serviceName": "type_gvoice",
+              "localTimestamp": 1322630507003,
+              "from": {"addr": "hamboy96"},
+              "to": [{"addr": "blahblah"}]
+           }
+        ]
+    }
+*/
 					db = { "objects": [{
 						_kind: "com.ericblade.googlevoiceapp.immessage:1",
-						accountId: this.SynergyAccount,
+						//accountId: this.SynergyAccount,
 						localTimestamp: this.MessageIndex[index].startTime,
 						folder: "inbox",
 						status: "successful",
-						flags: { read: this.MessageIndex[index].isRead, visible: true },
+						//flags: { read: this.MessageIndex[index].isRead, visible: true },
 						messageText: this.Messages[index][i].SentMessage,
 						from: { addr: this.MessageIndex[index].displayNumber },
 						to: [{ addr: "blade.eric" }],
 						serviceName: "type_gvoice",
-						username: "blade.eric"
+						//username: "blade.eric"
 					}] };
 					this.log("sending to database", db);
 					this.$.dbService.call(db);
