@@ -83,33 +83,65 @@ enyo.kind({
                 ]
             },
             { name: "CreateSynergyAccount", kind: "PalmService", service: "palm://com.palm.service.accounts/", method: "createAccount", onSuccess: "synergyAccountCreated", onFailure: "synergyAccountFailed" },
+			{ name: "GetSynergyAccount", kind: "PalmService", service: "palm://com.palm.service.accounts/", method: "getAccountInfo", onSuccess: "synergyAccountReceived", onFailure: "synergyAccountInfoFail" },
  
 	],
-        synergyAccountCreated: function(inSender, res)
-        {
-            /*  {"result":{"_kind":"com.palm.account:1","templateId":"com.ericblade.googlevoiceapp.account",
-                "username":"(configure in GVoice app)","alias":"Google Voice","beingDeleted":false,
-                "capabilityProviders":[{"id":"com.ericblade.googlevoiceapp.sms","capability":"PHONE"}],
-                "_id":"++Hs9+gGfJF3eKSa"},"returnValue":true} */
-            this.log(res);
-			this.SynergyAccount = res.result["_id"];
-			this.log("***************** SYNERGY ACCOUNT ID=", this.SynergyAccount);
-			this.$.outboxWatch.call({
-				"query":
-				{
-					"from":"com.ericblade.googlevoiceapp.immessage:1",
-					"where": [
-						{ "prop":"folder", "op":"=", "val":"outbox" },	
-					]
-				},
-				"watch": true,
-			});
-        },
-        synergyAccountFailed: function(inSender, res)
-        {
-            /*  {"errorText":"Unable to create a duplicate account","errorCode":"DUPLICATE_ACCOUNT","exception":"[object Object]","returnValue":false}, */
-            this.log(res);
-        },
+	createSynergyAccount: function()
+	{
+		this.$.CreateSynergyAccount.call(
+			{
+				"templateId": "com.ericblade.googlevoiceapp.account",
+				"capabilityProviders": [{ "id": "com.ericblade.googlevoiceapp.phone", "capability":"PHONE"},
+										{ "id": "com.ericblade.googlevoiceapp.contacts", "capability": "CONTACTS" },
+										//{ "id": "com.ericblade.googlevoiceapp.text", "capability":"MESSAGING", "capabilitySubtype": "SMS"},
+										{"id": "com.ericblade.googlevoiceapp.im", "capability":"MESSAGING" }],
+				"username": "blade.eric",
+				"alias": "blade.eric @ GVoice",
+				"credentials": { "common": {"password":"password", "authToken":"authToken"} },
+				"config": { "ip": "8.8.8.8" }
+			} 
+		);	
+	},
+	querySynergyAccount: function()
+	{
+		this.$.GetSynergyAccount.call({ accountId: prefs.get("synergyAccount") });
+	},
+	synergyAccountInfoFail: function(inSender, res)
+	{
+		this.log(res);
+	},
+	synergyAccountReceived: function(inSender, res)
+	{
+		this.log(res);
+		this.SynergyAccount = res.result["_id"];
+		this.log("***************** SYNERGY ACCOUNT ID=", this.SynergyAccount);
+	},
+	synergyAccountCreated: function(inSender, res)
+	{
+		/*  {"result":{"_kind":"com.palm.account:1","templateId":"com.ericblade.googlevoiceapp.account",
+			"username":"(configure in GVoice app)","alias":"Google Voice","beingDeleted":false,
+			"capabilityProviders":[{"id":"com.ericblade.googlevoiceapp.sms","capability":"PHONE"}],
+			"_id":"++Hs9+gGfJF3eKSa"},"returnValue":true} */
+		this.log(res);
+		this.SynergyAccount = res.result["_id"];
+		prefs.set("synergyAccount", this.SynergyAccount);
+		this.log("***************** SYNERGY ACCOUNT ID=", this.SynergyAccount);
+		this.$.outboxWatch.call({
+			"query":
+			{
+				"from":"com.ericblade.googlevoiceapp.immessage:1",
+				"where": [
+					{ "prop":"folder", "op":"=", "val":"outbox" },	
+				]
+			},
+			"watch": true,
+		});
+	},
+	synergyAccountFailed: function(inSender, res)
+	{
+		/*  {"errorText":"Unable to create a duplicate account","errorCode":"DUPLICATE_ACCOUNT","exception":"[object Object]","returnValue":false}, */
+		this.log(res);
+	},
 	create: function (inSender, inEvent) {
             this.USESYNERGY = true;
 		this.inherited(arguments);
@@ -137,19 +169,10 @@ enyo.kind({
                 }
             if(window.PalmSystem && this.USESYNERGY)
             {
-                this.$.CreateSynergyAccount.call(
-                        {
-                            "templateId": "com.ericblade.googlevoiceapp.account",
-                            "capabilityProviders": [{ "id": "com.ericblade.googlevoiceapp.phone", "capability":"PHONE"},
-                                                    { "id": "com.ericblade.googlevoiceapp.contacts", "capability": "CONTACTS" },
-                                                    //{ "id": "com.ericblade.googlevoiceapp.text", "capability":"MESSAGING", "capabilitySubtype": "SMS"},
-                                                    {"id": "com.ericblade.googlevoiceapp.im", "capability":"MESSAGING" }],
-                            "username": "blade.eric",
-                            "alias": "blade.eric @ GVoice",
-                            "credentials": { "common": {"password":"password", "authToken":"authToken"} },
-                            "config": { "ip": "8.8.8.8" }
-                        } 
-                );
+				if(prefs.get("synergyAccount"))
+				    this.querySynergyAccount();
+				else
+				    this.createSynergyAccount();
             }
 	},
  
