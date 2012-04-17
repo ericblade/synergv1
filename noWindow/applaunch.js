@@ -39,6 +39,7 @@ enyo.kind({
 		{
 			for(var x in inResponse.results)
 			{
+				this.log(enyo.application.mainApp, "spooling message", inResponse.results[x])
 				if(enyo.application.mainApp)
 				{
 					enyo.application.mainApp.$.outbox.queueMessage(inResponse.results[x].to.addr, inResponse.results[x].messageText);
