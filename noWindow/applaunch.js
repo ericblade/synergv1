@@ -44,7 +44,8 @@ enyo.kind({
 				this.log(enyo.application.mainApp, "spooling message", inResponse.results[x])
 				if(enyo.application.mainApp)
 				{
-					enyo.application.mainApp.$.outbox.queueMessage(inResponse.results[x].to.addr, inResponse.results[x].messageText);
+					// multiple recipients can be specified in the incoming array!! make sure we handle
+					enyo.application.mainApp.$.outbox.queueMessage(inResponse.results[x].to[0].addr, inResponse.results[x].messageText);
 				}
 			}
 			// queue automatically sends when online or sets timer when not
