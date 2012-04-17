@@ -23,6 +23,19 @@ enyo.kind({
 	},
 	outboxMessage: function(inSender, inResponse)
 	{
+		if(inResponse.fired === true)
+		{
+			this.$.outboxWatch.call({
+				"query":
+				{
+					"from":"com.ericblade.googlevoiceapp.immessage:1",
+					"where": [
+						{ "prop":"folder", "op":"=", "val":"outbox" },	
+					]
+				},
+				"watch": true,
+			});
+		}
 		this.log(inResponse);
 	},
 	watchFail: function(inSender, inResponse)
