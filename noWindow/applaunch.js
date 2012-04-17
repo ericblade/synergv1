@@ -23,6 +23,8 @@ enyo.kind({
 	},
 	outboxMessage: function(inSender, inResponse)
 	{
+		this.log("fired=", inResponse.fired);
+		this.log("results=", inResponse.results);
 		if(inResponse.fired)
 		{
 			this.$.outboxWatch.call({
