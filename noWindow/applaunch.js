@@ -104,11 +104,13 @@ enyo.kind({
 	},
 	querySynergyAccount: function()
 	{
+		this.log();
 		this.$.GetSynergyAccount.call({ accountId: prefs.get("synergyAccount") });
 	},
 	synergyAccountInfoFail: function(inSender, res)
 	{
 		this.log(res);
+		this.createSynergyAccount();
 	},
 	synergyAccountReceived: function(inSender, res)
 	{
