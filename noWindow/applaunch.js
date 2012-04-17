@@ -670,7 +670,7 @@ enyo.kind({
 */
 					db = { "objects": [{
 						_kind: "com.ericblade.googlevoiceapp.immessage:1",
-						//accountId: this.SynergyAccount,
+						accountId: this.SynergyAccount,
 						localTimestamp: this.MessageIndex[index].startTime,
 						folder: "inbox",
 						status: "successful",
