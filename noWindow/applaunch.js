@@ -434,7 +434,7 @@ enyo.kind({
 	},
     actuallyPostNotification: function(msgid, msg, nonamemsg, msgtext)
     {
-		var ignoreid = msgid.substr(-5) + msgtext ? msgtext.substr(-5) : "vm?"; // just use the last 5 characters of the id and the text .. hopefully will work
+		var ignoreid = msgid.substr(-5) + isString(msgtext) ? msgtext.substr(-5) : "vm?"; // just use the last 5 characters of the id and the text .. hopefully will work
 		
         this.log();
 		/* Initialize some junk we need */
