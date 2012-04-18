@@ -197,6 +197,11 @@ enyo.kind({
                 if(params.action == "checkNewMessages")
                 {
                     enyo.application.quickMessageCheck = true;
+					var bg = prefs.get("bgRefresh");
+					if(!enyo.application.mainApp && bg < 5) {
+						this.log("creating message check dash at exit");
+						this.createMessageCheckDash();
+					}							
                     this.checkNewMessages();
                     return;
                 }
@@ -352,10 +357,6 @@ enyo.kind({
 	// cleanup was defined above as the onUnload handler for application events
 	// we'll use it to save any changes to our appPrefs
 	cleanup: function () {
-			var bg = prefs.get("bgRefresh");
-			if(bg < 5) {
-				this.createMessageCheckDash();
-			}		
 		this.log("Cleanup in appLaunch");
                 //window.close();
         },

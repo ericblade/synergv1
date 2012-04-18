@@ -248,6 +248,14 @@ enyo.kind({
             this.ringerStatus = (inResponse.state == "up");
         }
     },
+    windowUnloaded: function(inSender)
+    {
+        var bg = prefs.get("bgRefresh");
+        if(bg < 5) {
+            this.log("creating message check dash at exit");
+            enyo.application.launcher.createMessageCheckDash();
+        }		
+    },
     ttsPluginReady: false,
     components:
     [
@@ -259,6 +267,7 @@ enyo.kind({
           onBack: "goBack", onLoad: "windowLoaded", onWindowRotated: "windowRotated",
           onOpenAppMenu: "appMenuOpened", onWindowActivated: "windowActivated",
           onWindowDeactivated: "windowDeactivated", onSearch: "jumpToSearch",
+          onUnload: "windowUnloaded",
         },
         { name: "gvService", kind: "PalmService", service:"palm://com.ericblade.googlevoiceapp.service" },
         //{ name: "PeoplePicker", kind: "enyo.AddressingPopup", addressTypes: "phoneNumbers" },        
