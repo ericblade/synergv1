@@ -724,6 +724,7 @@ enyo.kind({
 						    dbfrom = this.MessageIndex[index].displayNumber;
 							dbto = "blade.eric";
 						}
+						
 						db = { "objects": [{
 							_kind: "com.ericblade.googlevoiceapp.immessage:1",
 							accountId: this.SynergyAccount,
@@ -733,8 +734,8 @@ enyo.kind({
 							status: "successful",
 							//flags: { read: this.MessageIndex[index].isRead, visible: true },
 							messageText: this.Messages[index][i].SentMessage,
-							from: { addr: this.MessageIndex[index].displayNumber },
-							to: [{ addr: "blade.eric" }],
+							from: { addr: dbfrom },
+							to: [{ addr: dbto }],
 							serviceName: "type_gvoice",
 							username: "blade.eric",
 							gConversationId: id
