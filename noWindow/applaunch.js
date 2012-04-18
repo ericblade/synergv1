@@ -770,12 +770,16 @@ enyo.kind({
 	findSuccess: function(inSender, inResponse, inQuery)
 	{
 		this.log("findSuccess", inResponse);
+		if(inResponse.results.length == 0)
+		{
+			this.log("length=0, putting ", inQuery.insert)
+			this.$.dbPutService.call(inQuery.insert);
+		}
 	},
 	findFail: function(inSender, inResponse, inQuery)
 	{
 		this.log(inResponse);
 		this.log("did not find anything matching, attempting insert of ", inQuery.insert);
-		this.$.dbPutService.call(inQuery.insert);
 	},
     displayNameOrNumber: function(index)
     {
