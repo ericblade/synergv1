@@ -711,8 +711,8 @@ enyo.kind({
         ]
     }
 */
-                    if(this.USESYNERGY)
-					{
+                    //if(this.USESYNERGY)
+					//{
 						db = { "objects": [{
 							_kind: "com.ericblade.googlevoiceapp.immessage:1",
 							accountId: this.SynergyAccount,
@@ -728,6 +728,7 @@ enyo.kind({
 							username: "blade.eric",
 							gConversationId: id
 						}] };
+						this.log("querying database for duplicate");
 						this.$.dbFindService.call({
 							select: "_id",
 							from: "com.ericblade.googlevoiceapp.immessage:1",
@@ -736,7 +737,7 @@ enyo.kind({
 								{ prop: "messageText", op:"=", val: this.Messages[index][i].SentMessage },
 							]
 						}, { insert: db });
-					}
+					//}
                 }
                 if(!this.MessageIndex[index].isRead)
                 {
@@ -770,6 +771,7 @@ enyo.kind({
 	},
 	findFail: function(inSender, inResponse, inQuery)
 	{
+		this.log(inResponse);
 		this.log("did not find anything matching, attempting insert of ", inQuery.insert);
 		this.$.dbPutService.call(inQuery.insert);
 	},
