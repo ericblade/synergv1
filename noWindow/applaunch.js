@@ -713,6 +713,17 @@ enyo.kind({
 */
                     //if(this.USESYNERGY)
 					//{
+					    var dbfrom;
+					    if(this.Messages[index][i].SentBy == "Me:")
+						{
+						    dbfrom = "blade.eric";
+							dbto = this.MessageIndex[index].displayNumber;
+						}
+						else
+						{
+						    dbfrom = this.MessageIndex[index].displayNumber;
+							dbto = "blade.eric";
+						}
 						db = { "objects": [{
 							_kind: "com.ericblade.googlevoiceapp.immessage:1",
 							accountId: this.SynergyAccount,
