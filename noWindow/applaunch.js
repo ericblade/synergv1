@@ -732,7 +732,7 @@ enyo.kind({
 							select: "_id",
 							from: "com.ericblade.googlevoiceapp.immessage:1",
 							where: [
-								{ prop: "gConversationId", op:"=", val: gConversationId },
+								{ prop: "gConversationId", op:"=", val: id },
 								{ prop: "messageText", op:"=", val: messageText },
 							]
 						}, { insert: db });
