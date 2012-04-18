@@ -120,6 +120,16 @@ enyo.kind({
 		else {
 			this.SynergyAccount = res.result["_id"];
 			this.log("***************** SYNERGY ACCOUNT ID=", this.SynergyAccount);
+			this.$.outboxWatch.call({
+				"query":
+				{
+					"from":"com.ericblade.googlevoiceapp.immessage:1",
+					"where": [
+						{ "prop":"folder", "op":"=", "val":"outbox" },	
+					]
+				},
+				"watch": true,
+			});
 		}
 	},
 	synergyAccountCreated: function(inSender, res)
