@@ -32,7 +32,8 @@ enyo.kind({
 				{
 					"from":"com.ericblade.googlevoiceapp.immessage:1",
 					"where": [
-						{ "prop":"folder", "op":"=", "val":"outbox" },	
+						{ "prop":"folder", "op":"=", "val":"outbox" },
+						{ "prop":"status", "op":"=", "val":"pending" }, // TODO: mark these as successful!! or delete them
 					]
 				},
 				"watch": true,
@@ -67,7 +68,8 @@ enyo.kind({
                     { name: "getLogin",       method: "POST", onSuccess: "LoginReceived",       onFailure: "LoginFailed",       url: "https://www.google.com/accounts/ClientLogin" },
                 ]
             },
-			{ name: "dbService", kind: "PalmService", service: "palm://com.palm.db/", method: "put", onSuccess: "onDbSuccess", onFailure: "onDbFailure" },
+			{ name: "dbPutService", kind: "PalmService", service: "palm://com.palm.db/", method: "put", onSuccess: "onDbSuccess", onFailure: "onDbFailure" },
+			{ name: "dbFindService", kind: "PalmService", service: "palm://com.palm.db/", method: "find", onSuccess: "findSuccess", onFailure: "findFailure" },
 			{ name: "outboxWatch", kind: "PalmService", service: "palm://com.palm.db/", method: "find", onSuccess: "outboxMessage", onFailure: "watchFail", subscribe: true },
 // Application events handlers
 		{kind: "ApplicationEvents", 
@@ -709,22 +711,32 @@ enyo.kind({
         ]
     }
 */
-					db = { "objects": [{
-						_kind: "com.ericblade.googlevoiceapp.immessage:1",
-						accountId: this.SynergyAccount,
-						localTimestamp: parseInt(this.MessageIndex[index].startTime),
-						timestamp: parseInt(this.MessageIndex[index].startTime),//Math.round(this.MessageIndex[index].startTime / 100),
-						folder: "inbox",
-						status: "successful",
-						//flags: { read: this.MessageIndex[index].isRead, visible: true },
-						messageText: this.Messages[index][i].SentMessage,
-						from: { addr: this.MessageIndex[index].displayNumber },
-						to: [{ addr: "blade.eric" }],
-						serviceName: "type_gvoice",
-						username: "blade.eric"
-					}] };
-					this.log("sending to database", db);
-					this.$.dbService.call(db);
+                    if(this.USESYNERGY)
+					{
+						db = { "objects": [{
+							_kind: "com.ericblade.googlevoiceapp.immessage:1",
+							accountId: this.SynergyAccount,
+							localTimestamp: parseInt(this.MessageIndex[index].startTime),
+							timestamp: parseInt(this.MessageIndex[index].startTime),//Math.round(this.MessageIndex[index].startTime / 100),
+							folder: "inbox",
+							status: "successful",
+							//flags: { read: this.MessageIndex[index].isRead, visible: true },
+							messageText: this.Messages[index][i].SentMessage,
+							from: { addr: this.MessageIndex[index].displayNumber },
+							to: [{ addr: "blade.eric" }],
+							serviceName: "type_gvoice",
+							username: "blade.eric",
+							gConversationId: id
+						}] };
+						this.$.dbFindService.call({
+							select: "_id",
+							from: "com.ericblade.googlevoiceapp.immessage:1",
+							where: [
+								{ prop: "gConversationId", op:"=", val: gConversationId },
+								{ prop: "messageText", op:"=", val: messageText },
+							]
+						}, { insert: db });
+					}
                 }
                 if(!this.MessageIndex[index].isRead)
                 {
@@ -752,6 +764,15 @@ enyo.kind({
 			enyo.application.mainApp.InboxReceived(inSender, inResponse);
 		}
     },
+	findSuccess: function(inSender, inResponse, inQuery)
+	{
+		this.log("findSuccess", inResponse);
+	},
+	findFail: function(inSender, inResponse, inQuery)
+	{
+		this.log("did not find anything matching, attempting insert of ", inQuery.insert);
+		this.$.dbPutService.call(inQuery.insert);
+	},
     displayNameOrNumber: function(index)
     {
         if(enyo.application.mainApp)
