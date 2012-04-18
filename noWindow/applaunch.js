@@ -730,12 +730,14 @@ enyo.kind({
 						}] };
 						this.log("querying database for duplicate");
 						this.$.dbFindService.call({
-							select: "_id",
-							from: "com.ericblade.googlevoiceapp.immessage:1",
-							where: [
-								{ prop: "gConversationId", op:"=", val: id },
-								{ prop: "messageText", op:"=", val: this.Messages[index][i].SentMessage },
-							]
+							query: {
+								select: "_id",
+								from: "com.ericblade.googlevoiceapp.immessage:1",
+								where: [
+									{ prop: "gConversationId", op:"=", val: id },
+									{ prop: "messageText", op:"=", val: this.Messages[index][i].SentMessage },
+								]
+							}
 						}, { insert: db });
 					//}
                 }
