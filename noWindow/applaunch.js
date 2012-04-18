@@ -115,8 +115,12 @@ enyo.kind({
 	synergyAccountReceived: function(inSender, res)
 	{
 		this.log(res);
-		this.SynergyAccount = res.result["_id"];
-		this.log("***************** SYNERGY ACCOUNT ID=", this.SynergyAccount);
+		if(res.result.beingDeleted)
+		    this.createSynergyAccount();
+		else {
+			this.SynergyAccount = res.result["_id"];
+			this.log("***************** SYNERGY ACCOUNT ID=", this.SynergyAccount);
+		}
 	},
 	synergyAccountCreated: function(inSender, res)
 	{
