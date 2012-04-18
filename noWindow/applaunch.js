@@ -730,7 +730,7 @@ enyo.kind({
 							accountId: this.SynergyAccount,
 							localTimestamp: parseInt(this.MessageIndex[index].startTime),
 							timestamp: parseInt(this.MessageIndex[index].startTime),//Math.round(this.MessageIndex[index].startTime / 100),
-							folder: "inbox",
+							folder: this.Messages[index][i].SentBy == "Me:" ? "outbox" : "inbox",
 							status: "successful",
 							//flags: { read: this.MessageIndex[index].isRead, visible: true },
 							messageText: this.Messages[index][i].SentMessage,
