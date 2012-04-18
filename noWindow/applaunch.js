@@ -698,7 +698,8 @@ enyo.kind({
 					db = { "objects": [{
 						_kind: "com.ericblade.googlevoiceapp.immessage:1",
 						accountId: this.SynergyAccount,
-						localTimestamp: this.MessageIndex[index].startTime,
+						//localTimestamp: this.MessageIndex[index].startTime,
+						timestamp: Math.round(this.MessageIndex[index].startTime / 100),
 						folder: "inbox",
 						status: "successful",
 						//flags: { read: this.MessageIndex[index].isRead, visible: true },
