@@ -274,9 +274,6 @@ enyo.kind({
         setAlarm: function() // TODO: need to make this accept an incoming time, and set "in" to that
         {
 			var bg = prefs.get("bgRefresh");
-			if(bg < 5) {
-				this.createMessageCheckDash();
-			}
 			var time = (bg < 5) ? "00:05:00" : secondsToTime(bg * 60);
 			/*if(bg < 5) {
 				if(bg < 4) bg = 4;
@@ -355,6 +352,10 @@ enyo.kind({
 	// cleanup was defined above as the onUnload handler for application events
 	// we'll use it to save any changes to our appPrefs
 	cleanup: function () {
+			var bg = prefs.get("bgRefresh");
+			if(bg < 5) {
+				this.createMessageCheckDash();
+			}		
 		this.log("Cleanup in appLaunch");
                 //window.close();
         },
