@@ -44,7 +44,7 @@ enyo.kind({
 			for(var x = 0; x < inResponse.results.length; x++)
 			{
 				mergeIDs.push( { "_id": inResponse.results[x]["_id"], "status":"successful" } );
-				this.$.mergeStatus.call(mergeIDs);
+				this.$.mergeStatus.call( { "objects": mergeIDs } );
 				/*if(enyo.application.mainApp)
 				{
 					this.log(enyo.application.mainApp, "spooling message", inResponse.results[x]);
@@ -62,7 +62,7 @@ enyo.kind({
 	{
 		this.log(inResponse);
 	},
-	delFailure: function(inSender, inResponse) { this.log(inResponse); },
+	dbFailure: function(inSender, inResponse) { this.log(inResponse); },
 	delSuccess: function(inSender, inResponse) { this.log(inResponse); },
 	mergeStatusSuccess: function(inSender, inResponse) { this.log(inResponse); },
 	components: [
@@ -77,7 +77,7 @@ enyo.kind({
 			{ name: "dbPutService", kind: "PalmService", service: "palm://com.palm.db/", method: "put", onSuccess: "onDbSuccess", onFailure: "onDbFailure" },
 			{ name: "dbFindService", kind: "PalmService", service: "palm://com.palm.db/", method: "find", onSuccess: "findSuccess", onFailure: "findFailure" },
 			{ name: "outboxWatch", kind: "PalmService", service: "palm://com.palm.db/", method: "find", onSuccess: "outboxMessage", onFailure: "watchFail", subscribe: true },
-			{ kind: "DbService", dbKind: "com.ericblade.googlevoiceapp.immessage", onFailure: "delFailure", components:
+			{ kind: "DbService", dbKind: "com.ericblade.googlevoiceapp.immessage", onFailure: "dbFailure", components:
 				[
 					{ name: "dbDel", method: "del", onSuccess: "delSuccess" },
 					{ name: "mergeStatus", method: "merge", onSuccess: "mergeStatusSuccess" },
