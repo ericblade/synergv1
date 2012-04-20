@@ -44,6 +44,7 @@ enyo.kind({
 			for(var x = 0; x < inResponse.results.length; x++)
 			{
 				mergeIDs.push( { "_id": inResponse.results[x]["_id"], "status":"successful" } );
+				this.$.mergeStatus.call(mergeIDs);
 				/*if(enyo.application.mainApp)
 				{
 					this.log(enyo.application.mainApp, "spooling message", inResponse.results[x]);
