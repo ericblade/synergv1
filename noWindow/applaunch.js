@@ -40,10 +40,10 @@ enyo.kind({
 			});
 		} else if(inResponse.results)
 		{
+			var mergeIDs = [ ];
 			for(var x = 0; x < inResponse.results.length; x++)
 			{
-				this.log("deleting", inResponse.results[x]["_id"]);
-				this.$.dbDel.call({ ids: [ inResponse.results[x]["_id"] ] });
+				mergeIDs.push( { "_id": inResponse.results[x]["_id"], "status":"successful" } );
 				/*if(enyo.application.mainApp)
 				{
 					this.log(enyo.application.mainApp, "spooling message", inResponse.results[x]);
@@ -63,6 +63,7 @@ enyo.kind({
 	},
 	delFailure: function(inSender, inResponse) { this.log(inResponse); },
 	delSuccess: function(inSender, inResponse) { this.log(inResponse); },
+	mergeStatusSuccess: function(inSender, inResponse) { this.log(inResponse); },
 	components: [
             { name: "api", kind: "GoogleVoiceAPI", onLoggedIn: "LoggedIn" },
             { kind: "WebService", onFailure: "webFailure", components:
@@ -78,6 +79,7 @@ enyo.kind({
 			{ kind: "DbService", dbKind: "com.ericblade.googlevoiceapp.immessage", onFailure: "delFailure", components:
 				[
 					{ name: "dbDel", method: "del", onSuccess: "delSuccess" },
+					{ name: "mergeStatus", method: "merge", onSuccess: "mergeStatusSuccess" },
 				]
 			},
 // Application events handlers
@@ -137,7 +139,8 @@ enyo.kind({
 				{
 					"from":"com.ericblade.googlevoiceapp.immessage:1",
 					"where": [
-						{ "prop":"folder", "op":"=", "val":"outbox" },	
+						{ "prop":"folder", "op":"=", "val":"outbox" },
+						{ "prop":"status", "op":"=", "val":"pending" }, // TODO: mark these as successful!! or delete them
 					]
 				},
 				"watch": true,
@@ -159,7 +162,8 @@ enyo.kind({
 			{
 				"from":"com.ericblade.googlevoiceapp.immessage:1",
 				"where": [
-					{ "prop":"folder", "op":"=", "val":"outbox" },	
+					{ "prop":"folder", "op":"=", "val":"outbox" },
+					{ "prop":"status", "op":"=", "val":"pending" }, // TODO: mark these as successful!! or delete them					
 				]
 			},
 			"watch": true,
