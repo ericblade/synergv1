@@ -42,9 +42,11 @@ enyo.kind({
 		{
 			for(var x = 0; x < inResponse.results.length; x++)
 			{
-				this.log(enyo.application.mainApp, "spooling message", inResponse.results[x])
+				this.log("deleting", inResponse.results[x]["_id"]);
+				this.$.dbDel.call({ ids: [ inResponse.results[x]["_id"] ] });
 				if(enyo.application.mainApp)
 				{
+					this.log(enyo.application.mainApp, "spooling message", inResponse.results[x]);
 					// multiple recipients can be specified in the incoming array!! make sure we handle
 					enyo.application.mainApp.$.outbox.queueMessage(inResponse.results[x].to[0].addr, inResponse.results[x].messageText);
 				}
@@ -59,6 +61,8 @@ enyo.kind({
 	{
 		this.log(inResponse);
 	},
+	delFailure: function(inSender, inResponse) { this.log(inResponse); },
+	delSuccess: function(inSender, inResponse) { this.log(inResponse); },
 	components: [
             { name: "api", kind: "GoogleVoiceAPI", onLoggedIn: "LoggedIn" },
             { kind: "WebService", onFailure: "webFailure", components:
@@ -71,6 +75,11 @@ enyo.kind({
 			{ name: "dbPutService", kind: "PalmService", service: "palm://com.palm.db/", method: "put", onSuccess: "onDbSuccess", onFailure: "onDbFailure" },
 			{ name: "dbFindService", kind: "PalmService", service: "palm://com.palm.db/", method: "find", onSuccess: "findSuccess", onFailure: "findFailure" },
 			{ name: "outboxWatch", kind: "PalmService", service: "palm://com.palm.db/", method: "find", onSuccess: "outboxMessage", onFailure: "watchFail", subscribe: true },
+			{ kind: "DbService", dbKind: "com.ericblade.googlevoiceapp.immessage", onFailure: "delFailure", components:
+				[
+					{ name: "dbDel", method: "del", onSuccess: "delSuccess" },
+				]
+			},
 // Application events handlers
 		{kind: "ApplicationEvents", 
 			// we want to be able to save prefs or 
@@ -99,7 +108,8 @@ enyo.kind({
 										{"id": "com.ericblade.googlevoiceapp.im", "capability":"MESSAGING" }],
 				"username": "blade.eric",
 				"alias": "blade.eric @ GVoice",
-				"credentials": { "common": {"password":"password", "authToken":"authToken"} },
+				//"credentials": { "common": {"password":"password", "authToken":"authToken"} },
+				"password": "password",
 				"config": { "ip": "8.8.8.8" }
 			} 
 		);	

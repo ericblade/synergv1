@@ -1,4 +1,5 @@
 //*** Featured in the "SWEETHEART TIME" App Catalog Featured Apps, February 2012!! ***
+// TODO: Dynamically rename the call popup to voicemail if needed
 // TODO: need to get synergy connector forwarding voicemail text
 //  invalidopcode: hey EricBlade how about an auto-reply that you could sent up for certain contacts when its in DnD mode?
 //Does this app have the option to group by person instead of the ever so annoying conversation thread? 
