@@ -44,12 +44,12 @@ enyo.kind({
 			{
 				this.log("deleting", inResponse.results[x]["_id"]);
 				this.$.dbDel.call({ ids: [ inResponse.results[x]["_id"] ] });
-				if(enyo.application.mainApp)
+				/*if(enyo.application.mainApp)
 				{
 					this.log(enyo.application.mainApp, "spooling message", inResponse.results[x]);
 					// multiple recipients can be specified in the incoming array!! make sure we handle
 					enyo.application.mainApp.$.outbox.queueMessage(inResponse.results[x].to[0].addr, inResponse.results[x].messageText);
-				}
+				}*/
 			}
 			// queue automatically sends when online or sets timer when not
 			//if(enyo.application.mainApp)
