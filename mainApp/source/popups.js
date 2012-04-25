@@ -570,7 +570,7 @@ enyo.kind(
                         { name: "sendMessageCaption", content: "Message", className: "login-box-caption", },
                         { name: "messageInput",
                             //kind: Platform.isLargeScreen() ? (window.PalmSystem ? "RichText" : "Textarea") : "Input",
-                            kind: (window.PalmSystem ? "RichText" : "Textarea"),
+                            kind: "Input", //(window.PalmSystem ? "RichText" : "Textarea"),
                             rows: "3",
                             style: "height: 3em;",
                             onfocus: "hideDialpad",
@@ -619,6 +619,8 @@ enyo.kind(
             sendComposedMessage: function(inSender, inEvent)
             {
                 enyo.application.mainApp.sendSMSMessage(this.$.recipientInput.getValue(), this.$.messageInput.getValue());
+                this.$.recipientInput.forceBlur();
+                this.$.messageInput.forceBlur();
                 this.closeComposePopup();
             },
             messageInputKeypress: function(inSender, inEvent)
@@ -653,6 +655,8 @@ enyo.kind(
             },
             closeComposePopup: function()
             {
+                this.$.recipientInput.forceBlur();
+                this.$.messageInput.forceBlur();
                 this.close();
             }
 

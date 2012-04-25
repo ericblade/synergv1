@@ -44,7 +44,6 @@ enyo.kind({
 			for(var x = 0; x < inResponse.results.length; x++)
 			{
 				mergeIDs.push( { "_id": inResponse.results[x]["_id"], "status":"successful" } );
-				this.$.mergeStatus.call( { "objects": mergeIDs } );
 				if(enyo.application.mainApp)
 				{
 					this.log(enyo.application.mainApp, "spooling message", inResponse.results[x]);
@@ -52,6 +51,7 @@ enyo.kind({
 					enyo.application.mainApp.$.outbox.queueMessage(inResponse.results[x].to[0].addr, inResponse.results[x].messageText);
 				}
 			}
+			this.$.mergeStatus.call( { "objects": mergeIDs } );
 			// queue automatically sends when online or sets timer when not
 			//if(enyo.application.mainApp)
 			//    enyo.application.mainApp.$.outbox.timedMessageSend();
@@ -108,7 +108,7 @@ enyo.kind({
 				"capabilityProviders": [{ "id": "com.ericblade.googlevoiceapp.phone", "capability":"PHONE"},
 										{ "id": "com.ericblade.googlevoiceapp.contacts", "capability": "CONTACTS" },
 										//{ "id": "com.ericblade.googlevoiceapp.text", "capability":"MESSAGING", "capabilitySubtype": "SMS"},
-										{"id": "com.ericblade.googlevoiceapp.im", "capability":"MESSAGING" }],
+										{"id": "com.ericblade.googlevoiceapp.im", "capability":"MESSAGING", "_sync": true }],
 				"username": "blade.eric",
 				"alias": "blade.eric @ GVoice",
 				//"credentials": { "common": {"password":"password", "authToken":"authToken"} },

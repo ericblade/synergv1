@@ -77,6 +77,9 @@ enyo.kind({
     forceFocus: function() {
         this.$.InputBox.forceFocus();
     },
+    forceBlur: function() {
+        this.$.InputBox.forceBlur();
+    },
     /*scrolled: function(sender) {
         this.$.fades.showHideFades(this.$.Scroller);
     },*/
