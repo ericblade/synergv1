@@ -619,9 +619,12 @@ enyo.kind(
             sendComposedMessage: function(inSender, inEvent)
             {
                 enyo.application.mainApp.sendSMSMessage(this.$.recipientInput.getValue(), this.$.messageInput.getValue());
+                enyo.nextTick(enyo.bind(this, this.blurInputs));
+                this.closeComposePopup();
+            },
+            blurInputs: function() {
                 this.$.recipientInput.forceBlur();
                 this.$.messageInput.forceBlur();
-                this.closeComposePopup();
             },
             messageInputKeypress: function(inSender, inEvent)
             {
@@ -653,10 +656,18 @@ enyo.kind(
                     this.$.recipientInput.forceFocus();
                 enyo.error("messageInput kind", this.$.messageInput.kind)
             },
+            afterOpen: function()
+            {
+                var rcpt = this.$.recipientInput.getValue();
+                this.inherited(arguments);
+                if(rcpt.length)
+                    this.$.messageInput.forceFocus();
+                else
+                    this.$.recipientInput.forceFocus();                
+            },
             closeComposePopup: function()
             {
-                this.$.recipientInput.forceBlur();
-                this.$.messageInput.forceBlur();
+                enyo.nextTick(enyo.bind(this, this.blurInputs));
                 this.close();
             }
 
