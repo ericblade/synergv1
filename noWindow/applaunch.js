@@ -178,9 +178,7 @@ enyo.kind({
 	create: function (inSender, inEvent) {
         //this.USESYNERGY = true;
 		this.USESYNERGY = false;
-		
-		localStorage.clear();
-		
+			
         prefs.def("fgRefresh", 2);
         prefs.def("bgRefresh", 5);
         prefs.def("smallFonts", true);
@@ -188,7 +186,8 @@ enyo.kind({
 		prefs.def("ignoreNotificationList", { });
 		prefs.def("gvAlertTone", "Default");
 		prefs.def("runcount", 0);
-		prefs.def("ttsdisable", false); 
+		prefs.def("ttsdisable", false);
+		prefs.def("autoCheckNewMessages", true);
 		prefs.def("newMessageNotifyDisable", false);
 		prefs.def("ttsNotificationDisable", false);
 		prefs.def("ttsAnnounceMessages", false);
@@ -312,7 +311,9 @@ enyo.kind({
         {
             this.log("timer check");
         },
-        startTimer: function(x) {           
+        startTimer: function(x) {
+			if(!prefs.get("autoCheckNewMessages"))
+			    return;
             var interval = enyo.application.mainApp.isForeground ? prefs.get("fgRefresh") : prefs.get("bgRefresh");
             if(!this.timerInterval || this.timerInterval === 0)
                 this.timerInterval = setInterval(this.sendMessageToApp, 60 * interval * 1000);
@@ -339,7 +340,7 @@ enyo.kind({
 				time = month + "/" + day + "/" + dt.getFullYear() + " " + hours + ":" + minutes + ":" + seconds;
 			}*/
 			enyo.error("**** Set Alarm for ", time, bg);
-            if(window.PalmSystem)
+            if(window.PalmSystem && prefs.get("autoCheckNewMessages"))
             {
 				/*if(bg < 5) {
 					this.$.setRefreshTimer.call({
@@ -495,8 +496,8 @@ enyo.kind({
 				enyo.windows.addBannerMessage(msg, '{}', "mainApp/images/google-voice-icon24.png", "", this.getAlertPath());
 				if(enyo.application.mainApp && prefs.get("ttsNotificationDisable", true) != 1) // TODO: can't speak until mainApp is loaded :(
 				{
-					enyo.application.mainApp.speak( prefs.get("ttsAnnounceName") == 1 ? msg : nonamemsg );
-					if(prefs.get("ttsAnnounceMessages", true) == 1 && msgtext && msgtext != "")
+					enyo.application.mainApp.speak( prefs.get("ttsAnnounceName") ? msg : nonamemsg );
+					if(prefs.get("ttsAnnounceMessages", true) && msgtext && msgtext != "")
 					{
 						enyo.application.mainApp.speak(msgtext); // TODO: Move the speech plugin to here ... 
 					}
@@ -647,7 +648,7 @@ enyo.kind({
     checkNewMessages: function()
     {
         this.log();
-        if(prefs.get("newMessageNotifyDisable") == 1)
+        if(!prefs.get("autoCheckNewMessages"))
         {
             return;
         }

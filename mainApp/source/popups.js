@@ -225,6 +225,12 @@ enyo.kind(
                         [
                             { kind: "Item", layoutKind: "HFlexLayout", components:
                                 [
+                                    { content: "Auto check new messages", flex: 1, className: "enyo-item-secondary", },
+                                    { name: "autoCheckCheckbox", kind: "CheckBox", },
+                                ]
+                            },
+                            { kind: "Item", layoutKind: "HFlexLayout", components:
+                                [
                                     { content: "New Message Notifications", flex: 1, className: "enyo-item-secondary", },
                                     { name: "newMessageNotificationsCheckBox", kind: "CheckBox", },
                                 ]
@@ -416,14 +422,14 @@ enyo.kind(
             }
             this.$.fgRefreshSlider.setPosition(prefs.get("fgRefresh"));
             this.$.bgRefreshSlider.setPosition(prefs.get("bgRefresh"));
-            this.$.ttsCheckBox.setChecked(prefs.get("ttsdisable") == 1);
-            this.log("newMessageNotifyDisable == ", prefs.get("newMessageNotifyDisable"));
-            this.$.newMessageNotificationsCheckBox.setChecked(prefs.get("newMessageNotifyDisable") == 0);
-            this.$.ttsNotificationsCheckBox.setChecked(prefs.get("ttsNotificationDisable") == 1);
-            this.$.ttsNameCheckBox.setChecked(prefs.get("ttsAnnounceName") == 1);
-            this.$.ttsMessageCheckBox.setChecked(prefs.get("ttsAnnounceMessages") == 1);
-            this.$.smallFontsCheckBox.setChecked(prefs.get("smallFonts") == 1);
-            this.$.enterSendCheckBox.setChecked(prefs.get("enterSends") == 1);
+            this.$.ttsCheckBox.setChecked(prefs.get("ttsdisable"));
+            this.$.autoCheckCheckbox.setChecked(prefs.get("autoCheckNewMessages"));
+            this.$.newMessageNotificationsCheckBox.setChecked(!prefs.get("newMessageNotifyDisable"));
+            this.$.ttsNotificationsCheckBox.setChecked(prefs.get("ttsNotificationDisable"));
+            this.$.ttsNameCheckBox.setChecked(prefs.get("ttsAnnounceName"));
+            this.$.ttsMessageCheckBox.setChecked(prefs.get("ttsAnnounceMessages"));
+            this.$.smallFontsCheckBox.setChecked(prefs.get("smallFonts"));
+            this.$.enterSendCheckBox.setChecked(prefs.get("enterSends"));
         },
         close: function()
         {
@@ -433,17 +439,16 @@ enyo.kind(
             {
                 prefs.set("fgRefresh", this.$.fgRefreshSlider.getPosition());
                 prefs.set("bgRefresh", this.$.bgRefreshSlider.getPosition());
-                prefs.set("ttsdisable", this.$.ttsCheckBox.checked ? 1 : 0);
-                prefs.set("ttsNotificationDisable", this.$.ttsNotificationsCheckBox.checked ? 1 : 0);
-                prefs.set("ttsAnnounceName", this.$.ttsNameCheckBox.checked ? 1 : 0);
-                prefs.set("ttsAnnounceMessages", this.$.ttsMessageCheckBox.checked ? 1 : 0);
-                prefs.set("smallFonts", this.$.smallFontsCheckBox.checked ? 1 : 0);
-                prefs.set("newMessageNotifyDisable", this.$.newMessageNotificationsCheckBox.checked ? 0 : 1);
-                prefs.set("enterSends", this.$.enterSendCheckBox.checked ? 1 : 0);
+                prefs.set("ttsdisable", this.$.ttsCheckBox.checked);
+                prefs.set("autoCheckNewMessages", this.$.autoCheckCheckbox.checked);
+                prefs.set("ttsNotificationDisable", this.$.ttsNotificationsCheckBox.checked);
+                prefs.set("ttsAnnounceName", this.$.ttsNameCheckBox.checked);
+                prefs.set("ttsAnnounceMessages", this.$.ttsMessageCheckBox.checked);
+                prefs.set("smallFonts", this.$.smallFontsCheckBox.checked);
+                prefs.set("newMessageNotifyDisable", this.$.newMessageNotificationsCheckBox.checked);
+                prefs.set("enterSends", this.$.enterSendCheckBox.checked);
                     
                 this.doPrefsChanged();
-                            this.log("newMessageNotifyDisable == ", prefs.get("newMessageNotifyDisable"));
-
             }
         }
     }
@@ -628,7 +633,7 @@ enyo.kind(
             },
             messageInputKeypress: function(inSender, inEvent)
             {
-                if(inEvent && inEvent.keyCode == 13 && prefs.get("enterSends") == 1)
+                if(inEvent && inEvent.keyCode == 13 && prefs.get("enterSends"))
                     this.sendComposedMessage();
                 return true;
             },

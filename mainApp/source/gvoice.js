@@ -1071,7 +1071,8 @@ enyo.kind({
     restartTimedRetrieval: function()
     {
         this.StopTimedRetrieval();
-        this.StartTimedRetrieval();
+        if(prefs.get("autoCheckNewMessages"))
+            this.StartTimedRetrieval();
     },
     StartTimedRetrieval: function() {
         if(enyo.application.launcher) {
@@ -1577,7 +1578,7 @@ enyo.kind({
                 {    
                     inSender.messageId = messages.id;
                     
-                    if(!messagefield.hasClass("enyo-item-secondary") && prefs.get("smallFonts") == 1)
+                    if(!messagefield.hasClass("enyo-item-secondary") && prefs.get("smallFonts"))
                     {
                         messagefield.addClass("enyo-item-secondary");
                     }
