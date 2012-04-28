@@ -378,6 +378,7 @@ enyo.kind({
         sendMessageToApp: function() {
             //if(enyo.application.mainAppWindow && enyo.application.mainAppWindow.name)
             //    enyo.application.mainAppWindow.postMessage("retrieveInbox", "*");
+			this.log();
 			enyo.application.quickMessageCheck = true;
 			enyo.application.launcher.checkNewMessages();
         },
@@ -630,6 +631,7 @@ enyo.kind({
         this.log(enyo.application.quickMessageCheck);
         if(enyo.application.quickMessageCheck)
         {
+			this.log();
             this.checkNewMessages();
         }
     },
@@ -865,7 +867,7 @@ enyo.kind({
         
         enyo.setCookie("SID", this.SID, { "Max-Age": -1 });
         enyo.setCookie("LSID", this.LSID, { "Max-Age": -1 });
-        
+        this.log();
         this.checkNewMessages();
         //this.RetrieveInbox("Inbox");
         //this.RetrievePrimaryData();
