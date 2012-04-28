@@ -10,7 +10,7 @@ enyo.kind({
     stateChanged: function()
     {
         var x;
-        if(x = this.stateImages[this.state])
+        if(x = this.stateImages[this.state]) // yes = is intentional
         {
             this.setSrc(x);
         } else {

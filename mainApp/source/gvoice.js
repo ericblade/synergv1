@@ -2171,6 +2171,7 @@ enyo.kind({
         if(inEvent && inEvent.keyCode == 13)
         {
             this.doQuickCompose(x);
+            this.$.quickComposeInput.forceBlur();
             return true;
         }
         this.$.quickComposeInput.forceFocus(null, true);
@@ -2324,35 +2325,35 @@ enyo.kind({
 	closeAppMenuHandler: function() {
 	    this.$.AppMenu.close();
 	},
-        qcFocus: function(inSender, inEvent)
+    qcFocus: function(inSender, inEvent)
+    {
+        ////this.log();
+        if(!Platform.isLargeScreen()) // pre - toolinput scrolls app off screen, wth?
         {
-            ////this.log();
-            if(!Platform.isLargeScreen()) // pre - toolinput scrolls app off screen, wth?
-            {
-                this.composeButtonClick();
-            } else {
-                this.$.composeButton.hide();
-                this.$.newCallButton.hide();
-                this.$.voicemailButton.hide();
-                if(this.$.voicemailStop)
-                    this.$.voicemailStop.hide();
-            }
-            inEvent.stopPropagation();
-            inEvent.preventDefault();
-            return -1;
-        },
-        qcBlur: function()
+            this.composeButtonClick();
+        } else {
+            this.$.composeButton.hide();
+            this.$.newCallButton.hide();
+            this.$.voicemailButton.hide();
+            if(this.$.voicemailStop)
+                this.$.voicemailStop.hide();
+        }
+        inEvent.stopPropagation();
+        inEvent.preventDefault();
+        return -1;
+    },
+    qcBlur: function()
+    {
+        ////this.log();
+        this.$.composeButton.show();
+        this.$.newCallButton.show();
+        if(Platform.isLargeScreen())
         {
-            ////this.log();
-            this.$.composeButton.show();
-            this.$.newCallButton.show();
-            if(Platform.isLargeScreen())
-            {
-                this.$.voicemailButton.show();
-                if(this.$.voicemailStop)
-                    this.$.voicemailStop.show();
-            }
-        },
+            this.$.voicemailButton.show();
+            if(this.$.voicemailStop)
+                this.$.voicemailStop.show();
+        }
+    },
     tabSelect: function(inSender, x)
     {
         ////enyo.log(inSender, x);
