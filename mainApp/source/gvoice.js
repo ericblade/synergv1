@@ -1833,9 +1833,9 @@ enyo.kind({
     },
     openContactsView: function(inSender, inEvent)
     {
+        /*this.log(inEvent, inEvent.cancelable);
         if(typeof blackberry !== "undefined" && inEvent.cancelable)
-            return;
-        this.log(inEvent);
+            return;*/
         this.LeftPaneView = 1 - this.LeftPaneView;
         //this.log("selecting " + this.LeftPaneView);
         this.$.leftPane.selectViewByIndex(this.LeftPaneView);
