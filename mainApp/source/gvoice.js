@@ -665,15 +665,10 @@ enyo.kind({
         //if(Platform.isLargeScreen())
         //{
             this.$.slidingPane.selectViewByName("left");
-        //}
-        prefs.def("fgRefresh", 2);
-        prefs.def("bgRefresh", 5);
-        
+        //}       
         this.Online = true; // assume online
         this.$.quickComposeInput.hide();
         
-        prefs.def("smallFonts", 1);
-        prefs.def("enterSends", 1);
         enyo.asyncMethod(this, "delayedStartup");
     },
     ready: function()

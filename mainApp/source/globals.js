@@ -1,12 +1,20 @@
 prefs = {
     set: function(prop, setting)
     {
+        setting = JSON.stringify(setting);
         localStorage.setItem(prop, setting);
         enyo.setCookie(prop, setting, { "Max-Age": 31536000 });
     },
     get: function(prop)
     {
         var x = localStorage && localStorage.getItem(prop);
+        if(x) {
+            try {
+                x = JSON.parse(x);
+            } catch(err) {
+                // do nothing
+            }
+        }
         return x || (document && document.cookie && enyo.getCookie(prop));
     },
     del: function(prop)

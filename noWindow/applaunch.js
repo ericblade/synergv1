@@ -178,10 +178,22 @@ enyo.kind({
 	create: function (inSender, inEvent) {
         //this.USESYNERGY = true;
 		this.USESYNERGY = false;
+		
+		localStorage.clear();
+		
+        prefs.def("fgRefresh", 2);
+        prefs.def("bgRefresh", 5);
+        prefs.def("smallFonts", true);
+        prefs.def("enterSends", true);
+		prefs.def("ignoreNotificationList", { });
+		prefs.def("gvAlertTone", "Default");
+		prefs.def("runcount", 0);
+		prefs.def("ttsdisable", false); 
+		prefs.def("newMessageNotifyDisable", false);
+		prefs.def("ttsNotificationDisable", false);
+		prefs.def("ttsAnnounceMessages", false);
+		
 		this.inherited(arguments);
-                prefs.def("ignoreNotificationList", { });
-                prefs.def("gvAlertTone", "Default");
-				prefs.def("runcount", 0);
                 try {
                     var changedList;
                     this.IgnoreNotificationsList = enyo.json.parse(prefs.get("ignoreNotificationsList"));
@@ -300,10 +312,7 @@ enyo.kind({
         {
             this.log("timer check");
         },
-        startTimer: function(x) {
-			prefs.def("fgRefresh", 2);
-			prefs.def("bgRefresh", 5);
-            
+        startTimer: function(x) {           
             var interval = enyo.application.mainApp.isForeground ? prefs.get("fgRefresh") : prefs.get("bgRefresh");
             if(!this.timerInterval || this.timerInterval === 0)
                 this.timerInterval = setInterval(this.sendMessageToApp, 60 * interval * 1000);
