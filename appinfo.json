@@ -23,9 +23,12 @@
     "noWindow": true,    
     "title": "GVoice",
     "uiRevision": "2",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "id": "com.ericblade.googlevoiceapp",
     "tapToShareSupported": false,
     "appWorldId": "86606",
-    "plug-ins": true
+    "plug-ins": true,
+    "mimeTypes": [
+        { "mime": "application/googlevoice", "extension": "gvoice", "stream": true }
+    ]
 }
