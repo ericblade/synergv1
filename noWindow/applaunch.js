@@ -176,7 +176,8 @@ enyo.kind({
 		this.log(res);
 	},
 	create: function (inSender, inEvent) {
-            this.USESYNERGY = true;
+        //this.USESYNERGY = true;
+		this.USESYNERGY = false;
 		this.inherited(arguments);
                 prefs.def("ignoreNotificationList", { });
                 prefs.def("gvAlertTone", "Default");
@@ -726,8 +727,8 @@ enyo.kind({
         ]
     }
 */
-                    //if(this.USESYNERGY)
-					//{
+                    if(this.USESYNERGY)
+					{
 					    var dbfrom;
 					    if(this.Messages[index][i].SentBy == "Me:")
 						{
@@ -766,7 +767,7 @@ enyo.kind({
 						};
 						this.log("querying database for duplicate", query);
 						this.$.dbFindService.call(query, { insert: db });
-					//}
+					}
                 }
                 if(!this.MessageIndex[index].isRead)
                 {
