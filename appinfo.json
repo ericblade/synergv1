@@ -29,6 +29,6 @@
     "appWorldId": "86606",
     "plug-ins": true,
     "mimeTypes": [
-        { "mime": "application/googlevoice", "extension": "html", "stream": true }
+        { "mime": "application/googlevoice", "extension": "html", "stream": false }
     ]
 }
