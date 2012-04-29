@@ -627,6 +627,11 @@ enyo.kind({
             inEvent.preventDefault();
             return -1;
         }
+        if(Platform.isAndroid())
+        {
+            inEvent.preventDefault();
+            navigator.app.exitApp();
+        }
         return;
     },
     rendered: function() {
