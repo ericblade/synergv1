@@ -425,14 +425,14 @@ enyo.kind(
                      prefs.get("ttsAnnounceMessages"), prefs.get("smallFonts"), prefs.get("enterSends"));
             this.$.fgRefreshSlider.setPosition(prefs.get("fgRefresh"));
             this.$.bgRefreshSlider.setPosition(prefs.get("bgRefresh"));
-            this.$.ttsCheckBox.setChecked(prefs.get("ttsdisable"));
-            this.$.autoCheckCheckbox.setChecked(prefs.get("autoCheckNewMessages"));
-            this.$.newMessageNotificationsCheckBox.setChecked(!prefs.get("newMessageNotifyDisable"));
-            this.$.ttsNotificationsCheckBox.setChecked(prefs.get("ttsNotificationDisable"));
-            this.$.ttsNameCheckBox.setChecked(prefs.get("ttsAnnounceName"));
-            this.$.ttsMessageCheckBox.setChecked(prefs.get("ttsAnnounceMessages"));
-            this.$.smallFontsCheckBox.setChecked(prefs.get("smallFonts"));
-            this.$.enterSendCheckBox.setChecked(prefs.get("enterSends"));
+            this.$.ttsCheckBox.setChecked(prefs.get("ttsdisable") == false);
+            this.$.autoCheckCheckbox.setChecked(prefs.get("autoCheckNewMessages") == true);
+            this.$.newMessageNotificationsCheckBox.setChecked(prefs.get("newMessageNotifyDisable") == false);
+            this.$.ttsNotificationsCheckBox.setChecked(prefs.get("ttsNotificationDisable") == true);
+            this.$.ttsNameCheckBox.setChecked(prefs.get("ttsAnnounceName") == true);
+            this.$.ttsMessageCheckBox.setChecked(prefs.get("ttsAnnounceMessages") == true);
+            this.$.smallFontsCheckBox.setChecked(prefs.get("smallFonts") == true);
+            this.$.enterSendCheckBox.setChecked(prefs.get("enterSends") == true);
         },
         close: function()
         {
@@ -448,7 +448,7 @@ enyo.kind(
                 prefs.set("ttsAnnounceName", this.$.ttsNameCheckBox.checked);
                 prefs.set("ttsAnnounceMessages", this.$.ttsMessageCheckBox.checked);
                 prefs.set("smallFonts", this.$.smallFontsCheckBox.checked);
-                prefs.set("newMessageNotifyDisable", this.$.newMessageNotificationsCheckBox.checked);
+                prefs.set("newMessageNotifyDisable", !this.$.newMessageNotificationsCheckBox.checked);
                 prefs.set("enterSends", this.$.enterSendCheckBox.checked);
                     
                 this.doPrefsChanged();
