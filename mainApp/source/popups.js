@@ -327,7 +327,7 @@ enyo.kind(
                         ]
                     },
                     { name: "RestartNotifier", kind: "TimedNotification", msg: "Restart GVoice for changes to take effect.", lazy: false },
-                    { kind: "Button", caption: "OK", className: "enyo-button-affirmative", onclick: "close" },
+                    { kind: "Button", caption: "OK", className: "enyo-button-affirmative", onclick: "closePopup" },
                     { kind: "Divider", caption: "" }
                 ]
             }
@@ -427,19 +427,23 @@ enyo.kind(
             this.$.bgRefreshSlider.setPosition(prefs.get("bgRefresh"));
             this.$.ttsCheckBox.setChecked(prefs.get("ttsdisable") == false);
             this.$.autoCheckCheckbox.setChecked(prefs.get("autoCheckNewMessages") == true);
-            this.$.newMessageNotificationsCheckBox.setChecked(prefs.get("newMessageNotifyDisable") == false);
+            this.$.newMessageNotificationsCheckBox.setChecked(!prefs.get("newMessageNotifyDisable"));
             this.$.ttsNotificationsCheckBox.setChecked(prefs.get("ttsNotificationDisable") == true);
             this.$.ttsNameCheckBox.setChecked(prefs.get("ttsAnnounceName") == true);
             this.$.ttsMessageCheckBox.setChecked(prefs.get("ttsAnnounceMessages") == true);
             this.$.smallFontsCheckBox.setChecked(prefs.get("smallFonts") == true);
             this.$.enterSendCheckBox.setChecked(prefs.get("enterSends") == true);
         },
+        closePopup: function()
+        {
+            enyo.error();
+            this.close();
+        },
         close: function()
         {
-            this.inherited(arguments);
-
             if(this.$.fgRefreshSlider)
             {
+                enyo.log("******* Saving preferences ");
                 prefs.set("fgRefresh", this.$.fgRefreshSlider.getPosition());
                 prefs.set("bgRefresh", this.$.bgRefreshSlider.getPosition());
                 prefs.set("ttsdisable", this.$.ttsCheckBox.checked);
@@ -453,6 +457,7 @@ enyo.kind(
                     
                 this.doPrefsChanged();
             }
+            this.inherited(arguments);
         }
     }
 );
