@@ -427,7 +427,8 @@ enyo.kind(
             this.$.bgRefreshSlider.setPosition(prefs.get("bgRefresh"));
             this.$.ttsCheckBox.setChecked(prefs.get("ttsdisable") == false);
             this.$.autoCheckCheckbox.setChecked(prefs.get("autoCheckNewMessages") == true);
-            this.$.newMessageNotificationsCheckBox.setChecked(!prefs.get("newMessageNotifyDisable"));
+            this.log("******** NEWMESSAGENOTIFYDISABLE=", prefs.get("newMessageNotifyDisable"));
+            this.$.newMessageNotificationsCheckBox.setChecked(prefs.get("newMessageNotifyDisable") == false);
             this.$.ttsNotificationsCheckBox.setChecked(prefs.get("ttsNotificationDisable") == true);
             this.$.ttsNameCheckBox.setChecked(prefs.get("ttsAnnounceName") == true);
             this.$.ttsMessageCheckBox.setChecked(prefs.get("ttsAnnounceMessages") == true);
