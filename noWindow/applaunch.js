@@ -176,8 +176,8 @@ enyo.kind({
 		this.log(res);
 	},
 	create: function (inSender, inEvent) {
-        //this.USESYNERGY = true;
-		this.USESYNERGY = false;
+        this.USESYNERGY = true;
+		//this.USESYNERGY = false;
 			
         prefs.def("fgRefresh", 2);
         prefs.def("bgRefresh", 5);
@@ -700,7 +700,6 @@ enyo.kind({
         
         for( id in inboxJSON.messages )
         {
-            this.log("parsing msg", id);
             if(inboxJSON.messages.hasOwnProperty(id))
             {
                 i = inboxHTML.indexOf('<div id="'+id+'"');
@@ -778,7 +777,8 @@ enyo.kind({
 							}
 						};
 						this.log("querying database for duplicate", query);
-						this.$.dbFindService.call(query, { insert: db });
+						if(this.Messages[index][i].SentBy != "Me:")
+						    this.$.dbFindService.call(query, { insert: db });
 					}
                 }
                 if(!this.MessageIndex[index].isRead)
