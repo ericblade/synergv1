@@ -420,6 +420,9 @@ enyo.kind(
                 this.$.NotifyTwo.hide();
                 this.$.NotifyThree.hide();
             }
+            this.log(prefs.get("fgRefresh"), prefs.get("bgRefresh"), prefs.get("ttsdisable"), prefs.get("autoCheckNewMessages"),
+                     prefs.get("newMessageNotifyDisable"), prefs.get("ttsNotificationDisable"), prefs.get("ttsAnnounceName"),
+                     prefs.get("ttsAnnounceMessages"), prefs.get("smallFonts"), prefs.get("enterSends"));
             this.$.fgRefreshSlider.setPosition(prefs.get("fgRefresh"));
             this.$.bgRefreshSlider.setPosition(prefs.get("bgRefresh"));
             this.$.ttsCheckBox.setChecked(prefs.get("ttsdisable"));
