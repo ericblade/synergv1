@@ -3,28 +3,28 @@ enyo.kind({
 	kind: "Component",
     windowActivated: function()
     {
-        this.log();
+        enyo.log();
         enyo.application.mainApp.isForeground = true;
         enyo.application.mainApp.restartTimedRetrieval();
     },
     windowDeactivated: function()
     {
-        this.log();
+        enyo.log();
         enyo.application.mainApp.isForeground = false;
         enyo.application.mainApp.restartTimedRetrieval();
     },
     onDbSuccess: function(inSender, inResponse)
 	{
-		this.log(inResponse);
+		enyo.log(inResponse);
 	},
 	onDbFailure: function(inSender, inResponse)
 	{
-		this.log(inResponse);
+		enyo.log(inResponse);
 	},
 	outboxMessage: function(inSender, inResponse)
 	{
-		this.log("fired=", inResponse.fired);
-		this.log("results=", inResponse.results);
+		enyo.log("fired=", inResponse.fired);
+		enyo.log("results=", inResponse.results);
 		if(inResponse.fired)
 		{
 			this.$.outboxWatch.call({
@@ -46,7 +46,7 @@ enyo.kind({
 				mergeIDs.push( { "_id": inResponse.results[x]["_id"], "status":"successful" } );
 				if(enyo.application.mainApp)
 				{
-					this.log(enyo.application.mainApp, "spooling message", inResponse.results[x]);
+					enyo.log(enyo.application.mainApp, "spooling message", inResponse.results[x]);
 					// multiple recipients can be specified in the incoming array!! make sure we handle
 					enyo.application.mainApp.$.outbox.queueMessage(inResponse.results[x].to[0].addr, inResponse.results[x].messageText);
 				}
@@ -56,15 +56,15 @@ enyo.kind({
 			//if(enyo.application.mainApp)
 			//    enyo.application.mainApp.$.outbox.timedMessageSend();
 		}
-		this.log(inResponse);
+		enyo.log(inResponse);
 	},
 	watchFail: function(inSender, inResponse)
 	{
-		this.log(inResponse);
+		enyo.log(inResponse);
 	},
-	dbFailure: function(inSender, inResponse) { this.log(inResponse); },
-	delSuccess: function(inSender, inResponse) { this.log(inResponse); },
-	mergeStatusSuccess: function(inSender, inResponse) { this.log(inResponse); },
+	dbFailure: function(inSender, inResponse) { enyo.log(inResponse); },
+	delSuccess: function(inSender, inResponse) { enyo.log(inResponse); },
+	mergeStatusSuccess: function(inSender, inResponse) { enyo.log(inResponse); },
 	components: [
             { name: "api", kind: "GoogleVoiceAPI", onLoggedIn: "LoggedIn" },
             { kind: "WebService", onFailure: "webFailure", components:
@@ -119,22 +119,22 @@ enyo.kind({
 	},
 	querySynergyAccount: function()
 	{
-		this.log();
+		enyo.log();
 		this.$.GetSynergyAccount.call({ accountId: prefs.get("synergyAccount") });
 	},
 	synergyAccountInfoFail: function(inSender, res)
 	{
-		this.log(res);
+		enyo.log(res);
 		this.createSynergyAccount();
 	},
 	synergyAccountReceived: function(inSender, res)
 	{
-		this.log(res);
+		enyo.log(res);
 		if(res.result.beingDeleted)
 		    this.createSynergyAccount();
 		else {
 			this.SynergyAccount = res.result["_id"];
-			this.log("***************** SYNERGY ACCOUNT ID=", this.SynergyAccount);
+			enyo.log("***************** SYNERGY ACCOUNT ID=", this.SynergyAccount);
 			this.$.outboxWatch.call({
 				"query":
 				{
@@ -154,10 +154,10 @@ enyo.kind({
 			"username":"(configure in GVoice app)","alias":"Google Voice","beingDeleted":false,
 			"capabilityProviders":[{"id":"com.ericblade.googlevoiceapp.sms","capability":"PHONE"}],
 			"_id":"++Hs9+gGfJF3eKSa"},"returnValue":true} */
-		this.log(res);
+		enyo.log(res);
 		this.SynergyAccount = res.result["_id"];
 		prefs.set("synergyAccount", this.SynergyAccount);
-		this.log("***************** SYNERGY ACCOUNT ID=", this.SynergyAccount);
+		enyo.log("***************** SYNERGY ACCOUNT ID=", this.SynergyAccount);
 		this.$.outboxWatch.call({
 			"query":
 			{
@@ -173,7 +173,7 @@ enyo.kind({
 	synergyAccountFailed: function(inSender, res)
 	{
 		/*  {"errorText":"Unable to create a duplicate account","errorCode":"DUPLICATE_ACCOUNT","exception":"[object Object]","returnValue":false}, */
-		this.log(res);
+		enyo.log(res);
 	},
 	create: function (inSender, inEvent) {
         this.USESYNERGY = true;
@@ -201,7 +201,7 @@ enyo.kind({
                     {
                         if(this.IgnoreNotificationsList.hasOwnProperty(x) && this.IgnoreNotificationsList[x] < (ctime - (86400 * 7)) ) // if it's more than a week old, kill it
                         {
-                            this.log("***** Throwing Out ignoreNotification:", x, this.IgnoreNotificationsList[x]);
+                            enyo.log("***** Throwing Out ignoreNotification:", x, this.IgnoreNotificationsList[x]);
                             changedList = true;
                             delete this.IgnoreNotificationsList[x];
                         }
@@ -235,14 +235,14 @@ enyo.kind({
 	},
  
 	relaunch: function (params) {
-		this.log("Relaunch in myAppLaunch", params, params.action);
+		enyo.log("Relaunch in myAppLaunch", params, params.action);
                 this.setAlarm();
                 if(params.action == "checkNewMessages")
                 {
                     enyo.application.quickMessageCheck = true;
 					var bg = prefs.get("bgRefresh");
 					if(!enyo.application.mainApp && bg < 5) {
-						this.log("creating message check dash at exit");
+						enyo.log("creating message check dash at exit");
 						this.createMessageCheckDash();
 					}							
                     this.checkNewMessages();
@@ -309,7 +309,7 @@ enyo.kind({
 	},
         logmessage: function()
         {
-            this.log("timer check");
+            enyo.log("timer check");
         },
         startTimer: function(x) {
 			if(!prefs.get("autoCheckNewMessages"))
@@ -388,19 +388,19 @@ enyo.kind({
         sendMessageToApp: function() {
             //if(enyo.application.mainAppWindow && enyo.application.mainAppWindow.name)
             //    enyo.application.mainAppWindow.postMessage("retrieveInbox", "*");
-			this.log();
+			enyo.log();
 			enyo.application.quickMessageCheck = true;
 			enyo.application.launcher.checkNewMessages();
         },
  
 	something: function () {
-		this.log("We're gonna do something without an app window! (better hope it's quick)");
+		enyo.log("We're gonna do something without an app window! (better hope it's quick)");
 	},
  
 	// cleanup was defined above as the onUnload handler for application events
 	// we'll use it to save any changes to our appPrefs
 	cleanup: function () {
-		this.log("Cleanup in appLaunch");
+		enyo.log("Cleanup in appLaunch");
                 //window.close();
         },
     getAlertPath: function() {
@@ -465,7 +465,7 @@ enyo.kind({
     {
 		var ignoreid = msgid.substr(-5) + (typeof msgtext == "string" ? msgtext.substr(-5) : "vm?"); // just use the last 5 characters of the id and the text .. hopefully will work
 		
-        this.log();
+        enyo.log();
 		/* Initialize some junk we need */
 		if(!this.NotificationDashboards)
 			this.NotificationDashboards = { };
@@ -483,7 +483,7 @@ enyo.kind({
         if(window.PalmSystem)
         {
 			if(this.IgnoreNotificationsList[ignoreid]) {
-				this.log("*** IGNORING POSTNOTIFICATION FOR " + ignoreid);
+				enyo.log("*** IGNORING POSTNOTIFICATION FOR " + ignoreid);
 				return;
 			}
 			if(!this.NotificationDashboards[msgid] || this.NotificationDashboards[msgid].ignoreid != ignoreid) {
@@ -502,7 +502,7 @@ enyo.kind({
 						enyo.application.mainApp.speak(msgtext); // TODO: Move the speech plugin to here ... 
 					}
 				}
-				this.log("************************ NOTIFICATION POSTED ******************** ");
+				enyo.log("************************ NOTIFICATION POSTED ******************** ");
 			}
 			//this.NotificationDashboards[0].onDashboardActivated = "dashboardActivated";
 			this.NotificationDashboards[0].onLayerSwipe = "dashboardLayerSwipe";
@@ -528,7 +528,7 @@ enyo.kind({
 						note.show();
 						this.NotificationDashboards[0] = "temp holder";
 						this.NotificationDashboards[ignoreid] = { "ignoreid": ignoreid };
-						this.log("************************ NOTIFICATION POSTED ******************** ");
+						enyo.log("************************ NOTIFICATION POSTED ******************** ");
 					} catch(err) { // throw security error
 						enyo.log("error posting notification:" + err);
 					}
@@ -568,14 +568,14 @@ enyo.kind({
         if(!layer) {
             for(x in this.NotificationDashboards)
             {
-                this.log("ignoreid could be", this.NotificationDashboards[x].ignoreid);
+                enyo.log("ignoreid could be", this.NotificationDashboards[x].ignoreid);
                 ignoreid = this.NotificationDashboards[x].ignoreid;
             }
         } else {
             ignoreid = layer.id.substr(-5) + layer.text.substr(-5); // just use the last 5 characters of the id and the text .. hopefully will work
             this.clearNotificationsFor(layer.id);
         }
-        this.log("Ignoring Notification for", ignoreid);
+        enyo.log("Ignoring Notification for", ignoreid);
         this.IgnoreNotificationsList[ignoreid] = (new Date().getTime() / 1000); // unix timestamp
         prefs.set("ignoreNotificationsList", enyo.json.stringify(this.IgnoreNotificationsList));
     },
@@ -586,7 +586,7 @@ enyo.kind({
     },
     /*dashboardActivated: function(dash) {
         //dash.applyStyle("background-color", "black");
-        this.log("**************** DASHBOARD ACTIVATED ***************** ");
+        enyo.log("**************** DASHBOARD ACTIVATED ***************** ");
         var l;
         for(l in dash)
         {
@@ -638,16 +638,16 @@ enyo.kind({
         }
     },
     LoggedIn: function() {
-        this.log(enyo.application.quickMessageCheck);
+        enyo.log(enyo.application.quickMessageCheck);
         if(enyo.application.quickMessageCheck)
         {
-			this.log();
+			enyo.log();
             this.checkNewMessages();
         }
     },
     checkNewMessages: function()
     {
-        this.log();
+        enyo.log();
         if(!prefs.get("autoCheckNewMessages"))
         {
             return;
@@ -659,12 +659,12 @@ enyo.kind({
             this.$.getInbox.headers= { "Authorization":"GoogleLogin auth="+this.$.api.AuthCode };
             this.$.getInbox.call( { page:"p1" } );
         } else {
-            this.log("can't check messages, we aren't logged in");
+            enyo.log("can't check messages, we aren't logged in");
         }
     },
     InboxFailed: function(inSender, inResponse)
     {
-        this.log(inResponse);
+        enyo.log(inResponse);
         if(inResponse.indexOf("Unauthorized") > -1 && inResponse.indexOf("Error 401") > -1)
         {
             this.doLogin(prefs.get("gvUsername"), prefs.get("gvPassword"));   
@@ -674,7 +674,7 @@ enyo.kind({
     {
 		var bForwardToApp = false;
 		var db = { };
-        //this.log(inResponse);
+        //enyo.log(inResponse);
 		enyo.error("Launcher InboxReceived");
         var i = inResponse.indexOf("<json><!")+14;
         var j = inResponse.lastIndexOf("></json>")-1;
@@ -682,7 +682,7 @@ enyo.kind({
         try {
             inboxJSON = JSON.parse(inResponse.substring(i, j))[0];
         } catch(err) {
-            this.log("********** UNABLE TO READ INBOX, ARE WE OFFLINE? ");
+            enyo.log("********** UNABLE TO READ INBOX, ARE WE OFFLINE? ");
             return;
         }
 
@@ -776,7 +776,7 @@ enyo.kind({
 								]
 							}
 						};
-						this.log("querying database for duplicate", query);
+						enyo.log("querying database for duplicate", query);
 						if(this.Messages[index][i].SentBy != "Me:")
 						    this.$.dbFindService.call(query, { insert: db });
 					}
@@ -809,17 +809,17 @@ enyo.kind({
     },
 	findSuccess: function(inSender, inResponse, inQuery)
 	{
-		this.log("findSuccess", inResponse);
+		enyo.log("findSuccess", inResponse);
 		if(inResponse.results.length == 0)
 		{
-			this.log("length=0, putting ", inQuery.insert)
+			enyo.log("length=0, putting ", inQuery.insert)
 			this.$.dbPutService.call(inQuery.insert);
 		}
 	},
 	findFail: function(inSender, inResponse, inQuery)
 	{
-		this.log(inResponse);
-		this.log("did not find anything matching, attempting insert of ", inQuery.insert);
+		enyo.log(inResponse);
+		enyo.log("did not find anything matching, attempting insert of ", inQuery.insert);
 	},
     displayNameOrNumber: function(index)
     {
@@ -852,7 +852,7 @@ enyo.kind({
             }
             prefs.set("gvUsername", username);
             prefs.set("gvPassword", password);
-            this.log();
+            enyo.log();
             this.$.getLogin.call(params);
         }
         prefs.set("gvUsername", username);
@@ -861,9 +861,9 @@ enyo.kind({
     LoginReceived: function(inSender, inResponse) {
         var AuthIndex = inResponse.lastIndexOf("Auth=");
         if(AuthIndex == -1)
-            this.log("LoginReceived: " + inResponse);
+            enyo.log("LoginReceived: " + inResponse);
         else
-            this.log("LoginReceived ");
+            enyo.log("LoginReceived ");
         
         /*if(this.cookieLoginAttempt) {
             this.headerIconClick();
@@ -877,7 +877,7 @@ enyo.kind({
         
         enyo.setCookie("SID", this.SID, { "Max-Age": -1 });
         enyo.setCookie("LSID", this.LSID, { "Max-Age": -1 });
-        this.log();
+        enyo.log();
         this.checkNewMessages();
         //this.RetrieveInbox("Inbox");
         //this.RetrievePrimaryData();
@@ -933,8 +933,8 @@ enyo.kind({
         this.Messages = [];
         this.MessageIndex = [];
         this.selectedID = "";
-        this.log();
-        this.loggingIn = false;
+        enyo.log();
+        enyo.loggingIn = false;
         enyo.application.api = this;
     },
     ready: function()
@@ -943,17 +943,17 @@ enyo.kind({
         var pass = prefs.get("gvPassword");
         if(!username || !pass)
             return;
-        this.log();
-        this.loggingIn = true;
+        enyo.log();
+        enyo.loggingIn = true;
         this.$.gvLogoutMobile.call(); // make sure we're getting a fresh login
         enyo.application.api = this;
     },
     beginLogin: function(username, password) {
-        if(this.loggingIn)
+        if(enyo.loggingIn)
             return;
         prefs.set("gvUsername", username);
         prefs.set("gvPassword", password);
-        this.loggingIn = true;
+        enyo.loggingIn = true;
         this.$.gvLogoutMobile.call();
     },
     mobileLogoutSuccess: function(inSender, inResponse)
@@ -962,7 +962,7 @@ enyo.kind({
         var pass = prefs.get("gvPassword");
         if(!username || !pass || username == "undefined" || pass == "undefined")
         {
-            this.loggingIn = false;
+            enyo.loggingIn = false;
             return;
         }
         this.GALXReceived(inSender, inResponse); // try to parse it from our logout!
@@ -974,7 +974,7 @@ enyo.kind({
             var i = this.GALX.indexOf("value=")+6;
             this.GALX = this.GALX.substring(i+1, this.GALX.length-1);
         } catch(e) {
-            this.log("GALXReceived: did not find GALX .. reget?");
+            enyo.log("GALXReceived: did not find GALX .. reget?");
             this.GALX = enyo.getCookie("GALX");
             //this.RetrieveInbox();
         }
@@ -986,10 +986,10 @@ enyo.kind({
             this.dsh = enyo.getCookie("dsh");
         }
 
-        this.log("GALX=", this.GALX, "dsh=", this.dsh);        
+        enyo.log("GALX=", this.GALX, "dsh=", this.dsh);        
         if(!this.GALX)
         {
-            this.log("Failed to find GALX, but Google isn't always sending it to us anymore??..");
+            enyo.log("Failed to find GALX, but Google isn't always sending it to us anymore??..");
             this.doMobileLogin();
             //this.$.gvLogoutMobile.call();
             //this.regettingGALX = true;
@@ -1014,12 +1014,12 @@ enyo.kind({
             rmShown:"1",
             signIn:"Sign in",
         };
-        this.log(params);        
+        enyo.log(params);        
         this.$.gvLoginMobile.call( params );
     },
     mobileLoginSuccess: function(inSender, inResponse)
     {
-        this.log();
+        enyo.log();
         this.doLogin(prefs.get("gvUsername"), prefs.get("gvPassword"));
     },
     doLogin: function(username, password)
@@ -1040,12 +1040,12 @@ enyo.kind({
         //enyo.log("response", inResponse);
         var AuthIndex = inResponse.lastIndexOf("Auth=");
         if(AuthIndex == -1)
-            this.log("LoginReceived: " + inResponse);
+            enyo.log("LoginReceived: " + inResponse);
         else
-            this.log("LoginReceived ");
+            enyo.log("LoginReceived ");
         
         this.AuthCode = inResponse.substring(AuthIndex+5, inResponse.length-1);
-        this.log("AuthCode received", this.AuthCode);
+        enyo.log("AuthCode received", this.AuthCode);
         
         var x = inResponse.indexOf("SID=");
         var y = inResponse.lastIndexOf("LSID=");
@@ -1055,7 +1055,7 @@ enyo.kind({
         enyo.setCookie("SID", this.SID, { "Max-Age": -1 });
         enyo.setCookie("LSID", this.LSID, { "Max-Age": -1 });
         
-        this.log("SID", this.SID, "LSID", this.LSID);
+        enyo.log("SID", this.SID, "LSID", this.LSID);
         
         this.RetrievePrimaryData();
         if(enyo.application.mainApp)
@@ -1067,14 +1067,14 @@ enyo.kind({
             else
             {
                 enyo.application.mainApp.LoginFailed();
-                this.loggingIn = false;
+                enyo.loggingIn = false;
             }
         }
     },
     LoginFailed: function(inSender, inResponse) {
         if(enyo.application.mainApp)
         {
-            this.loggingIn = false;
+            enyo.loggingIn = false;
             enyo.application.mainApp.LoginFailed(inSender, inResponse);
         }
     },
@@ -1085,10 +1085,10 @@ enyo.kind({
     },
     PrimaryDataReceived: function(inSender, inResponse)
     {
-        this.log();
-        this.loggingIn = false;
+        enyo.log();
+        enyo.loggingIn = false;
         this.PrimaryData = ParsePrimaryData(inResponse);
-        //this.log(this.PrimaryData);
+        //enyo.log(this.PrimaryData);
         if(this.PrimaryData && this.PrimaryData.userName && this.PrimaryData._rnr_se && enyo.application.mainApp)
         {
             enyo.application.mainApp.PrimaryDataReceived();
@@ -1097,8 +1097,8 @@ enyo.kind({
     },
     doLogout: function()
     {
-        this.log();
-        this.loggingIn = false;
+        enyo.log();
+        enyo.loggingIn = false;
         this.$.gvLogoutMobile.call();
         prefs.del("gvUsername");
         prefs.del("gvPassword");
