@@ -221,6 +221,16 @@ enyo.kind(
         [
             { kind: "FadeScroller", height: Platform.isLargeScreen() ? "570px" : "360px",   components:
                 [
+                    { name: "GeneralOptions", kind: "Group", caption: "General", components:
+                        [
+                            { kind: "Item", layoutKind: "HFlexLayout", components:
+                                [
+                                    { content: "Default Inbox", flex: 1 },
+                                    { name: "defaultBoxPicker", value: prefs.get("defaultBox"), onChange: "selectBox", className: "box-picker", items: ["Inbox", "Unread", "All", "Voicemail", "SMS", "Recorded", "Placed", "Received", "Missed", "Starred", "Spam", "Trash", "Search"] },                                    
+                                ]
+                            }
+                        ]
+                    },
                     { name: "NotifyOne", kind: "Group", caption: "Notifications", components:
                         [
                             { kind: "Item", layoutKind: "HFlexLayout", components:
@@ -463,6 +473,7 @@ enyo.kind(
                 prefs.set("smallFonts", this.$.smallFontsCheckBox.checked);
                 prefs.set("newMessageNotifyDisable", this.$.newMessageNotificationsCheckBox.checked == false);
                 prefs.set("enterSends", this.$.enterSendCheckBox.checked);
+                prefs.set("defaultBox", this.$.defaultBoxPicker.getValue());
                     
                 this.doPrefsChanged();
             }

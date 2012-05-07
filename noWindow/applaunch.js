@@ -191,6 +191,7 @@ enyo.kind({
 		prefs.def("newMessageNotifyDisable", false);
 		prefs.def("ttsNotificationDisable", false);
 		prefs.def("ttsAnnounceMessages", false);
+		prefs.def("defaultBox", "Unread");
 		
 		this.inherited(arguments);
 		try {

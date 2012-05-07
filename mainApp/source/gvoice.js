@@ -362,7 +362,7 @@ enyo.kind({
                             [
                                 { kind: "PickerGroup", label: "", components:
                                     [
-                                        { name: "boxPicker", value: prefs.get("defaultUnread") ? "Unread" : "Inbox", onChange: "selectBox", className: "box-picker", items: ["Inbox", "Unread", "All", "Voicemail", "SMS", "Recorded", "Placed", "Received", "Missed", "Starred", "Spam", "Trash", "Search"] },
+                                        { name: "boxPicker", value: prefs.get("defaultBox"), onChange: "selectBox", className: "box-picker", items: ["Inbox", "Unread", "All", "Voicemail", "SMS", "Recorded", "Placed", "Received", "Missed", "Starred", "Spam", "Trash", "Search"] },
                                         { name: "pagePicker", label: "Page", className: "page-picker", kind: "IntegerPicker", onChange: "selectPage", min: 1, max: 10 },
                                     ]
                                 },
@@ -1050,10 +1050,11 @@ enyo.kind({
     },
     InboxClick: function(inSender, inEvent)
     {
-        this.$.boxPicker.setValue("Inbox");
+        var box = prefs.get("defaultBox");
+        this.$.boxPicker.setValue(box);
         this.$.pagePicker.setValue("1");
         this.resetSelectedID();
-        this.RetrieveInbox("Inbox");
+        this.RetrieveInbox(box);
     },
     MarkReadSuccess: function(inSender, inResponse, inRequest) {
         //console.log("MarkReadSuccess "+inResponse);
@@ -1174,7 +1175,7 @@ enyo.kind({
     {
         console.log("PrimaryDataReceived");
         if(!this.PrimaryData) // if it's our first time receiving it, then fire an Inbox load too
-            enyo.nextTick(this, enyo.bind(this, this.RetrieveInbox, "Inbox"));
+            enyo.nextTick(this, enyo.bind(this, this.RetrieveInbox, prefs.get("defaultBox")));
         //this.PrimaryData = ParsePrimaryData(inResponse);
         this.PrimaryData = enyo.application.api.PrimaryData;
         
