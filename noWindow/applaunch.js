@@ -1,3 +1,4 @@
+// TODO: we should have bForwardToApp determine if the user is viewing Inbox or Unread, and if we're loading the other one, then force the user's view to reload
 enyo.kind({
 	name: "myAppLaunch",
 	kind: "Component",
@@ -655,7 +656,14 @@ enyo.kind({
         }
         if(this.$.api.AuthCode)
         {
-            var type = "inbox";
+			var defbox = prefs.get("defaultBox");
+			var type = "inbox";
+			switch(defbox) {
+				case "Inbox": type = "inbox"; break;
+				case "Unread": type = "unread"; break;
+				default: type = "unread"; break;
+			}
+			
 			//var type = "unread";
             this.$.getInbox.setUrl("https://www.google.com/voice/inbox/recent/" + type + "/");
             this.$.getInbox.headers= { "Authorization":"GoogleLogin auth="+this.$.api.AuthCode };
@@ -803,7 +811,17 @@ enyo.kind({
         }
 		//enyo.error("Launcher bForwardToApp", bForwardToApp, enyo.application.mainApp, enyo.application.mainApp.$.boxPicker.getValue(), parseInt(enyo.application.mainApp.$.pagePicker.getValue()));
 		var app = enyo.application.mainApp;
-		if(bForwardToApp && app && app.$ && app.$.boxPicker && app.$.pagePicker && app.$.boxPicker.getValue() == "Inbox" && parseInt(app.$.pagePicker.getValue()) == 1)
+		
+		var defbox = prefs.get("defaultBox");
+		var type = "inbox";
+		switch(defbox) {
+			case "Inbox": type = "inbox"; break;
+			case "Unread": type = "unread"; break;
+			default: type = "unread"; break;
+		}
+		
+		// TODO: This function is -only- called with Unread or Inbox as the type, if we ever use this function for others, this if will need to be changed
+		if(bForwardToApp && app && app.$ && app.$.boxPicker && app.$.pagePicker && app.$.boxPicker.getValue().toLowerCase() == type && parseInt(app.$.pagePicker.getValue()) == 1)
 		{
 			// HACK: forward all the crap we already did anyway over to the main app.. sigh.
 			enyo.application.mainApp.InboxReceived(inSender, inResponse);
