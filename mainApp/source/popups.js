@@ -232,7 +232,7 @@ enyo.kind(
                             { kind: "Item", layoutKind: "HFlexLayout", components:
                                 [
                                     { content: "New Message Notifications", flex: 1, className: "enyo-item-secondary", },
-                                    { name: "newMessageNotificationsCheckBox", kind: "CheckBox", },
+                                    { name: "newMessageNotificationsCheckBox", checked: !prefs.get("newMessageNotifyDisable"), kind: "CheckBox", },
                                 ]
                             },
                             { name: "AlertItem", kind: "Item", layoutKind: "HFlexLayout", components:
@@ -428,6 +428,14 @@ enyo.kind(
             this.$.ttsCheckBox.setChecked(prefs.get("ttsdisable") == false);
             this.$.autoCheckCheckbox.setChecked(prefs.get("autoCheckNewMessages") == true);
             this.log("******** NEWMESSAGENOTIFYDISABLE=", prefs.get("newMessageNotifyDisable"));
+            if(prefs.get("newMessageNotifyDisable") === true)
+            {
+                this.log("************* NEW MESSAGE NOTIFICATIONS ARE OFF");
+                this.$.newMessageNotificationsCheckBox.setChecked(false);
+            } else {
+                this.log("************* NEW MESSAGE NOTIFICATIONS ARE ON");
+                this.$.newMessageNotificationsCheckBox.setChecked(true);
+            }
             this.$.newMessageNotificationsCheckBox.setChecked(prefs.get("newMessageNotifyDisable") == false);
             this.$.ttsNotificationsCheckBox.setChecked(prefs.get("ttsNotificationDisable") == true);
             this.$.ttsNameCheckBox.setChecked(prefs.get("ttsAnnounceName") == true);
