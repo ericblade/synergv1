@@ -176,8 +176,8 @@ enyo.kind({
 		enyo.log(res);
 	},
 	create: function (inSender, inEvent) {
-        this.USESYNERGY = true;
-		//this.USESYNERGY = false;
+        //this.USESYNERGY = true;
+		this.USESYNERGY = false;
 			
         prefs.def("fgRefresh", 2);
         prefs.def("bgRefresh", 5);
@@ -193,32 +193,32 @@ enyo.kind({
 		prefs.def("ttsAnnounceMessages", false);
 		
 		this.inherited(arguments);
-                try {
-                    var changedList;
-                    this.IgnoreNotificationsList = enyo.json.parse(prefs.get("ignoreNotificationsList"));
-                    var ctime = new Date().getTime() / 1000;
-                    for (x in this.IgnoreNotificationsList)
-                    {
-                        if(this.IgnoreNotificationsList.hasOwnProperty(x) && this.IgnoreNotificationsList[x] < (ctime - (86400 * 7)) ) // if it's more than a week old, kill it
-                        {
-                            enyo.log("***** Throwing Out ignoreNotification:", x, this.IgnoreNotificationsList[x]);
-                            changedList = true;
-                            delete this.IgnoreNotificationsList[x];
-                        }
-                    }
-                    if(changedList) {
-                        prefs.set("ignoreNotificationsList", enyo.json.stringify(this.IgnoreNotificationsList));
-                    }
-                } catch(err) {
-                    this.IgnoreNotificationsList = { };
-                }
-            if(window.PalmSystem && this.USESYNERGY)
-            {
-				if(prefs.get("synergyAccount"))
-				    this.querySynergyAccount();
-				else
-				    this.createSynergyAccount();
-            }
+		try {
+			var changedList;
+			this.IgnoreNotificationsList = enyo.json.parse(prefs.get("ignoreNotificationsList"));
+			var ctime = new Date().getTime() / 1000;
+			for (x in this.IgnoreNotificationsList)
+			{
+				if(this.IgnoreNotificationsList.hasOwnProperty(x) && this.IgnoreNotificationsList[x] < (ctime - (86400 * 7)) ) // if it's more than a week old, kill it
+				{
+					enyo.log("***** Throwing Out ignoreNotification:", x, this.IgnoreNotificationsList[x]);
+					changedList = true;
+					delete this.IgnoreNotificationsList[x];
+				}
+			}
+			if(changedList) {
+				prefs.set("ignoreNotificationsList", enyo.json.stringify(this.IgnoreNotificationsList));
+			}
+		} catch(err) {
+			this.IgnoreNotificationsList = { };
+		}
+		if(window.PalmSystem && this.USESYNERGY)
+		{
+			if(prefs.get("synergyAccount"))
+				this.querySynergyAccount();
+			else
+				this.createSynergyAccount();
+		}
 	},
  
 	constructor: function() {
@@ -654,7 +654,8 @@ enyo.kind({
         }
         if(this.$.api.AuthCode)
         {
-            var type = "inbox";
+            //var type = "inbox";
+			var type = "unread";
             this.$.getInbox.setUrl("https://www.google.com/voice/inbox/recent/" + type + "/");
             this.$.getInbox.headers= { "Authorization":"GoogleLogin auth="+this.$.api.AuthCode };
             this.$.getInbox.call( { page:"p1" } );

@@ -1,4 +1,5 @@
 //*** Featured in the "SWEETHEART TIME" App Catalog Featured Apps, February 2012!! ***
+// TODO: Need to seriously explore the "back" function across platforms
 // TODO: Dynamically rename the call popup to voicemail if needed
 // TODO: need to get synergy connector forwarding voicemail text
 //  invalidopcode: hey EricBlade how about an auto-reply that you could sent up for certain contacts when its in DnD mode?
@@ -361,7 +362,7 @@ enyo.kind({
                             [
                                 { kind: "PickerGroup", label: "", components:
                                     [
-                                        { name: "boxPicker", value: "Inbox", onChange: "selectBox", className: "box-picker", items: ["Inbox", "All", "Voicemail", "SMS", "Recorded", "Placed", "Received", "Missed", "Starred", "Spam", "Trash", "Search"] },
+                                        { name: "boxPicker", value: prefs.get("defaultUnread") ? "Unread" : "Inbox", onChange: "selectBox", className: "box-picker", items: ["Inbox", "Unread", "All", "Voicemail", "SMS", "Recorded", "Placed", "Received", "Missed", "Starred", "Spam", "Trash", "Search"] },
                                         { name: "pagePicker", label: "Page", className: "page-picker", kind: "IntegerPicker", onChange: "selectPage", min: 1, max: 10 },
                                     ]
                                 },
@@ -1113,7 +1114,7 @@ enyo.kind({
         } else {
             this.$.getInbox.setUrl("https://www.google.com/voice/inbox/recent/" + type + "/");
             this.$.getInbox.headers= { "Authorization":"GoogleLogin auth="+this.AuthCode };
-            this.$.getInbox.call( { page:"p"+this.$.pagePicker.getValue() } );
+            this.$.getInbox.call( { limit: 50, page:"p"+this.$.pagePicker.getValue() } );
         }
     },
     webViewLogout: function()
@@ -2193,7 +2194,7 @@ enyo.kind({
         if(!page) page = "1";
         this.messageSearch = str;
         //this.log("?q="+str+"&page=p"+page);
-        enyo.application.mainApp.$.messageSearch.call({ "q":str, page:"p"+page });
+        enyo.application.mainApp.$.messageSearch.call({ limit: "Infinity", "q":str, page:"p"+page });
         enyo.application.mainApp.$.boxPicker.setValue("Search");
     },
     messageSearchClick: function()
