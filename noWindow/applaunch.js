@@ -654,11 +654,11 @@ enyo.kind({
         }
         if(this.$.api.AuthCode)
         {
-            //var type = "inbox";
-			var type = "unread";
+            var type = "inbox";
+			//var type = "unread";
             this.$.getInbox.setUrl("https://www.google.com/voice/inbox/recent/" + type + "/");
             this.$.getInbox.headers= { "Authorization":"GoogleLogin auth="+this.$.api.AuthCode };
-            this.$.getInbox.call( { page:"p1" } );
+            this.$.getInbox.call( { limit: "Infinity", page:"p1" } );
         } else {
             enyo.log("can't check messages, we aren't logged in");
         }
