@@ -1313,7 +1313,7 @@ enyo.kind({
                     if(this.MessageIndex[index].isMissedCall)
                         type = "missed call";
                     var disable = prefs.get("newMessageNotifyDisable");
-                    if(!disable || disable == 0)
+                    if(disable !== true)
                         this.PostNotification(this.MessageIndex[index].id, "New "+type+" from " + this.displayNameOrNumber(index), "New " + type + " received", this.Messages[index][i-1] ? this.Messages[index][i-1].SentMessage : "");
                 } else if(enyo.application.launcher && enyo.application.launcher.NotificationDashboards && enyo.application.launcher.NotificationDashboards[this.MessageIndex[index].id]) // TODO: get rid of this, send it to a getter or something
                 {
