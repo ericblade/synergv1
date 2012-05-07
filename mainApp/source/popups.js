@@ -436,7 +436,7 @@ enyo.kind(
                 this.log("************* NEW MESSAGE NOTIFICATIONS ARE ON");
                 this.$.newMessageNotificationsCheckBox.setChecked(true);
             }
-            this.$.newMessageNotificationsCheckBox.setChecked(prefs.get("newMessageNotifyDisable") == false);
+            //this.$.newMessageNotificationsCheckBox.setChecked(prefs.get("newMessageNotifyDisable") == false);
             this.$.ttsNotificationsCheckBox.setChecked(prefs.get("ttsNotificationDisable") == true);
             this.$.ttsNameCheckBox.setChecked(prefs.get("ttsAnnounceName") == true);
             this.$.ttsMessageCheckBox.setChecked(prefs.get("ttsAnnounceMessages") == true);
