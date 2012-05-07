@@ -498,8 +498,8 @@ enyo.kind({
 				enyo.windows.addBannerMessage(msg, '{}', "mainApp/images/google-voice-icon24.png", "", this.getAlertPath());
 				if(enyo.application.mainApp && prefs.get("ttsNotificationDisable", true) != 1) // TODO: can't speak until mainApp is loaded :(
 				{
-					enyo.application.mainApp.speak( prefs.get("ttsAnnounceName") ? msg : nonamemsg );
-					if(prefs.get("ttsAnnounceMessages", true) && msgtext && msgtext != "")
+					enyo.application.mainApp.speak( prefs.get("ttsAnnounceName") === true ? msg : nonamemsg );
+					if(prefs.get("ttsAnnounceMessages") === true && msgtext && msgtext != "")
 					{
 						enyo.application.mainApp.speak(msgtext); // TODO: Move the speech plugin to here ... 
 					}
