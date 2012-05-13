@@ -1110,6 +1110,7 @@ enyo.kind({
         if(enyo.application.launcher) {
             var interval = enyo.application.mainApp.isForeground ? prefs.get("fgRefresh") : prefs.get("bgRefresh");
             if(interval < 1) interval = 1;
+            enyo.log("Start Timed Retrieval", interval);
             //this.log("retrieval interval", interval, "minutes");
             enyo.application.launcher.startTimer(this);
             window.addEventListener("message", this.receiveMessage, false);
@@ -1118,6 +1119,7 @@ enyo.kind({
         {
             var interval = enyo.application.mainApp.isForeground ? prefs.get("fgRefresh") : prefs.get("bgRefresh");
             if(interval < 1) interval = 1;
+            enyo.log("Start Timed Retrieval", interval);
             this.InboxInterval = setInterval(function(thisObj) { thisObj.RetrieveInbox(); }, 60 * interval * 1000, this);
         }
     },
