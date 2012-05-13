@@ -1,3 +1,4 @@
+// TODO: check the "Place Call", "Send SMS", "Send email" buttons in contacts on all platforms
 //*** Featured in the "SWEETHEART TIME" App Catalog Featured Apps, February 2012!! ***
 // TODO: Need to seriously explore the "back" function across platforms
 // TODO: Dynamically rename the call popup to voicemail if needed
