@@ -226,7 +226,7 @@ enyo.kind(
                             { kind: "Item", layoutKind: "HFlexLayout", components:
                                 [
                                     { content: "Default Inbox", flex: 1 },
-                                    { name: "defaultBoxPicker", kind: "ListSelector", value: prefs.get("defaultBox"), onChange: "selectBox", className: "box-picker", items: ["Inbox", "Unread", "All", "Voicemail", "SMS", "Recorded", "Placed", "Received", "Missed", "Starred", "Spam", "Trash", "Search"] },                                    
+                                    { name: "defaultBoxPicker", kind: "ListSelector", value: prefs.get("defaultBox") || "Unread", onChange: "selectBox", className: "box-picker", items: ["Inbox", "Unread", "All", "Voicemail", "SMS", "Recorded", "Placed", "Received", "Missed", "Starred", "Spam", "Trash", "Search"] },                                    
                                 ]
                             }
                         ]
