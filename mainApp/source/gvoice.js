@@ -362,7 +362,7 @@ enyo.kind({
                             [
                                 { kind: "PickerGroup", label: "", components:
                                     [
-                                        { name: "boxPicker", value: prefs.get("defaultBox"), onChange: "selectBox", className: "box-picker", items: ["Inbox", "Unread", "All", "Voicemail", "SMS", "Recorded", "Placed", "Received", "Missed", "Starred", "Spam", "Trash", "Search"] },
+                                        { name: "boxPicker", value: prefs.get("defaultBox") || "Unread", onChange: "selectBox", className: "box-picker", items: ["Inbox", "Unread", "All", "Voicemail", "SMS", "Recorded", "Placed", "Received", "Missed", "Starred", "Spam", "Trash", "Search"] },
                                         { name: "pagePicker", label: "Page", className: "page-picker", kind: "IntegerPicker", onChange: "selectPage", min: 1, max: 10 },
                                     ]
                                 },
@@ -475,7 +475,7 @@ enyo.kind({
                                     [
                                         { kind: "Header", className: "pane-header", onclick: "scrollRightToTop", components:
                                             [
-                                                { name: "overviewHeader", content: "Overview: Inbox", },
+                                                { name: "overviewHeader", content: "Overview: " + prefs.get("defaultBox"), },
                                             ]
                                         },
                                         { name: "overviewScroller", kind: "TransformScroller", flex: 1, autoHorizontal: false, horizontal: false, autoVertical: true, accelerated: true,
