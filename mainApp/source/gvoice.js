@@ -620,12 +620,17 @@ enyo.kind({
         }
         if(!Platform.isLargeScreen())
         {
-            enyo.log("leftPane history=", this.$.leftPane.history.length);
+            /*enyo.log("leftPane history=", this.$.leftPane.history.length);
             enyo.log("rightPane history=", this.$.rightPane.history.length);
             enyo.log("slider history=", this.$.slidingPane.history.length);
-            
+            enyo.log("slidingpane view=", this.$.slidingPane.getViewName());
+            enyo.log("rightpane view=", this.$.rightPane.getViewName());*/
             //var backpane = this.$.slidingPane.getView() == this.$.left ? this.$.leftPane : this.$.rightPane;
-            var backpane = this.$.leftPane;
+            var backpane;
+            if(this.$.slidingPane.getView() == this.$.right && this.$.rightPane.getView() == this.$.contactsView)
+                backpane = this.$.slidingPane;
+            else
+                backpane = this.$.leftPane;
             if(backpane.history.length == 0)
                 backpane = this.$.slidingPane;
             if(backpane.history.length > 0)
@@ -1860,8 +1865,8 @@ enyo.kind({
         /*this.log(inEvent, inEvent.cancelable);
         if(typeof blackberry !== "undefined" && inEvent.cancelable)
             return;*/
-        this.LeftPaneView = 1 - this.LeftPaneView;
-        //this.log("selecting " + this.LeftPaneView);
+        this.LeftPaneView = 1 - this.$.leftPane.getViewIndex();
+        this.log("selecting " + this.LeftPaneView);
         this.$.leftPane.selectViewByIndex(this.LeftPaneView);
         if(!Platform.hasBack() && this.LeftPaneView == 1)
         {
