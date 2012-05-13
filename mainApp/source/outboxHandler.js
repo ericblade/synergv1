@@ -156,7 +156,7 @@ enyo.kind( {
     },
     SMSFailed: function()
     {
-        this.log();
+        this.log("SMSFailed");
         if(!timer || timer == 0 && enyo.application.mainApp.Online) {
             enyo.windows.addBannerMessage("Message Queued", '{}', "images/google-voice-icon24.png", "")
             this.startTimer();

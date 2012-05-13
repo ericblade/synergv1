@@ -4,23 +4,23 @@ enyo.kind({
 	kind: "Component",
     windowActivated: function()
     {
-        enyo.log();
+        enyo.log("windowActivated");
         enyo.application.mainApp.isForeground = true;
         enyo.application.mainApp.restartTimedRetrieval();
     },
     windowDeactivated: function()
     {
-        enyo.log();
+        enyo.log("windowDeactivated");
         enyo.application.mainApp.isForeground = false;
         enyo.application.mainApp.restartTimedRetrieval();
     },
     onDbSuccess: function(inSender, inResponse)
 	{
-		enyo.log(inResponse);
+		enyo.log("onDbSuccess", inResponse);
 	},
 	onDbFailure: function(inSender, inResponse)
 	{
-		enyo.log(inResponse);
+		enyo.log("onDbFailure", inResponse);
 	},
 	outboxMessage: function(inSender, inResponse)
 	{
@@ -57,15 +57,15 @@ enyo.kind({
 			//if(enyo.application.mainApp)
 			//    enyo.application.mainApp.$.outbox.timedMessageSend();
 		}
-		enyo.log(inResponse);
+		enyo.log("outboxMessage", inResponse);
 	},
 	watchFail: function(inSender, inResponse)
 	{
-		enyo.log(inResponse);
+		enyo.log("watchFail", inResponse);
 	},
-	dbFailure: function(inSender, inResponse) { enyo.log(inResponse); },
-	delSuccess: function(inSender, inResponse) { enyo.log(inResponse); },
-	mergeStatusSuccess: function(inSender, inResponse) { enyo.log(inResponse); },
+	dbFailure: function(inSender, inResponse) { enyo.log("dbFailure", inResponse); },
+	delSuccess: function(inSender, inResponse) { enyo.log("delSuccess", inResponse); },
+	mergeStatusSuccess: function(inSender, inResponse) { enyo.log("mergeStatusSuccess", inResponse); },
 	components: [
             { name: "api", kind: "GoogleVoiceAPI", onLoggedIn: "LoggedIn" },
             { kind: "WebService", onFailure: "webFailure", components:
@@ -120,17 +120,17 @@ enyo.kind({
 	},
 	querySynergyAccount: function()
 	{
-		enyo.log();
+		enyo.log("querySynergyAccount");
 		this.$.GetSynergyAccount.call({ accountId: prefs.get("synergyAccount") });
 	},
 	synergyAccountInfoFail: function(inSender, res)
 	{
-		enyo.log(res);
+		enyo.log("synergyAccountInfoFail", res);
 		this.createSynergyAccount();
 	},
 	synergyAccountReceived: function(inSender, res)
 	{
-		enyo.log(res);
+		enyo.log("synergyAccountReceived", res);
 		if(res.result.beingDeleted)
 		    this.createSynergyAccount();
 		else {
@@ -155,7 +155,7 @@ enyo.kind({
 			"username":"(configure in GVoice app)","alias":"Google Voice","beingDeleted":false,
 			"capabilityProviders":[{"id":"com.ericblade.googlevoiceapp.sms","capability":"PHONE"}],
 			"_id":"++Hs9+gGfJF3eKSa"},"returnValue":true} */
-		enyo.log(res);
+		enyo.log("synergyAccountCreated", res);
 		this.SynergyAccount = res.result["_id"];
 		prefs.set("synergyAccount", this.SynergyAccount);
 		enyo.log("***************** SYNERGY ACCOUNT ID=", this.SynergyAccount);
@@ -174,7 +174,7 @@ enyo.kind({
 	synergyAccountFailed: function(inSender, res)
 	{
 		/*  {"errorText":"Unable to create a duplicate account","errorCode":"DUPLICATE_ACCOUNT","exception":"[object Object]","returnValue":false}, */
-		enyo.log(res);
+		enyo.log("synergyAccountFailed", res);
 	},
 	create: function (inSender, inEvent) {
         //this.USESYNERGY = true;
@@ -392,7 +392,7 @@ enyo.kind({
         sendMessageToApp: function() {
             //if(enyo.application.mainAppWindow && enyo.application.mainAppWindow.name)
             //    enyo.application.mainAppWindow.postMessage("retrieveInbox", "*");
-			enyo.log();
+			enyo.log("sendMessageToApp");
 			enyo.application.quickMessageCheck = true;
 			enyo.application.launcher.checkNewMessages();
         },
@@ -469,7 +469,7 @@ enyo.kind({
     {
 		var ignoreid = msgid.substr(-5) + (typeof msgtext == "string" ? msgtext.substr(-5) : "vm?"); // just use the last 5 characters of the id and the text .. hopefully will work
 		
-        enyo.log();
+        enyo.log("actuallyPostNotification");
 		/* Initialize some junk we need */
 		if(!this.NotificationDashboards)
 			this.NotificationDashboards = { };
@@ -645,13 +645,13 @@ enyo.kind({
         enyo.log(enyo.application.quickMessageCheck);
         if(enyo.application.quickMessageCheck)
         {
-			enyo.log();
+			enyo.log("LoggedIn");
             this.checkNewMessages();
         }
     },
     checkNewMessages: function()
     {
-        enyo.log();
+        enyo.log("checkNewMessages");
         if(!prefs.get("autoCheckNewMessages"))
         {
             return;
@@ -676,7 +676,7 @@ enyo.kind({
     },
     InboxFailed: function(inSender, inResponse)
     {
-        enyo.log(inResponse);
+        enyo.log("InboxFailed", inResponse);
         if(inResponse.indexOf("Unauthorized") > -1 && inResponse.indexOf("Error 401") > -1)
         {
             this.doLogin(prefs.get("gvUsername"), prefs.get("gvPassword"));   
@@ -840,7 +840,7 @@ enyo.kind({
 	},
 	findFail: function(inSender, inResponse, inQuery)
 	{
-		enyo.log(inResponse);
+		enyo.log("findFail", inResponse);
 		enyo.log("did not find anything matching, attempting insert of ", inQuery.insert);
 	},
     displayNameOrNumber: function(index)
@@ -874,7 +874,7 @@ enyo.kind({
             }
             prefs.set("gvUsername", username);
             prefs.set("gvPassword", password);
-            enyo.log();
+            enyo.log("doLogin");
             this.$.getLogin.call(params);
         }
         prefs.set("gvUsername", username);
@@ -899,7 +899,7 @@ enyo.kind({
         
         enyo.setCookie("SID", this.SID, { "Max-Age": -1 });
         enyo.setCookie("LSID", this.LSID, { "Max-Age": -1 });
-        enyo.log();
+        enyo.log("LoginReceived checkNewMessages");
         this.checkNewMessages();
         //this.RetrieveInbox("Inbox");
         //this.RetrievePrimaryData();
@@ -955,7 +955,7 @@ enyo.kind({
         this.Messages = [];
         this.MessageIndex = [];
         this.selectedID = "";
-        enyo.log();
+        enyo.log("create");
         enyo.loggingIn = false;
         enyo.application.api = this;
     },
@@ -965,7 +965,7 @@ enyo.kind({
         var pass = prefs.get("gvPassword");
         if(!username || !pass)
             return;
-        enyo.log();
+        enyo.log("ready");
         enyo.loggingIn = true;
         this.$.gvLogoutMobile.call(); // make sure we're getting a fresh login
         enyo.application.api = this;
@@ -1036,12 +1036,12 @@ enyo.kind({
             rmShown:"1",
             signIn:"Sign in",
         };
-        enyo.log(params);        
+        enyo.log("doMobileLogin", params);        
         this.$.gvLoginMobile.call( params );
     },
     mobileLoginSuccess: function(inSender, inResponse)
     {
-        enyo.log();
+        enyo.log("mobileLoginSuccess");
         this.doLogin(prefs.get("gvUsername"), prefs.get("gvPassword"));
     },
     doLogin: function(username, password)
@@ -1107,7 +1107,7 @@ enyo.kind({
     },
     PrimaryDataReceived: function(inSender, inResponse)
     {
-        enyo.log();
+        enyo.log("PrimaryDataReceived");
         enyo.loggingIn = false;
         this.PrimaryData = ParsePrimaryData(inResponse);
         //enyo.log(this.PrimaryData);
@@ -1119,7 +1119,7 @@ enyo.kind({
     },
     doLogout: function()
     {
-        enyo.log();
+        enyo.log("doLogout");
         enyo.loggingIn = false;
         this.$.gvLogoutMobile.call();
         prefs.del("gvUsername");

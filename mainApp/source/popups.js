@@ -171,7 +171,7 @@ enyo.kind(
             if(inSender.url == "review") {
                 inSender.url = Platform.getReviewURL();
             }
-            this.log(inSender.url);
+            this.log("linkClicked", inSender.url);
             Platform.browser(inSender.url, this)();
             return true;
         },
@@ -430,13 +430,13 @@ enyo.kind(
                 this.$.NotifyTwo.hide();
                 this.$.NotifyThree.hide();
             }
-            this.log(prefs.get("fgRefresh"), prefs.get("bgRefresh"), prefs.get("ttsdisable"), prefs.get("autoCheckNewMessages"),
+            this.log("all prefs=", prefs.get("fgRefresh"), prefs.get("bgRefresh"), prefs.get("ttsdisable"), prefs.get("autoCheckNewMessages"),
                      prefs.get("newMessageNotifyDisable"), prefs.get("ttsNotificationDisable"), prefs.get("ttsAnnounceName"),
                      prefs.get("ttsAnnounceMessages"), prefs.get("smallFonts"), prefs.get("enterSends"));
-            this.$.fgRefreshSlider.setPosition(prefs.get("fgRefresh"));
-            this.$.bgRefreshSlider.setPosition(prefs.get("bgRefresh"));
-            this.$.ttsCheckBox.setChecked(prefs.get("ttsdisable") == false);
-            this.$.autoCheckCheckbox.setChecked(prefs.get("autoCheckNewMessages") == true);
+            this.$.fgRefreshSlider.setPosition(prefs.get("fgRefresh") || 2);
+            this.$.bgRefreshSlider.setPosition(prefs.get("bgRefresh") || 5);
+            this.$.ttsCheckBox.setChecked(prefs.get("ttsdisable") == false || false);
+            this.$.autoCheckCheckbox.setChecked(prefs.get("autoCheckNewMessages") == true || true);
             this.log("******** NEWMESSAGENOTIFYDISABLE=", prefs.get("newMessageNotifyDisable"));
             if(prefs.get("newMessageNotifyDisable") === true)
             {
@@ -447,11 +447,11 @@ enyo.kind(
                 this.$.newMessageNotificationsCheckBox.setChecked(true);
             }
             //this.$.newMessageNotificationsCheckBox.setChecked(prefs.get("newMessageNotifyDisable") == false);
-            this.$.ttsNotificationsCheckBox.setChecked(prefs.get("ttsNotificationDisable") == true);
-            this.$.ttsNameCheckBox.setChecked(prefs.get("ttsAnnounceName") == true);
-            this.$.ttsMessageCheckBox.setChecked(prefs.get("ttsAnnounceMessages") == true);
-            this.$.smallFontsCheckBox.setChecked(prefs.get("smallFonts") == true);
-            this.$.enterSendCheckBox.setChecked(prefs.get("enterSends") == true);
+            this.$.ttsNotificationsCheckBox.setChecked(prefs.get("ttsNotificationDisable") == true || false);
+            this.$.ttsNameCheckBox.setChecked(prefs.get("ttsAnnounceName") == true || false);
+            this.$.ttsMessageCheckBox.setChecked(prefs.get("ttsAnnounceMessages") == true || false);
+            this.$.smallFontsCheckBox.setChecked(prefs.get("smallFonts") == true || true);
+            this.$.enterSendCheckBox.setChecked(prefs.get("enterSends") == true || true);
         },
         closePopup: function()
         {
@@ -580,7 +580,7 @@ enyo.kind({
     ],
     dialpadClick: function(inSender, inEvent)
     {
-        this.log(inSender, inEvent);
+        this.log("dialpadClick", inSender, inEvent);
         this.doDialpadClick(inSender.content.substring(0, 1));
         inEvent.stopPropagation();
         return true;
@@ -628,17 +628,17 @@ enyo.kind(
                 { name: "dialpad", kind: "gvoice.dialpad", flex: 1, onDialpadClick: "addNumber", showing: false },                
             ],
             showDialpad: function() {
-                this.log();
+                this.log("showDialpad");
                 if(!Platform.isLargeScreen() && window.PalmSystem) // no dialpad on touchpad.. // TODO: need to figure out how to properly set this up for landscape on phones too .. sigh
                     this.$.dialpad.show();
             },
             hideDialpad: function() {
-                this.log();
+                this.log("hideDialpad");
                 this.$.dialpad.hide();
             },
             addNumber: function(inSender, str)
             {
-                this.log(str);
+                this.log("addNumber", str);
                 // TODO: see if we can figure out how to insert where the caret might be
                 this.$.recipientInput.setValue(this.$.recipientInput.getValue() + str);
             },
@@ -758,7 +758,7 @@ enyo.kind({
         },
         addContact: function()
         {
-            this.log();
+            this.log("addContact");
             this.doAddContact(this.$.contactName.getValue(), this.$.contactNumber.getValue(), this.$.phonePicker.getValue());
         }
 });
@@ -847,7 +847,7 @@ enyo.kind(
             phoneSelect: function(inSender, inValue)
             {
                 var phones = enyo.application.mainApp.getPhones();
-                this.log(inSender +" " + inValue);
+                this.log("phoneSelect", inSender +" " + inValue);
                 for(id in phones)
                 {
                     if(phones[id].name == inValue)
