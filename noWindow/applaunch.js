@@ -317,6 +317,7 @@ enyo.kind({
 			if(!prefs.get("autoCheckNewMessages"))
 			    return;
             var interval = enyo.application.mainApp.isForeground ? prefs.get("fgRefresh") : prefs.get("bgRefresh");
+			if(interval < 1) interval = 1;
             if(!this.timerInterval || this.timerInterval === 0)
                 this.timerInterval = setInterval(this.sendMessageToApp, 60 * interval * 1000);
         },
