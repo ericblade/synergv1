@@ -618,15 +618,23 @@ enyo.kind({
             this.backClosedPopup = false;
             return -1;
         }
-        var backpane = this.$.slidingPane.getView() == this.$.left ? this.$.leftPane : this.$.rightPane;
-        if(backpane.history.length == 0)
-            backpane = this.$.slidingPane;
-        if(backpane.history.length > 0)
+        if(!Platform.isLargeScreen())
         {
-            backpane.back();
-            inEvent.stopPropagation();
-            inEvent.preventDefault();
-            return -1;
+            enyo.log("leftPane history=", this.$.leftPane.history.length);
+            enyo.log("rightPane history=", this.$.rightPane.history.length);
+            enyo.log("slider history=", this.$.slidingPane.history.length);
+            
+            //var backpane = this.$.slidingPane.getView() == this.$.left ? this.$.leftPane : this.$.rightPane;
+            var backpane = this.$.leftPane;
+            if(backpane.history.length == 0)
+                backpane = this.$.slidingPane;
+            if(backpane.history.length > 0)
+            {
+                backpane.back();
+                inEvent.stopPropagation();
+                inEvent.preventDefault();
+                return -1;
+            }
         }
         if(Platform.isAndroid())
         {
@@ -667,6 +675,7 @@ enyo.kind({
             if(!Platform.isLargeScreen())
                 this.$.PhoneToolButtons.show();
         }
+        this.$.rightPane.history.length = 0;
         this.$.conversationHeader.setLayoutKind("VFlexLayout"); // TODO: I want this only on Phone, but I think it's going to require layout changes to conversationStar area
         //if(Platform.isLargeScreen())
         //{
@@ -776,6 +785,7 @@ enyo.kind({
         {
             //this.log("selecting overview");
             this.$.rightPane.selectViewByName("overviewView");
+            this.$.rightPane.history.length = 0;
         }
         this.$.contactsButton.setCaption("");
         this.$.contactsButton.setIcon((!window.PalmSystem) ? "mainApp/images/contacts2.png" : "images/contacts2.png");
@@ -1040,9 +1050,7 @@ enyo.kind({
         //this.log();
         if(this.$.rightPane.getViewName() == "conversationScroller")
         {
-            enyo.error("scrollToNew");
-            //this.$.conversationScroller.scrollToBottom();
-            this.$.conversationScroller.scrollIntoView(1e99, 1e99);
+            this.$.conversationScroller.scrollToBottom();
         }
         else
             this.$.overviewScroller.scrollTo(0,0);
@@ -1055,9 +1063,7 @@ enyo.kind({
         //this.$.conversationScroller.scrollTo(this.$.conversationScroller.getBoundaries().bottom, 0);
         if(this.$.rightPane.getViewName() == "conversationScroller")
         {
-            enyo.error("scrollRightToBottom");
-            this.$.conversationScroller.scrollIntoView(1e99, 1e99);
-            //this.$.conversationScroller.scrollToBottom();
+            this.$.conversationScroller.scrollToBottom();
         }
         else
             this.$.overviewScroller.scrollToBottom();
@@ -2405,7 +2411,6 @@ enyo.kind({
                     case "conversationView":
                         this.$.PhoneTabs.setValue(2);
                         //this.$.conversationScroller.scrollTo(this.$.conversationScroller.getBoundaries().bottom, 0);
-                        enyo.error("viewChange 1");
                         this.$.conversationScroller.scrollToBottom();
                         break;
                     default:
@@ -2421,7 +2426,6 @@ enyo.kind({
         }
         if(inNewView == this.$.conversationView && !this.$.PhoneTabs)
         {
-            enyo.error("viewChange 2");
             this.$.conversationScroller.scrollToBottom();
         }
     }
