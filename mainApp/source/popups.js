@@ -278,7 +278,7 @@ enyo.kind(
                             { kind: "HFlexBox", components:
                                 [
                                     { kind: "Spacer", },
-                                    { name: "bgSliderLabel", kind: "HtmlContent", allowHtml: true, align: "center", content: (prefs.get("bgRefresh") > 0 ? prefs.get("bgRefresh") : 2) + "&nbsp;" + pluralize("minute", prefs.get("bfRefresh")), },
+                                    { name: "bgSliderLabel", kind: "HtmlContent", allowHtml: true, align: "center", content: (prefs.get("bgRefresh") > 0 ? prefs.get("bgRefresh") : 5) + "&nbsp;" + pluralize("minute", prefs.get("bfRefresh")), },
                                     { kind: "Spacer" },
                                 ]
                             },
