@@ -1025,28 +1025,42 @@ enyo.kind({
     },
     scrollRightToTop: function() {
         //this.$.rightScroller.scrollTo(0,0);
-        this.$.conversationScroller.scrollTo(0,0);
-        this.$.overviewScroller.scrollTo(0,0);
+        if(this.$.rightPane.getViewName() == "conversationScroller")
+            this.$.conversationScroller.scrollTo(0,0);
+        else
+            this.$.overviewScroller.scrollTo(0,0);
     },
     scrollLeftToBottom: function()
     {
-        //this.$.indexView.scrollToBottom();
-        this.$.indexView.scrollTo(this.$.indexView.getBoundaries().bottom, 0);
+        this.$.indexView.scrollToBottom();
+        //this.$.indexView.scrollTo(this.$.indexView.getBoundaries().bottom, 0);
     },
     scrollToNew: function() {
         //this.$.rightScroller.scrollToBottom();
         //this.log();
-        //this.$.conversationScroller.scrollToBottom();
-        this.$.conversationScroller.scrollTo(this.$.conversationScroller.getBoundaries().bottom, 0);
-        this.$.overviewScroller.scrollTo(0,0);
+        if(this.$.rightPane.getViewName() == "conversationScroller")
+        {
+            enyo.error("scrollToNew");
+            //this.$.conversationScroller.scrollToBottom();
+            this.$.conversationScroller.scrollIntoView(1e99, 1e99);
+        }
+        else
+            this.$.overviewScroller.scrollTo(0,0);
     },
     scrollRightToBottom: function()
     {
          // TODO: make sure this function only affects the view that we are actually in.. derp derp.
         //this.$.rightScroller.scrollToBottom();
         //this.$.conversationScroller.scrollToBottom();
-        this.$.conversationScroller.scrollTo(this.$.conversationScroller.getBoundaries().bottom, 0);
-        this.$.overviewScroller.scrollToBottom();
+        //this.$.conversationScroller.scrollTo(this.$.conversationScroller.getBoundaries().bottom, 0);
+        if(this.$.rightPane.getViewName() == "conversationScroller")
+        {
+            enyo.error("scrollRightToBottom");
+            this.$.conversationScroller.scrollIntoView(1e99, 1e99);
+            //this.$.conversationScroller.scrollToBottom();
+        }
+        else
+            this.$.overviewScroller.scrollToBottom();
     },
     InboxClick: function(inSender, inEvent)
     {
@@ -1108,6 +1122,7 @@ enyo.kind({
             this.$.InboxButton.setActive(true);
         if(!type || type === "")
             type = this.$.boxPicker.getValue();
+        if(!type) type = "Unread";
         type = type.toLowerCase();
         //this.debugLog("Retrieving "+type+" https://www.google.com/voice/inbox/recent/" + type);
         if(type == "search" && this.messageSearch) {
@@ -1409,7 +1424,7 @@ enyo.kind({
         this.$.quickComposeInput.setDisabled(false);
         this.$.quickComposeInput.setHint("Enter Message");
         
-        this.scrollToNew();
+        //this.scrollToNew();
     },
     displayNameOrNumber: function(index)
     {
@@ -2389,7 +2404,9 @@ enyo.kind({
                         break;
                     case "conversationView":
                         this.$.PhoneTabs.setValue(2);
-                        this.$.conversationScroller.scrollTo(this.$.conversationScroller.getBoundaries().bottom, 0);
+                        //this.$.conversationScroller.scrollTo(this.$.conversationScroller.getBoundaries().bottom, 0);
+                        enyo.error("viewChange 1");
+                        this.$.conversationScroller.scrollToBottom();
                         break;
                     default:
                         this.$.PhoneTabs.setValue(10);
@@ -2402,8 +2419,9 @@ enyo.kind({
                 this.$.PhoneTabs.setValue(2);
             }
         }
-        if(inNewView == this.$.conversationView)
+        if(inNewView == this.$.conversationView && !this.$.PhoneTabs)
         {
+            enyo.error("viewChange 2");
             this.$.conversationScroller.scrollToBottom();
         }
     }
