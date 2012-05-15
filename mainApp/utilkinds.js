@@ -214,7 +214,7 @@ enyo.kind({
         
         if(message)
         {
-            if(prefs.get("smallFonts") && !this.$.listItem.hasClass("enyo-item-secondary"))
+            if(prefs.get("smallFonts") === true && !this.$.listItem.hasClass("enyo-item-secondary"))
             {
                 this.$.listItem.addClass("enyo-item-secondary");
             }

@@ -321,7 +321,7 @@ enyo.kind(
                             { kind: "Item", layoutKind: "HFlexLayout", components:
                                 [
                                     { content: "Use Small Fonts", flex: 1, },
-                                    { name: "smallFontsCheckBox", kind: "CheckBox", onclick: "NotifyRestart" },
+                                    { name: "smallFontsCheckBox", checked: prefs.get("smallFonts"), kind: "CheckBox", onclick: "NotifyRestart" },
                                 ]
                             }
                         ]
@@ -435,8 +435,14 @@ enyo.kind(
                      prefs.get("ttsAnnounceMessages"), prefs.get("smallFonts"), prefs.get("enterSends"));
             this.$.fgRefreshSlider.setPosition(prefs.get("fgRefresh") || 2);
             this.$.bgRefreshSlider.setPosition(prefs.get("bgRefresh") || 5);
-            this.$.ttsCheckBox.setChecked(prefs.get("ttsdisable") == false || false);
-            this.$.autoCheckCheckbox.setChecked(prefs.get("autoCheckNewMessages") == true || true);
+            if(prefs.get("ttsdisable") === true)
+                this.$.ttsCheckBox.setChecked(true);
+            else
+                this.$.ttsCheckBox.setChecked(false);
+            if(prefs.get("autoCheckNewMessages") === true)
+                this.$.autoCheckCheckbox.setChecked(true);
+            else
+                this.$.autoCheckCheckbox.setChecked(false);
             this.log("******** NEWMESSAGENOTIFYDISABLE=", prefs.get("newMessageNotifyDisable"));
             if(prefs.get("newMessageNotifyDisable") === true)
             {
@@ -447,11 +453,21 @@ enyo.kind(
                 this.$.newMessageNotificationsCheckBox.setChecked(true);
             }
             //this.$.newMessageNotificationsCheckBox.setChecked(prefs.get("newMessageNotifyDisable") == false);
-            this.$.ttsNotificationsCheckBox.setChecked(prefs.get("ttsNotificationDisable") == true || false);
+            if(prefs.get("ttsNotificationDisable") === true)
+                this.$.ttsNotificationsCheckBox.setChecked(true);
+            else
+                this.$.ttsNotificationsCheckBox.setChecked(false);
             this.$.ttsNameCheckBox.setChecked(prefs.get("ttsAnnounceName") == true || false);
             this.$.ttsMessageCheckBox.setChecked(prefs.get("ttsAnnounceMessages") == true || false);
-            this.$.smallFontsCheckBox.setChecked(prefs.get("smallFonts") == true || true);
-            this.$.enterSendCheckBox.setChecked(prefs.get("enterSends") == true || true);
+            enyo.log("smallFonts=", prefs.get("smallFonts"));
+            if(prefs.get("smallFonts") === true)
+                this.$.smallFontsCheckBox.setChecked(true);
+            else
+                this.$.smallFontsCheckBox.setChecked(false);
+            if(prefs.get("enterSends") === true)
+                this.$.enterSendCheckBox.setChecked(true);
+            else
+                this.$.enterSendCheckBox.setChecked(false);
         },
         closePopup: function()
         {
@@ -470,7 +486,7 @@ enyo.kind(
                 prefs.set("ttsNotificationDisable", this.$.ttsNotificationsCheckBox.checked);
                 prefs.set("ttsAnnounceName", this.$.ttsNameCheckBox.checked);
                 prefs.set("ttsAnnounceMessages", this.$.ttsMessageCheckBox.checked);
-                prefs.set("smallFonts", this.$.smallFontsCheckBox.checked);
+                prefs.set("smallFonts", this.$.smallFontsCheckBox.checked == true);
                 prefs.set("newMessageNotifyDisable", this.$.newMessageNotificationsCheckBox.checked == false);
                 prefs.set("enterSends", this.$.enterSendCheckBox.checked);
                 prefs.set("defaultBox", this.$.defaultBoxPicker.getValue());

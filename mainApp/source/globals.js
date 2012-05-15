@@ -24,7 +24,9 @@ prefs = {
     },
     def: function(prop, setting)
     {
-        if(prefs.get(prop) === undefined)
+        var x = prefs.get(prop);
+        enyo.log("def", prop, x, setting);
+        if( (!isNaN(x) && isNaN(setting)) || x === undefined)
             prefs.set(prop, setting);
     }
 };

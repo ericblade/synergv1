@@ -573,7 +573,8 @@ enyo.kind({
     },
     speak: function(str)
     {
-        if(prefs.get("ttsdisable") != -1 && this.ttsPluginReady && this.ringerStatus)
+        enyo.log("********* SPEAK: ", prefs.get("ttsdisable"), this.ttsPluginReady, this.ringerStatus);
+        if( (prefs.get("ttsdisable") !== true) && this.ttsPluginReady && this.ringerStatus)
         {
             try {
                 this.$.ttsPlugin.callPluginMethodDeferred(null, "playAudio", str);    
@@ -1566,7 +1567,7 @@ enyo.kind({
                 this.$.IndexImage.setSrc(msgindex.Portrait.src);
             }
             
-            if(prefs.get("smallFonts") == 1)
+            if(prefs.get("smallFonts") === true)
             {
                 indexname.addClass("enyo-item-secondary");
             }
@@ -1616,7 +1617,7 @@ enyo.kind({
                 {    
                     inSender.messageId = messages.id;
                     
-                    if(!messagefield.hasClass("enyo-item-secondary") && prefs.get("smallFonts"))
+                    if(!messagefield.hasClass("enyo-item-secondary") && prefs.get("smallFonts") === true)
                     {
                         messagefield.addClass("enyo-item-secondary");
                     }

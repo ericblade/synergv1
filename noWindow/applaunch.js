@@ -498,12 +498,17 @@ enyo.kind({
 				this.NotificationDashboards[0].push(this.NotificationDashboards[msgid]);
 				enyo.error("Playing alert", this.getAlertPath());
 				enyo.windows.addBannerMessage(msg, '{}', "mainApp/images/google-voice-icon24.png", "", this.getAlertPath());
-				if(enyo.application.mainApp && prefs.get("ttsNotificationDisable", true) != 1) // TODO: can't speak until mainApp is loaded :(
+				enyo.log("***** NOTIFICATION : TTS DISABLE", prefs.get("ttsNotificationDisable"), enyo.application.mainApp, (enyo.application.mainApp !== undefined && prefs.get("ttsNotificationDisable") !== false ));
+				if((enyo.application.mainApp !== undefined && prefs.get("ttsNotificationDisable") !== false ) ) // TODO: can't speak until mainApp is loaded :(
 				{
-					enyo.application.mainApp.speak( prefs.get("ttsAnnounceName") === true ? msg : nonamemsg );
-					if(prefs.get("ttsAnnounceMessages") === true && msgtext && msgtext != "")
+					if(prefs.get("ttsNotificationDisable") !== true)
 					{
-						enyo.application.mainApp.speak(msgtext); // TODO: Move the speech plugin to here ... 
+						enyo.log("***** TTS ATTEMPTING TO SPEAK");
+						enyo.application.mainApp.speak( prefs.get("ttsAnnounceName") === true ? msg : nonamemsg );
+						if(prefs.get("ttsAnnounceMessages") === true && msgtext && msgtext != "")
+						{
+							enyo.application.mainApp.speak(msgtext); // TODO: Move the speech plugin to here ... 
+						}
 					}
 				}
 				enyo.log("************************ NOTIFICATION POSTED ******************** ");
