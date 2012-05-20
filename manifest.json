@@ -1,6 +1,6 @@
 ﻿{
     "name": "GVoice for Google Chrome™",
-    "version": "1.0.8.1",
+    "version": "1.0.8.2",
     "description": "A Google Voice™ SMS client and manager application for use with Google Chrome™",
     "icons": {
         "16": "mainApp/images/google-voice-icon16.png",
@@ -16,6 +16,6 @@
             "local_path": "index-chrome.html"
         }
     },
-    "permissions": ["tabs", "https://www.google.com/", "https://voice.google.com/", "http://google.com/", "https://www.google.com/", "https://accounts.google.com/" ],
+    "permissions": ["notifications", "unlimitedStorage", "tabs", "https://www.google.com/", "https://voice.google.com/", "http://google.com/", "https://www.google.com/", "https://accounts.google.com/" ],
     "homepage_url": "http://www.ericbla.de/gvoice-webos"
 }
