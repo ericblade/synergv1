@@ -13,7 +13,7 @@
     },
     "app": {
         "launch": {
-            "local_path": "mainApp/index.html"
+            "local_path": "index-chrome.html"
         }
     },
     "homepage_url": "http://www.ericbla.de/gvoice-webos"
