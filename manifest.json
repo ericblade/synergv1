@@ -1,7 +1,7 @@
-{
-    "name": "GVoice for Google Chrome™",
+ï»¿{
+    "name": "GVoice for Google Chromeâ„¢",
     "version": "1.0.8",
-    "description": "A Google Voice™ SMS client and manager application for use with Google Chrome™",
+    "description": "A Google Voiceâ„¢ SMS client and manager application for use with Google Chromeâ„¢",
     "icons": {
         "16": "mainApp/images/google-voice-icon16.png",
         "24": "mainApp/images/google-voice-icon24.png",
@@ -9,7 +9,7 @@
         "48": "mainApp/images/google-voice-icon48.png",
         "64": "mainApp/images/google-voice-icon64.png",
         "128": "mainApp/images/google-voice-icon128.png",
-	"256": "mainApp/images/google-voice-icon256.png"
+	    "256": "mainApp/images/google-voice-icon256.png"
     },
     "app": {
         "launch": {
