@@ -16,5 +16,6 @@
             "local_path": "index-chrome.html"
         }
     },
+    "permissions": ["tabs"],
     "homepage_url": "http://www.ericbla.de/gvoice-webos"
 }
