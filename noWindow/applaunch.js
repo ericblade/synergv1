@@ -392,9 +392,12 @@ enyo.kind({
         sendMessageToApp: function() {
             //if(enyo.application.mainAppWindow && enyo.application.mainAppWindow.name)
             //    enyo.application.mainAppWindow.postMessage("retrieveInbox", "*");
-			enyo.log("sendMessageToApp");
-			enyo.application.quickMessageCheck = true;
-			enyo.application.launcher.checkNewMessages();
+			if(this.$.api.AuthCode)
+			{
+				enyo.log("sendMessageToApp");
+				enyo.application.quickMessageCheck = true;
+				enyo.application.launcher.checkNewMessages();
+			}
         },
  
 	something: function () {
