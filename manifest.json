@@ -1,0 +1,22 @@
+{
+    "name": "GVoice-Chrome",
+    "version": "1.0.8",
+    "manifest_version": 2,
+    "description": "A Google Voice client for Chrome",
+    "icons": {
+        "16": "mainApp/images/google-voice-icon16.png",
+        "24": "mainApp/images/google-voice-icon24.png",
+        "32": "mainApp/images/google-voice-icon32.png",
+        "48": "mainApp/images/google-voice-icon48.png",
+        "64": "mainApp/images/google-voice-icon64.png",
+        "128": "mainApp/images/google-voice-icon128.png",
+	"256": "mainApp/images/google-voice-icon256.png"
+    },
+    "app": {
+        "launch": {
+            "local_path": "mainApp/index.html"
+        }
+    },
+    "homepage_url": "http://www.ericbla.de/gvoice-webos",
+    "minimum_chrome_version": "17.0"
+}
