@@ -325,6 +325,8 @@ enyo.kind({
         setAlarm: function() // TODO: need to make this accept an incoming time, and set "in" to that
         {
 			var bg = prefs.get("bgRefresh");
+			if(bg === undefined)
+			    bg = 5;
 			var time = (bg < 5) ? "00:05:00" : secondsToTime(bg * 60);
 			/*if(bg < 5) {
 				if(bg < 4) bg = 4;
