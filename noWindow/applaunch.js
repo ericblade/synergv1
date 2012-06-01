@@ -506,10 +506,18 @@ enyo.kind({
 					if(prefs.get("ttsNotificationDisable") !== true)
 					{
 						enyo.log("***** TTS ATTEMPTING TO SPEAK");
-						enyo.application.mainApp.speak( prefs.get("ttsAnnounceName") === true ? msg : nonamemsg );
-						if(prefs.get("ttsAnnounceMessages") === true && msgtext && msgtext != "")
-						{
-							enyo.application.mainApp.speak(msgtext); // TODO: Move the speech plugin to here ... 
+						if(typeof chrome !== undefined && chrome.tts) {
+							chrome.tts.speak(prefs.get("ttsAnnounceName") === true ? msg : nonamemsg);
+							if(prefs.get("ttsAnnounceMessages") === true && msgtext && msgtext != "")
+							{
+								chrome.tts.speak(msgtext); // TODO: Move the speech plugin to here ... 
+							}
+						} else {
+							enyo.application.mainApp.speak( prefs.get("ttsAnnounceName") === true ? msg : nonamemsg );
+							if(prefs.get("ttsAnnounceMessages") === true && msgtext && msgtext != "")
+							{
+								enyo.application.mainApp.speak(msgtext); // TODO: Move the speech plugin to here ... 
+							}
 						}
 					}
 				}
