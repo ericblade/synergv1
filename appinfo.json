@@ -27,5 +27,6 @@
     "id": "com.ericblade.googlevoiceapp",
     "tapToShareSupported": false,
     "appWorldId": "86606",
+    "chromeAppId": "obpljmpleobggclmlondpjfekjepojbe",
     "plug-ins": true
 }
