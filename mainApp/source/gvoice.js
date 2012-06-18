@@ -472,7 +472,7 @@ enyo.kind({
                                         },
                                     ]
                                 },
-                                { name: "overviewView", style: "background: black;", kind: "VFlexBox", components:
+                                { name: "overviewView", className: "overview", kind: "VFlexBox", components:
                                     [
                                         { kind: "Header", className: "pane-header", onclick: "scrollRightToTop", components:
                                             [
