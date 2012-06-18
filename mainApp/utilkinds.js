@@ -147,7 +147,7 @@ enyo.kind({
                             [
                                 { name: "timestampleft", kind: "HtmlContent", style: "padding-right: 5px;", allowHtml: false, className: "enyo-item-ternary", showing: false },
                                 { name: "listItem", kind: "HtmlContent", flex: 1, allowHtml: true, onLinkClick: "linkClicked", },
-                                { name: "timestamp", kind: "HtmlContent", allowHtml: false, className: "enyo-item-ternary", },
+                                { name: "timestamp", kind: "HtmlContent", allowHtml: false, style: "padding-left: 5px;", className: "enyo-item-ternary", },
                             ]
                         },
                     ]
