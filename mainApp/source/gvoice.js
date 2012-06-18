@@ -493,7 +493,7 @@ enyo.kind({
                                                                     ]
                                                                 },
                                                                 { kind: "messageListRepeater", onMessageClick: "listItemClick", onLinkClick: "linkClicked" },
-                                                                { kind: "Item", content: " " },
+                                                                //{ kind: "Item", content: " " },
                                                             ],
                                                         },
                                                     ]
