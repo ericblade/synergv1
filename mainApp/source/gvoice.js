@@ -460,6 +460,7 @@ enyo.kind({
                                                         { kind: "Item", layoutKind: "VFlexLayout", className: "noborders", components:
                                                             [
                                                                 { name: "messagefield", kind: "HFlexBox", className: "gvoice-inbox-message", components: [
+                                                                        { name: "sentTimeLeft", kind: "HtmlContent", allowHtml: false, style: "padding-right: 5px;", className: "enyo-item-ternary", showing: false },
                                                                         { name: "description", flex: 1, kind: "HtmlContent", allowHtml: true, onLinkClick: "linkClicked"},
                                                                         { name: "sentTime", kind: "HtmlContent", allowHtml: false, style: "padding-right: 10px; padding-left: 5px; max-width: 12%; ", className: "enyo-item-ternary" },
                                                                     ]
@@ -1628,6 +1629,8 @@ enyo.kind({
                         {
                             messagefield.addClass("gvoice-inbox-message-self"); // it's the "primary" color not the alt, at least that's the intent
                         }
+                        this.$.sentTime.setShowing(false);
+                        this.$.sentTimeLeft.setShowing(true);
                     }
                     else
                     {
@@ -1647,6 +1650,7 @@ enyo.kind({
                         str = "Transcript not available.";
                     }
                     this.$.sentTime.setContent(messages[inIndex].SentTime);
+                    this.$.sentTimeLeft.setContent(messages[inIndex].SentTime);
                     this.$.description.setContent(/*"("+messages[inIndex].SentTime + ") " +*/ str);
     
                     return true;
