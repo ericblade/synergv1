@@ -1588,11 +1588,8 @@ enyo.kind({
             this.$.IndexTime.setContent(this.MessageIndex[inIndex].displayStartTime);
             if(!msgindex.isRead)
             {
-                this.$.IndexTime.applyStyle("float: right;");
                 listitem.addClass("gvoice-inbox-message-alt");
-            } else {
-                this.$.IndexTime.applyStyle("float: left;");
-            }
+            } 
             return true;
         }
         return false;
