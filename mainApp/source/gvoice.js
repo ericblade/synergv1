@@ -439,7 +439,7 @@ enyo.kind({
                         useInternalWebView() ? { name: "HackWebViewX", kind: "WebView", height: "1px", width: "1px", showing: false } : { kind: "Component" },
                         { name: "rightPane", flex: 1, onSelectView: "viewChange", kind: "Pane", transitionKind:enyo.transitions.Simple, components:
                             [
-                                { name: "conversationView", kind: "VFlexBox", components:
+                                { name: "conversationView", className: "overview", kind: "VFlexBox", components:
                                     [
                                         { name: "conversationHeader", kind: "Header", className: "pane-header", onclick: "scrollRightToTop", layoutKind: Platform.isLargeScreen() ? "HFlexLayout" : "VFlexLayout", components:
                                             [
