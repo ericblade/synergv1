@@ -1590,6 +1590,8 @@ enyo.kind({
             {
                 this.$.IndexTime.applyStyle("float: right;");
                 listitem.addClass("gvoice-inbox-message-alt");
+            } else {
+                this.$.IndexTime.applyStyle("float: left;");
             }
             return true;
         }
