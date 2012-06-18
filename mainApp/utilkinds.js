@@ -145,7 +145,7 @@ enyo.kind({
                     [
                         { name: "message", kind: "HFlexBox", components:
                             [
-                                { name: "timestampleft", kind: "HtmlContent", allowHtml: false, className: "enyo-item-ternary", showing: false },
+                                { name: "timestampleft", kind: "HtmlContent", style: "padding-right: 5px;", allowHtml: false, className: "enyo-item-ternary", showing: false },
                                 { name: "listItem", kind: "HtmlContent", flex: 1, allowHtml: true, onLinkClick: "linkClicked", },
                                 { name: "timestamp", kind: "HtmlContent", allowHtml: false, className: "enyo-item-ternary", },
                             ]
