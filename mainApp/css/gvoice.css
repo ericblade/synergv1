@@ -36,7 +36,7 @@
 .default .gvoice-header { background-color: #4185D3; height: 64px; padding: 0px; }
 .default .pane-header { height: 64px; background-color: #61A5F3; }
 .default .gvoice-inbox-message { background-color: #CFCFDF; }
-.default .gvoice-inbox-message-alt { background-color: #DFDFFF !important; float: right; }
+.default .gvoice-inbox-message-alt { margin-left: 25%; background-color: #DFDFFF !important; }
 .default .gvoice-inbox-message-self { background-color: #CFCFDF; padding-left: 25px; }
 
 .default .indexitem { padding-left: 3px; padding-right: 1px; margin-right: 1px; margin-left: 0px; background-color: #CFCFDF; }
