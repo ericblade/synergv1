@@ -141,7 +141,7 @@ enyo.kind({
     [
         { kind: "VirtualRepeater", onSetupRow: "renderItem", accelerated: true, onclick: "repeaterClick", components:
             [
-                { kind: "Item", layoutKind: "VFlexLayout", className: "noborders", onclick: "listClick", components:
+                { kind: "Control", layoutKind: "VFlexLayout", className: "noborders", onclick: "listClick", components:
                     [
                         { name: "message", kind: "HFlexBox", components:
                             [
