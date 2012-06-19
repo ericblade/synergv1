@@ -418,7 +418,7 @@ enyo.kind(
             if( (ai && !ai["plug-ins"]) || !enyo.application.mainApp.ttsPluginReady)
                 this.$.TTSGroup.hide();
                 
-            if(typeof chrome !== undefined && chrome.tts)
+            if(typeof chrome !== "undefined" && chrome.tts)
                 this.$.TTSGroup.show();
                 
             if(!Platform.isWebOS())
