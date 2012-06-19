@@ -28,10 +28,13 @@ enyo.kind({
         { kind: "VFlexBox", components:
             [
                 { content: "Thank you for your purchase!" },
+                { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
                 { content: "When the Synergy Messaging Integration is available, expected in July, you will receive further instructions via GVoice." },
+                { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
                 { content: "You may view your purchase receipt information by selecting the 'Receipt' button on the GVoice app menu." },
+                { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
                 { content: "If you have any questions, please don't hesitate to send me an email at blade.eric@gmail.com. Thank you!" },
-                { kind: "Spacer" },
+                { kind: "HtmlContent", flex: 1, allowHtml: true, content: "&nbsp;" },
                 { kind: "Button", caption: "Close", onclick: "close" }
             ]
         }
