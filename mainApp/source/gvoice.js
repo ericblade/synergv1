@@ -749,6 +749,11 @@ enyo.kind({
         console.log("checking firstrun");
         enyo.asyncMethod(this, "checkFirstRun");
     },
+    purchaseSynergy: function(inSender, inEvent)
+    {
+        this.$.PurchaseSynergyPopup.close();
+        this.$.PurchasedPopup.open();
+    },
     checkFirstRun: function() {
         var appInfo;
         if(Platform.isWebOS() && Platform.platformVersion >= 3)

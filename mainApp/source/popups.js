@@ -17,6 +17,28 @@ enyo.kind({
 });
 
 enyo.kind({
+    name: "purchasedPopup",
+    kind: "Popup",
+    height: "80%",
+    width: "95%",
+    modal: true,
+    scrimWhenModal: true,
+    components:
+    [
+        { kind: "VFlexBox", components:
+            [
+                { content: "Thank you for your purchase!" },
+                { content: "When the Synergy Messaging Integration is available, expected in July, you will receive further instructions via GVoice." },
+                { content: "You may view your purchase receipt information by selecting the 'Receipt' button on the GVoice app menu." },
+                { content: "If you have any questions, please don't hesitate to send me an email at blade.eric@gmail.com. Thank you!" },
+                { kind: Spacer },
+                { kind: "Button", caption: "Close", onclick: "close" }
+            ]
+        }
+    ]
+});
+
+enyo.kind({
     name: "ReviewPopup", kind: "Popup", height: "80%", width: "95%", components:
         [
             { kind: "VFlexBox", height: "100%", style: "background-color: #4185D3;", components:
