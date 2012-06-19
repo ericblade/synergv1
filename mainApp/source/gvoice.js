@@ -1420,7 +1420,8 @@ enyo.kind({
             //type = this.displayNameOrNumber(index) + "@" + this.MessageIndex[index].displayStartDateTime;
         }*/
         //this.log("conversationHeader", type);
-        this.$.conversationType.setContent(type);
+        
+        this.$.conversationType.setContent(Platform.isLargeScreen() ? type : "");
         /*if(Platform.isLargeScreen())
             name = " @ " + name;*/
         this.$.conversationName.setContent(name);
