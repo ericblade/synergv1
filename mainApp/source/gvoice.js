@@ -1421,7 +1421,7 @@ enyo.kind({
         }*/
         //this.log("conversationHeader", type);
         
-        this.$.conversationType.setContent(Platform.isLargeScreen() ? type : "");
+        this.$.conversationType.setContent(Platform.isLargeScreen() ? type : (this.displayNameOrNumber(index) + " @ ") );
         /*if(Platform.isLargeScreen())
             name = " @ " + name;*/
         this.$.conversationName.setContent(name);
