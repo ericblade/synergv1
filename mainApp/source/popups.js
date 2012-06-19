@@ -10,10 +10,31 @@ enyo.kind({
     },
     components:
     [
-        { content: "Pre-Purchase SynerGV" },
-        { kind: "Button", caption: "Purchase SynerGV", onclick: "doPurchase" },
-        { kind: "Button", caption: "Maybe Later", onclick: "close" },
-    ]
+        { content: "Attention webOS tablet users! A major new upgrade for GVoice, called SynerGV will be available soon (mid to late July)!" },
+        { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
+        { content: "Much time and effort has been spent into integrating the Google Voice(tm) SMS text service directly to the webOS Messaging application." },
+        { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
+        { content: "I am offering to you, as a loyal GVoice user, the ability to pre-purchase the new SynerGV Messaging Integration at a significantly discounted price" },
+        { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
+        { content: "of only US$1.49. The purchase price for new users, after the release, will be US$4.99. Click the button below for more info, or to purchase." },
+        { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
+        { content: "Purchases will be made via HP's payment system, and a proof of purchase will be sent to the GVoice webOS support SMS number at 9519993267." },
+        { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
+        { content: "You will receive further instructions when SynerGV is available, via GVoice message." },
+        { kind: "HFlexBox", components:
+            [
+                { kind: "Button", caption: "More Info, Please!", onclick: "moreInfo" },
+                { kind: "Button", caption: "Purchase SynerGV", onclick: "doPurchase" },
+                { kind: "Button", caption: "Maybe Later", onclick: "close" },
+            ]
+        },
+    ],
+    moreInfo: function(inSender, inEvent) 
+    {
+        Platform.browser("http://ericbla.de/gvoice-webos/?p=500", this)();
+        return;
+    },
+    
 });
 
 enyo.kind({

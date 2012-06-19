@@ -292,7 +292,7 @@ enyo.kind({
         enyo.log("request method=", inRequest.method);
         switch(inRequest.method) {
             case "getAvailableItems":
-                if(inResponse.itemInfos[0].itemId == "1") {
+                if(inResponse.itemInfos[0].itemId == "1" /*&& inResponse.itemInfos[0].itemStatus.timesPurchased === 0*/) {
                     this.$.PurchaseSynergyPopup.open();
                 }
                 break;
@@ -447,7 +447,7 @@ enyo.kind({
                 { caption: "Debug Log", className: "enyo-grid-div menu-grid", onclick: "debugLogView", lazy: false },
                 //useInternalWebView() ? { caption: "Voice Web View", onclick: "showWebView", lazy: false } : {},
                 { caption: "Logout", className: "enyo-grid-div menu-grid", onclick: "doLogoutMenu", lazy: false, },
-                { caption: "Receipt", className: "enyo-grid-div menu-grid", onclick: "getReceiptInfo", lazy: false, },
+                { name: "ReceiptMenu", caption: "Receipt", className: "enyo-grid-div menu-grid", onclick: "getReceiptInfo", lazy: false, },
             ]
         },
         
@@ -816,6 +816,9 @@ enyo.kind({
     },
     checkFirstRun: function() {
         var appInfo;
+        if(!Platform.isWebOS() || Platform.platformVersion < 3) {
+            this.$.ReceiptMenu.hide();
+        }
         if(Platform.isWebOS() && Platform.platformVersion >= 3)
         {
             this.$.HPPaymentService.call({ includePurchased: false }, { method: "getAvailableItems" });
