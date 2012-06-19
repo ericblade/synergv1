@@ -447,6 +447,7 @@ enyo.kind({
                 { caption: "Debug Log", className: "enyo-grid-div menu-grid", onclick: "debugLogView", lazy: false },
                 //useInternalWebView() ? { caption: "Voice Web View", onclick: "showWebView", lazy: false } : {},
                 { caption: "Logout", className: "enyo-grid-div menu-grid", onclick: "doLogoutMenu", lazy: false, },
+                { name: "PurchaseMenu", caption: "Purchase SynerGV", className: "enyo-grid-div menu-grid", onclick: "openPurchasePopup", lazy: false, },
                 { name: "ReceiptMenu", caption: "Receipt", className: "enyo-grid-div menu-grid", onclick: "getReceiptInfo", lazy: false, },
             ]
         },
@@ -814,10 +815,14 @@ enyo.kind({
         this.$.PurchaseSynergyPopup.close();
         this.$.HPPaymentService.call({ itemId: "1", quantity: 1, vendorData: "GVoice Purchase: 1" }, { method: "purchaseItem" });
     },
+    openPurchasePopup: function(inSender, inEvent) {
+        this.$.PurchaseSynergyPopup.open();
+    },
     checkFirstRun: function() {
         var appInfo;
         if(!Platform.isWebOS() || Platform.platformVersion < 3) {
             this.$.ReceiptMenu.hide();
+            this.$.PurchaseMenu.hide();
         }
         if(Platform.isWebOS() && Platform.platformVersion >= 3)
         {

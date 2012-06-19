@@ -21,6 +21,9 @@ enyo.kind({
         { content: "Purchases will be made via HP's payment system, and a proof of purchase will be sent to the GVoice webOS support SMS number at 9519993267." },
         { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
         { content: "You will receive further instructions when SynerGV is available, via GVoice message." },
+        { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
+        { content: "If you would like to do this later, you may tap the App Menu in the upper-left corner, then select 'Purchase SynerGV'." },        
+        { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
         { kind: "HFlexBox", components:
             [
                 { kind: "Button", caption: "More Info, Please!", onclick: "moreInfo" },
