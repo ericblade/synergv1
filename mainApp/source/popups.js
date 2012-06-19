@@ -26,9 +26,9 @@ enyo.kind({
         { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
         { kind: "HFlexBox", components:
             [
-                { kind: "Button", caption: "More Info, Please!", onclick: "moreInfo" },
-                { kind: "Button", caption: "Purchase SynerGV", onclick: "doPurchase" },
-                { kind: "Button", caption: "Maybe Later", onclick: "close" },
+                { kind: "Button", caption: "More Info, Please!", className: "enyo-button-blue", onclick: "moreInfo" },
+                { kind: "Button", caption: "Purchase SynerGV!", className: "enyo-button-affirmative", onclick: "doPurchase" },
+                { kind: "Button", caption: "Maybe Later", className: "enyo-button-negative", onclick: "close" },
             ]
         },
     ],
