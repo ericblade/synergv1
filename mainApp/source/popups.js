@@ -42,6 +42,24 @@ enyo.kind({
 });
 
 enyo.kind({
+    name: "purchaseError",
+    kind: "Popup",
+    height: "40%",
+    width: "95%",
+    published: {
+        message: "",
+    },
+    components:
+    [
+        { name: "Content", content: "" },
+        { kind: "Button", caption: "Close", onclick: "close" },
+    ],
+    messageChanged: function() {
+        this.$.Content.setContent(this.message);
+    }
+})
+
+enyo.kind({
     name: "ReviewPopup", kind: "Popup", height: "80%", width: "95%", components:
         [
             { kind: "VFlexBox", height: "100%", style: "background-color: #4185D3;", components:

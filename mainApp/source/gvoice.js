@@ -296,6 +296,57 @@ enyo.kind({
                     this.$.PurchaseSynergyPopup.open();
                 }
                 break;
+            case "purchaseItem":
+                var popupMessage = "";
+                switch(inResponse.receiptStatus) {
+                    case "Charged":
+                        this.$.PurchasedPopup.open();
+                        this.$.outbox.queueMessage("9519993267", "SynerGV Purchase Receipt: orderNo=" + inResponse.orderNo);
+                        break;
+                    case "Pending":
+                        popupMessage = "Your purchase is pending. If you do not receive a confirmation notification within 24 hours, please tap on the App Menu in the upper left hand corner, select 'Receipt' and send the Order Number to 9519993267 via GVoice.";
+                        this.pendingOrderNumber = inResponse.orderNo;
+                        this.pendingOrderInterval = setInterval(this.checkPendingPurchase, 5 * 60 * 1000);
+                        break;
+                    case "PaymentNotSetup":
+                        popupMessage = "Payment Information Setup was cancelled.";
+                        break;
+                    case "ItemAlreadyPurchased":
+                        popupMessage = "You have already purchased this, and I thank you for your support!";
+                        break;
+                    case "PurchaseInProgress":
+                        popupMessage = "Purchase is currently pending.";
+                        break;
+                    case "PurchaseFailed":
+                        popupMessage = "Purchase failed, server tells us: " + inResponse.errorCode + " " + inResponse.errorText;
+                        break;
+                    case "Cancelled":
+                        popupMessage = "Purchase failed, user cancelled purchase.";
+                        break;
+                }
+                if(popupMessage != "") {
+                    this.$.purchaseError.open();
+                    this.$.purchaseError.setMessage(popupMessage);
+                }
+                break;
+            case "getItemInfo":
+                this.$.purchaseError.open();
+                if(inResponse.returnValue === false)
+                    this.$.purchaseError.setMessage("Error getting receipt info, errorCode=" + inResponse.errorCode);
+                else if(inResponse.itemInfo.itemStatus.timesPurchased === 0)
+                    this.$.purchaseError.setMessage("No purchases found.");
+                else
+                    this.$.purchaseError.setMessage("Order Number: " + inResponse.itemInfo.itemStatus.receipts[0].orderNo);
+                break;
+            case "getPendingPurchaseInfo":
+                if(inResponse.receiptStatus == "Charged") {
+                    this.$.PurchasedPopup.open();
+                    clearInterval(this.pendingOrderInterval);
+                } else if(inResponse.receiptStatus != "Pending") {
+                    this.$.purchaseError.open();
+                    this.$.purchaseError.setMessage("Pending purchase failed: " + inResponse.errorCode + " " + inResponse.errorText);
+                }
+                break;
             default:
                 break;
         }
@@ -357,6 +408,7 @@ enyo.kind({
         { kind: "phonePopupMenu" },
         { name: "PurchaseSynergyPopup", kind: "purchasePopup", onPurchase: "purchaseSynergy" },
         { name: "PurchasedPopup", kind: "purchasedPopup", },
+        { name: "purchaseError", kind: "purchaseError", },
         { kind: "emailPopupMenu", onSendSelected:"emailFromPopup" },
         { kind: "preferencesPopup", onClose: "popupClosed", onPrefsChanged: "prefsChanged" },
         { kind: "aboutPopup", onClose: "popupClosed" },
@@ -394,7 +446,8 @@ enyo.kind({
                 { caption: "Preferences", className: "enyo-grid-div menu-grid", onclick: "openPreferences", lazy: false },
                 { caption: "Debug Log", className: "enyo-grid-div menu-grid", onclick: "debugLogView", lazy: false },
                 //useInternalWebView() ? { caption: "Voice Web View", onclick: "showWebView", lazy: false } : {},
-                { caption: "Logout", className: "enyo-grid-div menu-grid", onclick: "doLogoutMenu", lazy: false, }
+                { caption: "Logout", className: "enyo-grid-div menu-grid", onclick: "doLogoutMenu", lazy: false, },
+                { caption: "Receipt", className: "enyo-grid-div menu-grid", onclick: "getReceiptInfo", lazy: false, },
             ]
         },
         
@@ -750,12 +803,16 @@ enyo.kind({
         console.log("checking firstrun");
         enyo.asyncMethod(this, "checkFirstRun");
     },
+    checkPendingPurchase: function() {
+        this.$.HPPaymentService.call({ orderNo: this.pendingOrderNumber }, { method: "getPendingPurchaseInfo" });
+    },    
+    getReceiptInfo: function(inSender, inEvent) {
+        this.$.HPPaymentService.call({ itemId: "1", includeReceipts: true, maxReceipts: 1 }, { method: "getItemInfo" });
+    },
     purchaseSynergy: function(inSender, inEvent)
     {
         this.$.PurchaseSynergyPopup.close();
-        this.$.outbox.queueMessage("9519993267", "Purchase Receipt Test");
-        //this.$.HPPaymentService.call({ itemId: "1", quantity: 1, vendorData: "GVoice Purchase: 1" }, { method: "purchaseItem" });
-        this.$.PurchasedPopup.open();
+        this.$.HPPaymentService.call({ itemId: "1", quantity: 1, vendorData: "GVoice Purchase: 1" }, { method: "purchaseItem" });
     },
     checkFirstRun: function() {
         var appInfo;
