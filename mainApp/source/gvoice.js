@@ -260,10 +260,45 @@ enyo.kind({
             enyo.application.launcher.createMessageCheckDash();
         }		
     },
+/*
+    {
+        "itemCount":2,
+        "itemInfos":
+        [
+            {
+                "itemId":"1",
+                "type":"Non-Perishable",
+                "title":"Messaging Integration",
+                "summary":"GVoice integration to the webOS Messaging App",
+                "currency":"USD",
+                "price":"1.49",
+                "itemStatus":{"timesPurchased":0}
+            },
+            {
+                "itemId":"2",
+                "type":"Non-Perishable",
+                "title":"GVoice-Lite",
+                "summary":"Basic version of GVoice, without plugins",
+                "currency":"USD",
+                "price":"0.99",
+                "itemStatus":{"timesPurchased":0}
+            }
+        ],
+        "returnValue":true}
+*/
     paymentServiceResponse: function(inSender, inResponse, inRequest)
     {
         enyo.log("response=", JSON.stringify(inResponse));
         enyo.log("request method=", inRequest.method);
+        switch(inRequest.method) {
+            case "getAvailableItems":
+                if(inResponse.itemInfos[0].itemId == "1") {
+                    this.$.PurchaseSynergyPopup.open();
+                }
+                break;
+            default:
+                break;
+        }
     },
     ttsPluginReady: false,
     components:
@@ -320,6 +355,7 @@ enyo.kind({
         { kind: "placeCallPopup", onClose: "popupClosed", onCreditPurchased: "RefreshBillingCredit", onCancelCall: "cancelOutgoingCall", onPlaceCall: "actionPlaceCall" },
         { kind: "deletePopup", onClose: "popupClosed" },
         { kind: "phonePopupMenu" },
+        { name: "PurchaseSynergyPopup", kind: "purchasePopup" },
         { kind: "emailPopupMenu", onSendSelected:"emailFromPopup" },
         { kind: "preferencesPopup", onClose: "popupClosed", onPrefsChanged: "prefsChanged" },
         { kind: "aboutPopup", onClose: "popupClosed" },

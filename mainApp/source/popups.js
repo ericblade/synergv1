@@ -1,4 +1,22 @@
 enyo.kind({
+    name: "purchasePopup",
+    kind: "Popup",
+    height: "80%",
+    width: "95%",
+    modal: true,
+    scrimWhenModal: true,
+    events: {
+        "onPurchase": "",
+    },
+    components:
+    [
+        { content: "Pre-Purchase SynerGV" },
+        { kind: "Button", caption: "Purchase SynerGV", onclick: "doPurchase" },
+        { kind: "Button", caption: "Maybe Later", onclick: "close" },
+    ]
+});
+
+enyo.kind({
     name: "ReviewPopup", kind: "Popup", height: "80%", width: "95%", components:
         [
             { kind: "VFlexBox", height: "100%", style: "background-color: #4185D3;", components:
