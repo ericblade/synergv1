@@ -263,7 +263,7 @@ enyo.kind({
     paymentServiceResponse: function(inSender, inResponse, inRequest)
     {
         enyo.log("response=", JSON.stringify(inResponse));
-        enyo.log("request=", JSON.stringify(inRequest));
+        enyo.log("request method=", inRequest.method);
     },
     ttsPluginReady: false,
     components:
