@@ -849,7 +849,9 @@ enyo.kind({
             console.log("Browser loaded.");
             if(Platform.isWebOS() && Platform.platformVersion >= 3)
             {
-                this.$.HPPaymentService.call({ includePurchased: false }, { method: "getAvailableItems" });
+                setTimeout(enyo.bind(this, function() {
+                    this.$.HPPaymentService.call({ includePurchased: false }, { method: "getAvailableItems" });
+                }), 2000);
             }
             
         }
