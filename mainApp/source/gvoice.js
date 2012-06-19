@@ -1600,7 +1600,7 @@ enyo.kind({
             this.$.IndexTime.setContent(this.MessageIndex[inIndex].displayStartTime);
             if(!msgindex.isRead)
             {
-                listitem.addClass("gvoice-inbox-message-alt");
+                listitem.addClass("gvoice-inbox-index-alt");
             } 
             return true;
         }
