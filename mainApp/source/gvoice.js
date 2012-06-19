@@ -355,7 +355,7 @@ enyo.kind({
         { kind: "placeCallPopup", onClose: "popupClosed", onCreditPurchased: "RefreshBillingCredit", onCancelCall: "cancelOutgoingCall", onPlaceCall: "actionPlaceCall" },
         { kind: "deletePopup", onClose: "popupClosed" },
         { kind: "phonePopupMenu" },
-        { name: "PurchaseSynergyPopup", kind: "purchasePopup" },
+        { name: "PurchaseSynergyPopup", kind: "purchasePopup", onPurchase: "purchaseSynergy" },
         { kind: "emailPopupMenu", onSendSelected:"emailFromPopup" },
         { kind: "preferencesPopup", onClose: "popupClosed", onPrefsChanged: "prefsChanged" },
         { kind: "aboutPopup", onClose: "popupClosed" },
