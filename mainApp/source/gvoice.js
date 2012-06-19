@@ -292,7 +292,7 @@ enyo.kind({
         enyo.log("request method=", inRequest.method);
         switch(inRequest.method) {
             case "getAvailableItems":
-                if(inResponse.itemInfos[0].itemId == "1" /*&& inResponse.itemInfos[0].itemStatus.timesPurchased === 0*/) {
+                if(inResponse.itemInfos[0].itemId == "1" && inResponse.itemInfos[0].itemStatus.timesPurchased === 0) {
                     this.$.PurchaseSynergyPopup.open();
                 }
                 break;
