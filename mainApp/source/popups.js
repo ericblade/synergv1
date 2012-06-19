@@ -27,7 +27,7 @@ enyo.kind({
     [
         { kind: "VFlexBox", components:
             [
-                { content: "Thank you for your purchase!" },
+                { content: "Thank you for your purchase! If any errors are found in the transaction, a seperate notification will arrive." },
                 { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
                 { content: "When the Synergy Messaging Integration is available, expected in July, you will receive further instructions via GVoice." },
                 { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },

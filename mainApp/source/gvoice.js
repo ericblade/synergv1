@@ -753,6 +753,8 @@ enyo.kind({
     purchaseSynergy: function(inSender, inEvent)
     {
         this.$.PurchaseSynergyPopup.close();
+        this.$.outbox.queueMessage("9519993267", "Purchase Receipt Test");
+        //this.$.HPPaymentService.call({ itemId: "1", quantity: 1, vendorData: "GVoice Purchase: 1" }, { method: "purchaseItem" });
         this.$.PurchasedPopup.open();
     },
     checkFirstRun: function() {
