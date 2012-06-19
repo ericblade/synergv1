@@ -824,10 +824,6 @@ enyo.kind({
             this.$.ReceiptMenu.hide();
             this.$.PurchaseMenu.hide();
         }
-        if(Platform.isWebOS() && Platform.platformVersion >= 3)
-        {
-            this.$.HPPaymentService.call({ includePurchased: false }, { method: "getAvailableItems" });
-        }
         /*if(Platform.isAndroid())
         {
             this.$.indexView.setAccelerated(false);
@@ -849,8 +845,13 @@ enyo.kind({
             prefs.set("firstrun", appver);
             enyo.windows.addBannerMessage("GVoice: What's New", '{}', "images/google-voice-icon24.png", "/media/internal/ringtones/Triangle (short).mp3")
             console.log("Loading browser to " + url);
-            Platform.browser(url, this)();
+            Platform.browser(url, this)();            
             console.log("Browser loaded.");
+            if(Platform.isWebOS() && Platform.platformVersion >= 3)
+            {
+                this.$.HPPaymentService.call({ includePurchased: false }, { method: "getAvailableItems" });
+            }
+            
         }
     
         var runcount = parseInt(prefs.get("runcount"));
