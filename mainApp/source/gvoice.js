@@ -356,6 +356,7 @@ enyo.kind({
         { kind: "deletePopup", onClose: "popupClosed" },
         { kind: "phonePopupMenu" },
         { name: "PurchaseSynergyPopup", kind: "purchasePopup", onPurchase: "purchaseSynergy" },
+        { name: "PurchasedPopup", kind: "purchasedPopup", },
         { kind: "emailPopupMenu", onSendSelected:"emailFromPopup" },
         { kind: "preferencesPopup", onClose: "popupClosed", onPrefsChanged: "prefsChanged" },
         { kind: "aboutPopup", onClose: "popupClosed" },
