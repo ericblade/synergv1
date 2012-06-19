@@ -506,7 +506,7 @@ enyo.kind({
 					if(prefs.get("ttsNotificationDisable") !== true)
 					{
 						enyo.log("***** TTS ATTEMPTING TO SPEAK");
-						if(typeof chrome !== undefined && chrome.tts) {
+						if(typeof chrome !== "undefined" && chrome.tts) {
 							chrome.tts.speak(prefs.get("ttsAnnounceName") === true ? msg : nonamemsg);
 							if(prefs.get("ttsAnnounceMessages") === true && msgtext && msgtext != "")
 							{

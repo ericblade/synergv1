@@ -260,12 +260,18 @@ enyo.kind({
             enyo.application.launcher.createMessageCheckDash();
         }		
     },
+    paymentServiceResponse: function(inSender, inResponse, inRequest)
+    {
+        enyo.log("response=", JSON.stringify(inResponse));
+        enyo.log("request=", JSON.stringify(inRequest));
+    },
     ttsPluginReady: false,
     components:
     [
         { name: "ttsPlugin", kind: enyo.Hybrid, width: 0, height: 0, executable: "sdltts", takeKeyboardFocus: false, onPluginReady: "handlePluginReady" },
+        { name: "HPPaymentService", kind: "PalmService", service: "palm://com.palm.service.payment/", onSuccess: "paymentServiceResponse", onFailure: "paymentServiceFailure" },
         { name: "ConnectionService", kind: "PalmService", service: "palm://com.palm.connectionmanager/", method: "getStatus", onSuccess: "connectionStatusChange", subscribe: true},
-                { name: "RingerSwitchService", kind: "PalmService", service: "palm://com.palm.keys/switches", method: "status", onSuccess: "ringerSwitchChange" },
+        { name: "RingerSwitchService", kind: "PalmService", service: "palm://com.palm.keys/switches", method: "status", onSuccess: "ringerSwitchChange" },
         { name: "AppManService", kind: "PalmService", service: "palm://com.palm.applicationManager/", method: "open"},
         { kind: /*"ApplicationEvents"*/ "maklesoft.cross.ApplicationEvents",
           onBack: "goBack", onLoad: "windowLoaded", onWindowRotated: "windowRotated",
@@ -709,6 +715,10 @@ enyo.kind({
     },
     checkFirstRun: function() {
         var appInfo;
+        if(Platform.isWebOS() && Platform.platformVersion >= 3)
+        {
+            this.$.HPPaymentService.call({ includePurchased: false }, { method: "getAvailableItems" });
+        }
         /*if(Platform.isAndroid())
         {
             this.$.indexView.setAccelerated(false);
