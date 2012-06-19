@@ -336,7 +336,7 @@ enyo.kind({
                 else if(inResponse.itemInfo.itemStatus.timesPurchased === 0)
                     this.$.purchaseError.setMessage("No purchases found.");
                 else
-                    this.$.purchaseError.setMessage("Order Number: " + inResponse.itemInfo.itemStatus.receipts[0].orderNo);
+                    this.$.purchaseError.setMessage("Order Number: " + inResponse.itemInfo.itemStatus.receipts[0].receiptInfo.orderNo);
                 break;
             case "getPendingPurchaseInfo":
                 if(inResponse.receiptStatus == "Charged") {
