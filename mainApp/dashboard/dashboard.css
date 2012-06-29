@@ -4,11 +4,11 @@ body {
 	font-family: Prelude, 'Prelude Medium', 'Segoe UI', Arial, Helvetica, sans-serif;
 	margin: 0;
 	/*background:transparent;*/
-        background: #F9D;
+        background: dark-grey;
 }
 
 .dashboard-notification-module {
-	height: 50px;
+	height: 150px;
 	display: -webkit-box;
 	/*background-color:#F9D;*/
 /*	-webkit-box-orient: horizontal;
