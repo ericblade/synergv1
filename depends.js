@@ -21,7 +21,6 @@ else // if PhoneGap or BlackBerry
         "mainApp/source/contactsIndex.js",
         "mainApp/source/gvDashboard.js",
         "mainApp/source/gvoice.js",
-        "mainApp/css/dashboard.css",
         "mainApp/css/gvoice.css"
     );
 }

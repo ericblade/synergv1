@@ -9,6 +9,5 @@ enyo.depends(
     "source/contactsIndex.js",
     "source/gvDashboard.js",
     "source/gvoice.js",
-    "css/gvoice.css",
-    "css/dashboard.css"
+    "css/gvoice.css"
 );
