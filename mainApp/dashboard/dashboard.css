@@ -4,7 +4,7 @@ body {
 	font-family: Prelude, 'Prelude Medium', 'Segoe UI', Arial, Helvetica, sans-serif;
 	margin: 0;
 	/*background:transparent;*/
-        background: black transparent;
+        background: black;
 }
 
 .dashboard-notification-module {
