@@ -8,9 +8,9 @@ enyo.kind({
 		var windowValid = this.window && this.window.closed === false;
 		// If we have items to display, then create the window if we don't already have one.
 		if(this.layers.length) {
-			var params = {layers:this.layers, docPath:document.location.pathname, dashboardId:this.dashboardId, "doubleheightdash":true};
+			var params = {layers:this.layers, docPath:document.location.pathname, dashboardId:this.dashboardId};
 			if(!windowValid) {
-				var attributes = {webosDragMode:"manual", window:"dashboard", _enyoOpener:window};
+				var attributes = {webosDragMode:"manual", window:"dashboard", _enyoOpener:window, "doubleheightdash":true};
 				if(this.smallIcon) {
 					attributes.icon = this.smallIcon;
 				}
