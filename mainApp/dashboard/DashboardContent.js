@@ -1,6 +1,6 @@
 /** @protected Manages contents of a standard dashboard window.*/
 enyo.kind({
-	name: "enyo.DashboardContent",
+	name: "gvoice.DashboardContent",
 	kind: enyo.Control,
 	className: "dashboard-notification-module",
 	components: [
@@ -175,8 +175,17 @@ enyo.kind({
 	components:[
 			{name:'swipeable', kind: "enyo.AnimatedSwipeableItem", allowLeft:false, onDrag: "configureClipping", onConfirm:"doSwipe", 
 										className: "palm-dashboard-text-container", confirmRequired:false, components: [
-				{name:'title', className:"dashboard-title"},
-				{name:'text', className:"palm-dashboard-text"}
+                                { kind: "HFlexBox", components:
+                                    [
+                                        { kind: "VFlexBox", components:
+                                            [
+                                                {name:'title', className:"dashboard-title"},
+                                                {name:'text', className:"palm-dashboard-text"}
+                                            ]
+                                        },
+                                        { kind: "Button", caption: "Call" },
+                                    ]
+                                }
 			]}
 	],
 	published: {
