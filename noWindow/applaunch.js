@@ -478,7 +478,7 @@ enyo.kind({
 		if(!this.NotificationDashboards[0])
 		{
 			this.NotificationDashboards[0] = this.createComponent( {
-				kind: "Dashboard",
+				kind: "gvoice.Dashboard",
 				smallIcon: "images/google-voice-icon24.png",
 				icon: "images/google-voice-icon48.png",
 				onMessageTap: "dashboardTap",
