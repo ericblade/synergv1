@@ -3,6 +3,7 @@ if(window.PalmSystem)
     enyo.depends(
         "mainApp/source/globals.js",
         "mainApp/source/EnyoPlatform/",
+        "mainApp/source/gvDashboard.js",
         "noWindow/applaunch.js"
     );
 }
