@@ -7,6 +7,8 @@ enyo.depends(
     "source/outboxHandler.js",
     "source/popups.js",
     "source/contactsIndex.js",
+    "source/gvDashboard.js",
     "source/gvoice.js",
-    "css/gvoice.css"
+    "css/gvoice.css",
+    "css/dashboard.css"
 );

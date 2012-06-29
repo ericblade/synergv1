@@ -19,7 +19,9 @@ else // if PhoneGap or BlackBerry
         "mainApp/source/outboxHandler.js",
         "mainApp/source/popups.js",
         "mainApp/source/contactsIndex.js",
+        "mainApp/source/gvDashboard.js",
         "mainApp/source/gvoice.js",
+        "mainApp/css/dashboard.css",
         "mainApp/css/gvoice.css"
     );
 }

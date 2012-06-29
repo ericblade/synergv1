@@ -1,3 +1,8 @@
+// TODO: we need an icon for "missed call", as well as it should have some text saying such in the message area.
+// TODO: probably same for "received" and "placed" as well
+// TODO: swap the inputs in the call dialog on devices < 480px, put entire call popup in a scroller? possibly?
+// TODO: make on screen dialpad go away if keyboard is open on phone?
+// TODO: replace all linkClicked functions with proper cross platform
 // TODO: check the "Place Call", "Send SMS", "Send email" buttons in contacts on all platforms
 //*** Featured in the "SWEETHEART TIME" App Catalog Featured Apps, February 2012!! ***
 // TODO: Need to seriously explore the "back" function across platforms
@@ -630,7 +635,7 @@ enyo.kind({
                         { kind: "Toolbar", className: "bottom-toolbar", onclick: "scrollRightToBottom", layoutKind: "HFlexLayout", components:
                             [
                                 {kind: "GrabButton", allowDrag:true, slidingHandler: true}, // TODO: stop propagation of clicks on the Grab Button to the Toolbar!
-                                { name: "quickComposeInput", flex: 1, onclick: "cancelEvent", onfocus: "qcFocus", onblur: "qcBlur",  kind: "quickInput", /*style: "background: white;",*/ onkeypress: Platform.isLargeScreen() ? "quickComposeKeypress" : "" , onkeyup: Platform.isLargeScreen() ? "": "quickComposeKeypress", disabled: true, hint: "", },
+                                { name: "quickComposeInput", flex: 1, onclick: "cancelEvent", onfocus: "qcFocus", onblur: "qcBlur",  kind: "quickInput", /*style: "background: white;",*/ onkeypress: /*Platform.isLargeScreen() ?*/ "quickComposeKeypress" /*: ""*/ , onkeyup: Platform.isLargeScreen() ? "": "quickComposeKeypress", disabled: true, hint: "", },
                                 //Platform.isLargeScreen() ? { name: "qcSpacer", kind: "Spacer" } : {} ,
                                 { name: "composeButton", icon: (!window.PalmSystem) ? "mainApp/images/Blade_msg1.png" : "images/Blade_msg1.png", className: "enyo-light-menu-button", onclick: "composeButtonClick" },
                                 { name: "newCallButton", icon: (!window.PalmSystem) ? "mainApp/images/Blade_phone1.png" : "images/Blade_phone1.png", className: "enyo-light-menu-button", onclick: "newCallButtonClick", disabled: true },
