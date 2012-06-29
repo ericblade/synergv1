@@ -183,8 +183,8 @@ enyo.kind({
                                                 {name:'text', className:"palm-dashboard-text"}
                                             ]
                                         },
-                                        { name: "CallButton", kind: "Button", caption: "Call", showing: false, onclick: "callClicked", },
-                                        { name: "MsgButton", kind: "Button", caption: "Msg", showing: false, onclick: "msgClicked", },
+                                        { name: "CallButton", kind: "ToolButton", style: "background: white;", icon: "Blade_msg1.png", showing: false, onclick: "callClicked", },
+                                        { name: "MsgButton", kind: "ToolButton", style: "background: white;", icon: "Blade_phone1.png", showing: false, onclick: "msgClicked", },
                                     ]
                                 }
 			]}
