@@ -5,8 +5,6 @@ body {
 	margin: 0;
 	/*background:transparent;*/
         background: black;
-        width: 320px; max-width: 320px;
-        height: 52px; max-height: 52px;
 }
 
 .dashboard-notification-module {

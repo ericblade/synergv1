@@ -74,6 +74,8 @@ enyo.kind({
 		// Make sure we're destroyed on window close, so we're removed from our owner's child list.
 		this.boundDestroy = enyo.bind(this, "destroy");
 		window.addEventListener('unload', this.boundDestroy);
+                
+                enyo.log("*** Dashboard Width", window.innerWidth, "Height", window.innerHeight);
 	},
 	// NOTE: destroy() is installed as an event listener for window unload, since it's not called automatically.
 	destroy: function() {
