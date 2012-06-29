@@ -183,7 +183,8 @@ enyo.kind({
                                                 {name:'text', className:"palm-dashboard-text"}
                                             ]
                                         },
-                                        { kind: "Button", caption: "Call" },
+                                        { name: "CallButton", kind: "Button", caption: "Call", showing: false, onclick: "callClicked", },
+                                        { name: "MsgButton", kind: "Button", caption: "Msg", showing: false, onclick: "msgClicked", },
                                     ]
                                 }
 			]}
@@ -200,7 +201,19 @@ enyo.kind({
 	create: function() {
 		this.inherited(arguments);
 		this.swipeableChanged();
+                this.callbackNumber = "7079925233";
+                this.replyNumber = "7079925233";
+                this.$.CallButton.setShowing(this.callbackNumber !== undefined);
+                this.$.MsgButton.setShowing(this.replyNumber !== undefined);
 	},
+        callClicked: function(inSender, inEvent) {
+            inEvent.preventDefault();
+            return true;
+        },
+        msgClicked: function(inSender, inEvent) {
+            inEvent.preventDefault();
+            return true;
+        },
 	configureClipping: function(inSender, dx) {
 		if (this.clipControl) {
 			this.clipControl.setStyle("width:"+Math.max(0, dx + this.leftOffset)+"px;"); // clipping div should be 10 greater than drag position, but never < 4.
