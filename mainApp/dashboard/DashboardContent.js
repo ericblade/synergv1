@@ -188,7 +188,10 @@ enyo.kind({
                                         { name: "CallButton", kind: "ToolButton", style: "background: white;", icon: "Blade_msg1.png", showing: false, onclick: "callClicked", },
                                         { name: "MsgButton", kind: "ToolButton", style: "background: white;", icon: "Blade_phone1.png", showing: false, onclick: "msgClicked", },
                                     ]
-                                }
+                                },
+                                { name: "CallButtonV", kind: "ToolButton", style: "background: white;", icon: "Blade_msg1.png", showing: false, onclick: "callClicked", },
+                                { name: "MsgButtonV", kind: "ToolButton", style: "background: white;", icon: "Blade_phone1.png", showing: false, onclick: "msgClicked", },
+                                
 			]}
 	],
 	published: {
