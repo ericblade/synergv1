@@ -190,7 +190,7 @@ enyo.kind({
                                         },
                                     ]
                                 },
-								{ name: "client" },
+								{ name: "client", showing: false },
 			]}
 	],
 	published: {
