@@ -47,6 +47,23 @@ body {
 	min-height: 53px;
 }
 
+.double-dashboard-text-container {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-box-pack: center;
+	-webkit-box-flex: 1;
+	
+	background: url(images/notification-divider.png) left top no-repeat;
+	color: #FFF;
+	margin-top: -1px;
+	margin-left: -7px;
+	border: none;
+	overflow: hidden;
+	font-size: 16px;
+	width: 270px;
+	min-height: 106px;
+}
+
 .palm-dashboard-text-container > div {
 	padding-left: 21px;
 	padding-right:10px;

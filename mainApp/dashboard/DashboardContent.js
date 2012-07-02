@@ -176,7 +176,7 @@ enyo.kind({
 	className: "dashboard-layer",
 	components:[
 			{name:'swipeable', kind: "enyo.AnimatedSwipeableItem", allowLeft:false, onDrag: "configureClipping", onConfirm:"doSwipe", 
-										className: "palm-dashboard-text-container", confirmRequired:false, components: [
+										className: (window.innerHeight > 52) ? "double-dashboard-text-container" : "palm-dashboard-text-container", confirmRequired:false, components: [
                                 { kind: "HFlexBox", components:
                                     [
                                         { kind: "VFlexBox", components:
