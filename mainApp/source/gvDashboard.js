@@ -1,4 +1,4 @@
-if(window.PalmSystem && Platform.platformVersion < 3.0) {
+if(Platform.isWebOS() && Platform.platformVersion < 3.0) {
 	enyo.kind({ name: "gvoice.Dashboard", kind: "enyo.Dashboard" });
 } else {
 	enyo.kind({
