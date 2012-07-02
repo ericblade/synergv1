@@ -501,7 +501,18 @@ enyo.kind({
 														smallIcon: "mainApp/images/google-voice-icon24.png",
 														title: msg, text: msgtext,
 														id: msgid, ignoreid: ignoreid };
-				this.NotificationDashboards[0].push(this.NotificationDashboards[msgid]);
+				if(Platform.platformVersion < 3) {
+					var newDash = this.createComponent({
+						kind: "gvoice.Dashboard",
+						smallIcon: "images/google-voice-icon24.png",
+						icon: "images/google-voice-icon48.png",
+						onMessageTap: "dashboardTap",
+						onIconTap: "dashboardTap",
+					});
+					newDash.push(this.NotificationDashboards[msgid]);
+				} else {
+					this.NotificationDashboards[0].push(this.NotificationDashboards[msgid]);
+				}
 				enyo.error("Playing alert", this.getAlertPath());
 				enyo.windows.addBannerMessage(msg, '{}', "mainApp/images/google-voice-icon24.png", "", this.getAlertPath());
 				enyo.log("***** NOTIFICATION : TTS DISABLE", prefs.get("ttsNotificationDisable"), enyo.application.mainApp, (enyo.application.mainApp !== undefined && prefs.get("ttsNotificationDisable") !== false ));
