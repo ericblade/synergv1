@@ -496,7 +496,7 @@ enyo.kind({
 				msgtext = "from " + msg.substr(20);
 				msg = "Missed Call";
 			}
-			if(msg.indexOf("New voicemail from ") == 0) {
+			if( (!msgtext || msgtext == "") && msg.indexOf("New voicemail from ") == 0) {
 				msgtext = "from " + msg.substr(18);
 				msg = "New Voicemail";
 			}
