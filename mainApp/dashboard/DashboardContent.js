@@ -239,8 +239,7 @@ enyo.kind({
 			this.$.title.setContent(this.layer.title);
 			this.$.text.setContent(this.layer.text);
 			if(this.leftOffset) {
-				this.$.swipeable.setStyle("width:"+(270-this.leftOffset)+"px;");
-				this.setStyle("padding-left:" + (20 + this.leftOffset) + "px;");
+				this.$.swipeable.setStyle("width:"+(270-this.leftOffset)+"px; padding-left:" + (20 + this.leftOffset) + "px;");
 			}
 			this.configureClipping(this, 0);
 		} else {
