@@ -243,5 +243,25 @@ enyo.kind({
 enyo.kind({
 	name: "gvoice.DoubleDashContent",
 	kind: "gvoice.DashboardContent",
-	className: "double-dashboard-notification-module",	
+	className: "double-dashboard-notification-module",
+	components: [
+		{kind: "ApplicationEvents", onWindowActivated:"dbActivated", onWindowDeactivated:"dbDeactivated"},
+		{name: 'topSwipeable', kind:"enyo.AnimatedSwipeableItem", layoutKind: "HFlexLayout", confirmRequired:false, onConfirm: "dbSwiped", allowLeft:false, components: [ 
+			{ className:'palm-dashboard-icon-container', onclick: "iconTapHandler", components: [
+					{name:'icon', className: "dashboard-icon", kind:enyo.Image},
+					{name: 'badge', className:'dashboard-count', components:[
+						{name: 'count', nodeTag:'span', className:'dashboard-count-label'}]}
+			]},
+			{name: 'layer0', kind: "enyo.DashboardLayer", className: 'layer-0', onclick:"msgTapHandler", swipeable:false},
+			{name: 'layer1', kind: "enyo.DashboardLayer", className: 'layer-1', onclick:"msgTapHandler", onSwipe:"layerSwiped"},
+			{name: 'layer2', kind: "enyo.DashboardLayer", className: 'layer-2', leftOffset: 15, onclick:"msgTapHandler", onSwipe:"layerSwiped"},
+			// Special drop shadow & edge highlights shown when dragging whole dashboard.
+			// Mimics that drawn by sysmgr, until we can better coordinate who handles dashboard drags.
+			{className:"double-swipe-shadow left"},
+			{className:"double-swipe-shadow right"},
+			{className:"double-swipe-highlight left"},
+			{className:"double-swipe-highlight right"}
+		]}
+	],
+	
 });

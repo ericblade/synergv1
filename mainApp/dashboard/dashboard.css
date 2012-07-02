@@ -146,8 +146,10 @@ body {
 	height: 52px;
 }
 
-.double-dashboard-notification-module.swipe-shadow {
-	background: green;
+.double-swipe-shadow {
+	position: absolute; 
+	width: 500px; 
+	background: url(images/repeatable-db-swipe-bg.png) repeat-x;
 	height: 104px;
 }
 
@@ -163,11 +165,13 @@ body {
 	width:1px;
 	height:52px;
 	position: absolute; 
-	background: url(images/menu-dropdown-swipe-highlight.png)
+	background: url(images/menu-dropdown-swipe-highlight.png);
 }
 
-.double-dashboard-notification-module.swipe-highlight {
-	background: blue;
+.double-swipe-highlight {
+	width:1px;
+	position: absolute; 
+	background: url(images/menu-dropdown-swipe-highlight.png);
 	height: 104px;
 }
 
