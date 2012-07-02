@@ -75,7 +75,10 @@ enyo.kind({
 		this.boundDestroy = enyo.bind(this, "destroy");
 		window.addEventListener('unload', this.boundDestroy);
                 
+		this.$.layer2.createContainedComponent({content: "Layer 2 Component"});
+		this.$.layer1.createContainedComponent({content: "Layer 1 Component"});
                 enyo.log("*** Dashboard Width", window.innerWidth, "Height", window.innerHeight);
+		}
 	},
 	// NOTE: destroy() is installed as an event listener for window unload, since it's not called automatically.
 	destroy: function() {
@@ -179,12 +182,13 @@ enyo.kind({
 										className: (window.innerHeight > 52) ? "double-dashboard-text-container" : "palm-dashboard-text-container", confirmRequired:false, components: [
                                 { kind: "HFlexBox", components:
                                     [
-                                        { kind: "VFlexBox", components:
+                                        { name: "Container", kind: "VFlexBox", components:
                                             [
                                                 {name:'title', className:"dashboard-title"},
                                                 {name:'text', className:"palm-dashboard-text"}
                                             ]
                                         },
+										{ name: "client", showing: false },
                                     ]
                                 },							
 			]}
@@ -201,12 +205,9 @@ enyo.kind({
 	create: function() {
 		this.inherited(arguments);
 		this.swipeableChanged();
-                this.callbackNumber = "7079925233";
-                this.replyNumber = "7079925233";
-				if(this.$.CallButton)
-					this.$.CallButton.setShowing(this.callbackNumber !== undefined);
-				if(this.$.MsgButton)
-					this.$.MsgButton.setShowing(this.replyNumber !== undefined);
+		if(window.innerHeight > 52) {
+			this.$.client.show();
+		}
 	},
         callClicked: function(inSender, inEvent) {
             inEvent.preventDefault();
