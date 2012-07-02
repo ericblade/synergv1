@@ -61,6 +61,8 @@ enyo.kind({
 		var params = enyo.windowParams;
 		this.dashboardId = params.dashboardId;
 		// Save the path to index file, for use with document-relative icons.
+		if(!params.docPath)
+		    params.docPath = "./";
 		this.docPath = params.docPath;
 		this.docPath = this.docPath.slice(0,this.docPath.lastIndexOf('/')+1);
 		this.layers = params.layers;
@@ -73,7 +75,10 @@ enyo.kind({
 		enyo.windowParamsChangeHandler = enyo.bind(this, "handleNewLayers");
 		// Make sure we're destroyed on window close, so we're removed from our owner's child list.
 		this.boundDestroy = enyo.bind(this, "destroy");
-		window.addEventListener('unload', this.boundDestroy);                
+		window.addEventListener('unload', this.boundDestroy);
+		
+		this.$.layer1.createContainedComponent({ content: "Layer 1 Contained Comp" });
+		this.$.layer2.createContainedComponent({ content: "Layer 2 Contained Comp" });
 	},
 	// NOTE: destroy() is installed as an event listener for window unload, since it's not called automatically.
 	destroy: function() {
@@ -173,14 +178,14 @@ enyo.kind({
 	kind: "enyo.Control",
 	className: "dashboard-layer",
 	components:[
-			{name:'swipeable', kind: "enyo.AnimatedSwipeableItem", allowLeft:false, onDrag: "configureClipping", onConfirm:"doSwipe", 
+			{name:'swipeable', kind: "enyo.AnimatedSwipeableItem", style: "padding-left: 20px;",allowLeft:false, onDrag: "configureClipping", onConfirm:"doSwipe", 
 										className: (window.innerHeight > 52) ? "double-dashboard-text-container" : "palm-dashboard-text-container", confirmRequired:false, components: [
                                 { kind: "HFlexBox", components:
                                     [
                                         { name: "Container", kind: "VFlexBox", components:
                                             [
-                                                {name:'title', className:"dashboard-title"},
-                                                {name:'text', className:"palm-dashboard-text"}
+                                                {name:'title', content: "title", className:"dashboard-title"},
+                                                {name:'text', content: "text", className:"palm-dashboard-text"}
                                             ]
                                         },
                                     ]
