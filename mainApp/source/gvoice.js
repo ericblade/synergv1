@@ -1982,7 +1982,7 @@ enyo.kind({
         //this.log("********************* POSTING NOTIFICATION **************** ");
         enyo.application.launcher.PostNotification(msgid, msg, nonamemsg, msgtext);
     },
-    dashboardActivated: function(dash) {
+    /*dashboardActivated: function(dash) {
         //dash.applyStyle("background-color", "black");
         //this.log("**************** DASHBOARD ACTIVATED ***************** ");
         for(l in dash)
@@ -1997,7 +1997,7 @@ enyo.kind({
                 //dash[l].dashboardContent.$.layer2.applyStyle("background-color", "black");
             }
         }
-    },
+    },*/
     openContactsView: function(inSender, inEvent)
     {
         /*this.log(inEvent, inEvent.cancelable);

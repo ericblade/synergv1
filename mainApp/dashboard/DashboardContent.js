@@ -24,6 +24,8 @@ enyo.kind({
 	],
 	clickHandler: function(inSender, event) {
 		this.sendEventToApp("doTap", [this.layers[this.layers.length-1], this.makeFakeEvent(event)]);
+		event.stopPropagation();
+		return true;
 	},
 	iconTapHandler: function(inSender, event) {
 		this.sendEventToApp("doIconTap", [this.layers[this.layers.length-1], this.makeFakeEvent(event)]);
@@ -220,14 +222,6 @@ enyo.kind({
 			this.$.client.show();
 		}
 	},
-        callClicked: function(inSender, inEvent) {
-            inEvent.preventDefault();
-            return true;
-        },
-        msgClicked: function(inSender, inEvent) {
-            inEvent.preventDefault();
-            return true;
-        },
 	configureClipping: function(inSender, dx) {
 		if (this.clipControl) {
 			this.clipControl.setStyle("width:"+Math.max(0, dx + this.leftOffset)+"px;"); // clipping div should be 10 greater than drag position, but never < 4.
