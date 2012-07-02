@@ -501,7 +501,7 @@ enyo.kind({
 														smallIcon: "mainApp/images/google-voice-icon24.png",
 														title: msg, text: msgtext,
 														id: msgid, ignoreid: ignoreid };
-				if(Platform.platformVersion < 3) {
+				if(Platform.isWebOS() && Platform.platformVersion < 3) {
 					var newDash = this.createComponent({
 						kind: "gvoice.Dashboard",
 						smallIcon: "images/google-voice-icon24.png",
