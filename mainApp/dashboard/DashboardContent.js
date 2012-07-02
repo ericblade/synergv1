@@ -181,7 +181,7 @@ enyo.kind({
 	components:[
 			{name:'swipeable', kind: "enyo.AnimatedSwipeableItem", style: "padding-left: 20px;",allowLeft:false, onDrag: "configureClipping", onConfirm:"doSwipe", 
 										className: (window.innerHeight > 52) ? "double-dashboard-text-container" : "palm-dashboard-text-container", confirmRequired:false, components: [
-                                { kind: "HFlexBox", components:
+                                { kind: "HFlexBox", flex: 1, components:
                                     [
                                         { name: "Container", kind: "VFlexBox", components:
                                             [
@@ -211,6 +211,7 @@ enyo.kind({
 				kind: "HFlexBox",
 				components: [
 					{ kind: "Button", caption: "Call Back" },
+					{ kind: "Spacer" },
 					{ kind: "Button", caption: "Send Msg" },
 				]
 			});
