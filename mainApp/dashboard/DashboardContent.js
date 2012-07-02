@@ -186,7 +186,7 @@ enyo.kind({
                                             ]
                                         },
                                     ]
-                                },                                
+                                },							
 			]}
 	],
 	published: {
@@ -203,8 +203,10 @@ enyo.kind({
 		this.swipeableChanged();
                 this.callbackNumber = "7079925233";
                 this.replyNumber = "7079925233";
-                this.$.CallButton.setShowing(this.callbackNumber !== undefined);
-                this.$.MsgButton.setShowing(this.replyNumber !== undefined);
+				if(this.$.CallButton)
+					this.$.CallButton.setShowing(this.callbackNumber !== undefined);
+				if(this.$.MsgButton)
+					this.$.MsgButton.setShowing(this.replyNumber !== undefined);
 	},
         callClicked: function(inSender, inEvent) {
             inEvent.preventDefault();
