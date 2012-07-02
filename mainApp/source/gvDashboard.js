@@ -1,3 +1,12 @@
+// TODO: write a single Dashboard kind that does:
+// adds option as to wether to use seperate dashboards or layers (for webOS 3, possible for html notifications that work right?)
+// webOS 3: open custom dashboard as we do now
+// webOS 2: open stock dashboard, as we do now, but whenever a new layer is pushed, call openDashboard again
+// playbook: opens an individual webkit notification for each layer
+// chrome: see if we can use the existing dashboard in chrome somehow, assuming it's custom Html Notifications actually work unlike playbook
+// android: call out to the notification plugin
+// TODO: fix that damned android notification plugin
+
 if(Platform.isWebOS() && Platform.platformVersion < 3.0) {
 	enyo.kind({ name: "gvoice.Dashboard", kind: "enyo.Dashboard" });
 } else {
