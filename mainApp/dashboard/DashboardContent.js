@@ -75,8 +75,6 @@ enyo.kind({
 		this.boundDestroy = enyo.bind(this, "destroy");
 		window.addEventListener('unload', this.boundDestroy);
                 
-		this.$.layer2.createContainedComponent({content: "Layer 2 Component"});
-		this.$.layer1.createContainedComponent({content: "Layer 1 Component"});
                 enyo.log("*** Dashboard Width", window.innerWidth, "Height", window.innerHeight);
 		}
 	},
@@ -188,9 +186,9 @@ enyo.kind({
                                                 {name:'text', className:"palm-dashboard-text"}
                                             ]
                                         },
-										{ name: "client", showing: false },
                                     ]
-                                },							
+                                },
+								{ name: "client" },
 			]}
 	],
 	published: {
