@@ -22,7 +22,6 @@ if(Platform.isWebOS() && Platform.platformVersion < 3.0) {
 					if(this.smallIcon) {
 						attributes.icon = this.smallIcon;
 					}
-					attributes = JSON.stringify(attributes);
 					this.window = enyo.windows.openDashboard(enyo.path.rewrite(this.indexPath), this.name, params, attributes);
 				} else {
 					enyo.windows.activate(undefined, this.name, params);
