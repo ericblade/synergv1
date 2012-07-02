@@ -14,7 +14,7 @@ enyo.kind({
 					webosDragMode:"manual",
 					window:"dashboard",
 					_enyoOpener:window,
-					//"doubleheightdash":true
+					"doubleheightdash":true
 				};
 				if(this.smallIcon) {
 					attributes.icon = this.smallIcon;

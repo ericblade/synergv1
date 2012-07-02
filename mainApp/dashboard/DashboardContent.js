@@ -79,10 +79,7 @@ enyo.kind({
 		enyo.windowParamsChangeHandler = enyo.bind(this, "handleNewLayers");
 		// Make sure we're destroyed on window close, so we're removed from our owner's child list.
 		this.boundDestroy = enyo.bind(this, "destroy");
-		window.addEventListener('unload', this.boundDestroy);
-		
-		this.$.layer1.createContainedComponent({ content: "Layer 1 Contained Comp" });
-		this.$.layer2.createContainedComponent({ content: "Layer 2 Contained Comp" });
+		window.addEventListener('unload', this.boundDestroy);		
 	},
 	// NOTE: destroy() is installed as an event listener for window unload, since it's not called automatically.
 	destroy: function() {
@@ -210,6 +207,13 @@ enyo.kind({
 		this.inherited(arguments);
 		this.swipeableChanged();
 		if(window.innerHeight > 52) {
+			this.$.client.createContainedComponent({
+				kind: "HFlexBox",
+				components: [
+					{ kind: "Button", caption: "Call Back" },
+					{ kind: "Button", caption: "Send Msg" },
+				]
+			});
 			this.$.client.show();
 		}
 	},
