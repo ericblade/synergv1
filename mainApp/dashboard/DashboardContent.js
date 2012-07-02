@@ -98,7 +98,7 @@ enyo.kind({
 	// Sets state of children to accurately reflect our layers array,
 	// including closing the window if we have no layers left.
 	updateContents: function() {
-		var len = this.layers.length;
+		var len = this.layers && this.layers.length;
 		if (!len) {
 			this.indicateNewContent(false);
 			window.close();
@@ -258,8 +258,8 @@ enyo.kind({
 			{name: 'layer2', kind: "enyo.DashboardLayer", className: 'layer-2', leftOffset: 15, onclick:"msgTapHandler", onSwipe:"layerSwiped"},
 			// Special drop shadow & edge highlights shown when dragging whole dashboard.
 			// Mimics that drawn by sysmgr, until we can better coordinate who handles dashboard drags.
-			{className:"double-swipe-shadow left"},
-			{className:"double-swipe-shadow right"},
+			//{className:"double-swipe-shadow left"},
+			//{className:"double-swipe-shadow right"},
 			{className:"double-swipe-highlight left"},
 			{className:"double-swipe-highlight right"}
 		]}
