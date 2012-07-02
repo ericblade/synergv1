@@ -27,9 +27,13 @@ enyo.kind({
 	},
 	iconTapHandler: function(inSender, event) {
 		this.sendEventToApp("doIconTap", [this.layers[this.layers.length-1], this.makeFakeEvent(event)]);
+		event.stopPropagation();
+		return true;
 	},
 	msgTapHandler: function(inSender, event) {
 		this.sendEventToApp("doMessageTap", [this.layers[this.layers.length-1], this.makeFakeEvent(event)]);
+		event.stopPropagation();
+		return true;
 	},
 	dbActivated: function(inSender) {
 		this.sendEventToApp("doDashboardActivated");
