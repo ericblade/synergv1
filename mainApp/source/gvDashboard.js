@@ -13,7 +13,7 @@ enyo.kind({
 				var attributes = {
 					webosDragMode:"manual",
 					window:"dashboard",
-					_enyoOpener:window,
+					//_enyoOpener:window,
 					doubleheightdash:true
 				};
 				if(this.smallIcon) {
