@@ -1,11 +1,5 @@
 /** @protected Manages contents of a standard dashboard window.*/
 enyo.kind({
-	name: "gvoice.DoubleDashContent",
-	kind: "gvoice.DashboardContent",
-	className: "double-dashboard-notification-module",	
-});
-
-enyo.kind({
 	name: "gvoice.DashboardContent",
 	kind: enyo.Control,
 	className: "dashboard-notification-module",
@@ -244,3 +238,8 @@ enyo.kind({
 	}
 });
 
+enyo.kind({
+	name: "gvoice.DoubleDashContent",
+	kind: "gvoice.DashboardContent",
+	className: "double-dashboard-notification-module",	
+});
