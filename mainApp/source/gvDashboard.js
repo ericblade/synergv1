@@ -10,7 +10,12 @@ enyo.kind({
 		if(this.layers.length) {
 			var params = {layers:this.layers, docPath:document.location.pathname, dashboardId:this.dashboardId};
 			if(!windowValid) {
-				var attributes = {webosDragMode:"manual", window:"dashboard", _enyoOpener:window, "doubleheightdash":true};
+				var attributes = {
+					webosDragMode:"manual",
+					window:"dashboard",
+					_enyoOpener:window,
+					//"doubleheightdash":true
+				};
 				if(this.smallIcon) {
 					attributes.icon = this.smallIcon;
 				}
