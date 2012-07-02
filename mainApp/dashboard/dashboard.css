@@ -145,8 +145,8 @@ body {
 	height: 52px;
 }
 
-.double-dashboard-notification-module .swipe-shadow {
-	height: 100px;
+.double-dashboard-notification-module.swipe-shadow {
+	height: 104px;
 }
 
 .swipe-shadow.left {
@@ -164,8 +164,8 @@ body {
 	background: url(images/menu-dropdown-swipe-highlight.png)
 }
 
-.double-dashboard-notification-module .swipe-highlight {
-	height: 100px;
+.double-dashboard-notification-module.swipe-highlight {
+	height: 104px;
 }
 
 .swipe-highlight.left {
