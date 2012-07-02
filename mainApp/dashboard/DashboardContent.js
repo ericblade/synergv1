@@ -1,5 +1,11 @@
 /** @protected Manages contents of a standard dashboard window.*/
 enyo.kind({
+	name: "gvoice.DoubleDashContent",
+	kind: "gvoice.DashboardContent",
+	className: "double-dashboard-notification-module",	
+});
+
+enyo.kind({
 	name: "gvoice.DashboardContent",
 	kind: enyo.Control,
 	className: "dashboard-notification-module",
@@ -185,13 +191,8 @@ enyo.kind({
                                                 {name:'text', className:"palm-dashboard-text"}
                                             ]
                                         },
-                                        { name: "CallButton", kind: "ToolButton", style: "background: white;", icon: "Blade_msg1.png", showing: false, onclick: "callClicked", },
-                                        { name: "MsgButton", kind: "ToolButton", style: "background: white;", icon: "Blade_phone1.png", showing: false, onclick: "msgClicked", },
                                     ]
-                                },
-                                { name: "CallButtonV", kind: "ToolButton", style: "background: white;", icon: "Blade_msg1.png", showing: false, onclick: "callClicked", },
-                                { name: "MsgButtonV", kind: "ToolButton", style: "background: white;", icon: "Blade_phone1.png", showing: false, onclick: "msgClicked", },
-                                
+                                },                                
 			]}
 	],
 	published: {

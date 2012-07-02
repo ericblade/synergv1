@@ -15,6 +15,11 @@ body {
 	-webkit-box-align: stretch;*/
 }
 
+.double-dashboard-notification-module {
+	height: 100px;
+	display: -webkit-box;
+}
+
 /* individual targets */
 
 .palm-dashboard-icon-container {
@@ -140,6 +145,10 @@ body {
 	height: 52px;
 }
 
+.double-dashboard-notification-module .swipe-shadow {
+	height: 100px;
+}
+
 .swipe-shadow.left {
 	left: -500px; 
 }
@@ -153,6 +162,10 @@ body {
 	height:52px;
 	position: absolute; 
 	background: url(images/menu-dropdown-swipe-highlight.png)
+}
+
+.double-dashboard-notification-module .swipe-highlight {
+	height: 100px;
 }
 
 .swipe-highlight.left {

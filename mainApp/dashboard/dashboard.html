@@ -7,13 +7,9 @@
 	<body>
 		<script type="text/javascript">
 			(function() {
-				var dashboard = new gvoice.DashboardContent();
-				//dashboard.renderInto(document.body);
+				var dashboard = new window.innerHeight > 52 ? gvoice.DoubleDashContent() : gvoice.DashboardContent();
+				dashboard.renderInto(document.body);
 			})();
 		</script>
-		<div>Line 1</div>
-		<div>Line 2</div>
-		<div>Line 3</div>
-		<div>Line 4</div>
 	</body>
 </html>
