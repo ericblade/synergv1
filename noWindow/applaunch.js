@@ -492,6 +492,10 @@ enyo.kind({
 				enyo.log("*** IGNORING POSTNOTIFICATION FOR " + ignoreid);
 				return;
 			}
+			if(msg.indexOf("New missed call from ") == 0) {
+				msgtext = "from " + msg.substr(20);
+				msg = "Missed Call";
+			}
 			if(!this.NotificationDashboards[msgid] || this.NotificationDashboards[msgid].ignoreid != ignoreid) {
 				this.NotificationDashboards[msgid] = { icon: "mainApp/images/google-voice-icon48.png",
 														smallIcon: "mainApp/images/google-voice-icon24.png",
