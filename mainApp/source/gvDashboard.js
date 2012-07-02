@@ -1,7 +1,7 @@
 enyo.kind({
     name: "gvoice.Dashboard",
     kind: "enyo.Dashboard",
-    indexPath: "mainApp/dashboard/dashboard.html",
+    /*indexPath: "mainApp/dashboard/dashboard.html",
     
 	updateWindow: function() {
 		// Note that closed windows may get their js bindings snipped, so 'w.closed' may actually be undefined instead of true.
@@ -29,6 +29,6 @@ enyo.kind({
 			}
 			this.window = undefined;
 		}
-	},
+	},*/
     
 });
