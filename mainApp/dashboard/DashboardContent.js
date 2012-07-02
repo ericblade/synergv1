@@ -211,9 +211,9 @@ enyo.kind({
 			this.$.client.createContainedComponent({
 				kind: "HFlexBox",
 				components: [
-					{ kind: "Button", caption: "Call Back" },
+					{ kind: "ToolButton", caption: "Call Back" },
 					{ kind: "Spacer" },
-					{ kind: "Button", caption: "Send Msg" },
+					{ kind: "ToolButton", caption: "Send Msg" },
 					{ kind: "Spacer" },
 				]
 			});
