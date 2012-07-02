@@ -18,6 +18,7 @@ body {
 .double-dashboard-notification-module {
 	height: 100px;
 	display: -webkit-box;
+	background-color: white;
 }
 
 /* individual targets */
@@ -146,6 +147,7 @@ body {
 }
 
 .double-dashboard-notification-module.swipe-shadow {
+	background: green;
 	height: 104px;
 }
 
@@ -165,6 +167,7 @@ body {
 }
 
 .double-dashboard-notification-module.swipe-highlight {
+	background: blue;
 	height: 104px;
 }
 
