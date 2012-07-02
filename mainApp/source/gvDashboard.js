@@ -1,9 +1,9 @@
 enyo.kind({
     name: "gvoice.Dashboard",
     kind: "enyo.Dashboard",
-    indexPath: "mainApp/dashboard/dashboard.html",
+    /*indexPath: "mainApp/dashboard/dashboard.html",
     
-	/*updateWindow: function() {
+	updateWindow: function() {
 		// Note that closed windows may get their js bindings snipped, so 'w.closed' may actually be undefined instead of true.
 		var windowValid = this.window && this.window.closed === false;
 		// If we have items to display, then create the window if we don't already have one.
