@@ -40,6 +40,25 @@
 .default .gvoice-inbox-index-alt { background-color: #DFDFFF !important; }
 .default .gvoice-inbox-message-self { margin-right: 10%; padding-right: 5px; background-color: #CFCFDF; }
 
+.androidphone .gvoice-inbox-message-alt {
+	border: solid 1px #b3d9f2;
+	background-color:#d6edff;
+    margin-left: 10%;
+    margin-right: 0;
+    padding-left: 5px;
+    text-align: right;
+}
+
+.androidphone .gvoice-inbox-message-self {
+	border: solid 1px #d0e1cb;
+	background-color: #dcffd1;
+    margin-right: 10%;
+    margin-left: 0;
+    padding-right: 5px;
+    text-align: left;
+}
+
+
 .default .indexitem { padding-left: 3px; padding-right: 1px; margin-right: 1px; margin-left: 0px; background-color: #CFCFDF; }
 .default .indexselected {
     font-weight: bold;

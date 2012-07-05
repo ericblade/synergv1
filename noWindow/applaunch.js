@@ -505,7 +505,11 @@ enyo.kind({
 														smallIcon: "mainApp/images/google-voice-icon24.png",
 														title: msg, text: msgtext,
 														id: msgid, ignoreid: ignoreid };
-				if(Platform.isWebOS() && Platform.platformVersion < 3) {
+														
+				/* TODO: We shouldn't do this without also retracting any previous notifications for this same conversation */
+				/* may require some major rewriting ugh */
+				
+				if(false && Platform.isWebOS() && Platform.platformVersion < 3) { 
 					var newDash = this.createComponent({
 						kind: "gvoice.Dashboard",
 						smallIcon: "images/google-voice-icon24.png",
@@ -581,7 +585,7 @@ enyo.kind({
 				plugins.localNotification.add({
 					date: new Date(),
 					message: msg + "\r\n" + msgtext,
-					ticker: "Hmm.. what does the ticker line do?  I wonder.  Maybe I should read the documentation.",
+					ticker: msg + ": " + msgtext,
 					repeatDaily: false,
 					id: msgid
 				});

@@ -795,6 +795,8 @@ enyo.kind({
         this.$.quickComposeInput.hide();
         
         enyo.asyncMethod(this, "delayedStartup");
+        
+        this.$.addRemoveClass("androidphone", Platform.isAndroid() && !Platform.isLargeScreen());
     },
     ready: function()
     {
