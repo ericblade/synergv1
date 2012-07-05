@@ -1,3 +1,5 @@
+// TODO: Android: when AppMenu is open, back should close it. When any popups are open, Back should close them.
+// TODO: probably need to setup the slidingview to not go into tablet mode until we hit > 800px, need to see how that works on PlayBook though
 // TODO: we need an icon for "missed call", as well as it should have some text saying such in the message area.
 // TODO: probably same for "received" and "placed" as well
 // TODO: swap the inputs in the call dialog on devices < 480px, put entire call popup in a scroller? possibly?
@@ -582,12 +584,12 @@ enyo.kind({
                                                 { name: "overviewHeader", content: "Overview: " + prefs.get("defaultBox"), },
                                             ]
                                         },
-                                        { name: "overviewScroller", kind: "TransformScroller", flex: 1, autoHorizontal: false, horizontal: false, autoVertical: true, accelerated: true,
+                                        { name: "overviewScroller", kind: "TransformScroller", flex: 1, autoHorizontal: false, horizontal: false, autoVertical: true, accelerated: Platform.isLargeScreen(),
                                         components:
                                             [
                                                 { kind: "VFlexBox", flex: 1, components:
                                                     [
-                                                        { name: "overviewList", kind: "VirtualRepeater", onSetupRow: "overviewListRender", accelerated: true, components:
+                                                        { name: "overviewList", kind: "VirtualRepeater", onSetupRow: "overviewListRender", accelerated: Platform.isLargeScreen(), components:
                                                             [
                                                                 { name: "overviewTitle", kind: "Divider", className: "gvoice-divider", allowHtml: true, components:
                                                                     [
