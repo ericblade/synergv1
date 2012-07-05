@@ -42,7 +42,7 @@
 
 .androidphone .gvoice-inbox-message-alt {
 	border: solid 1px #b3d9f2;
-	background-color:#d6edff;
+	background-color:#d6edff !important;
     margin-left: 10%;
     margin-right: 0;
     padding-left: 5px;
@@ -51,7 +51,7 @@
 
 .androidphone .gvoice-inbox-message-self {
 	border: solid 1px #d0e1cb;
-	background-color: #dcffd1;
+	background-color: #dcffd1 !important;
     margin-right: 10%;
     margin-left: 0;
     padding-right: 5px;
