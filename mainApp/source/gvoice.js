@@ -796,7 +796,8 @@ enyo.kind({
         
         enyo.asyncMethod(this, "delayedStartup");
         
-        this.$.addRemoveClass("androidphone", Platform.isAndroid() && !Platform.isLargeScreen());
+        this.addRemoveClass("androidphone", Platform.isAndroid() && !Platform.isLargeScreen());
+        
     },
     ready: function()
     {
