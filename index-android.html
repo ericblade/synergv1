@@ -15,6 +15,12 @@
 <body onLoad="onBodyLoad()">
 <script type="text/javascript">
     function onBodyLoad() {
+		document.addEventListener( "touchstart", function(e){ onStart(e); }, false );
+			function onStart ( touchEvent ) {
+			  if( navigator.userAgent.match(/Android/i) ) {
+			    touchEvent.preventDefault();
+			  }
+			}		
         document.addEventListener("deviceready", onDeviceReady, false);
         //onDeviceReady();
     }
