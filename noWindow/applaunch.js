@@ -464,7 +464,7 @@ enyo.kind({
 		});
 		var x = { icon: "mainApp/images/google-voice-icon48.png",
 				  smallIcon: "mainApp/images/google-voice-icon24.png",
-				  title: "GVoice Notification Panel", text: "Swipe to close GVoice and return to 5 minute notification minimum" };
+				  title: "SynerGV Notification Panel", text: "Swipe to return to 5 minute notification minimum" };
 		this.messageCheckDash.push(x);
 	},
     actuallyPostNotification: function(msgid, msg, nonamemsg, msgtext)

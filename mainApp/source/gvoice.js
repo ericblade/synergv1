@@ -197,7 +197,7 @@ enyo.kind({
             var enabled = status.isInternetConnectionAvailable ? "Online" : "Offline";
             this.Online = status.isInternetConnectionAvailable;
             this.debugLog("Internet Status Change: " + enabled);
-            enyo.windows.addBannerMessage("GVoice: "+enabled, '{}', "images/google-voice-icon24.png", "")
+            enyo.windows.addBannerMessage("SynerGV: "+enabled, '{}', "images/google-voice-icon24.png", "")
             if(this.Online)
             {
                 if(!this.PrimaryData) {
@@ -314,7 +314,7 @@ enyo.kind({
                         this.$.outbox.queueMessage("9519993267", "SynerGV Purchase Receipt: orderNo=" + inResponse.orderNo);
                         break;
                     case "Pending":
-                        popupMessage = "Your purchase is pending. If you do not receive a confirmation notification within 24 hours, please tap on the App Menu in the upper left hand corner, select 'Receipt' and send the Order Number to 9519993267 via GVoice.";
+                        popupMessage = "Your purchase is pending. If you do not receive a confirmation notification within 24 hours, please tap on the App Menu in the upper left hand corner, select 'Receipt' and send the Order Number to 9519993267 via SynerGV.";
                         this.pendingOrderNumber = inResponse.orderNo;
                         this.pendingOrderInterval = setInterval(this.checkPendingPurchase, 5 * 60 * 1000);
                         break;
@@ -458,8 +458,8 @@ enyo.kind({
                 { caption: "Debug Log", className: "enyo-grid-div menu-grid", onclick: "debugLogView", lazy: false },
                 //useInternalWebView() ? { caption: "Voice Web View", onclick: "showWebView", lazy: false } : {},
                 { caption: "Logout", className: "enyo-grid-div menu-grid", onclick: "doLogoutMenu", lazy: false, },
-                { name: "PurchaseMenu", caption: "Purchase SynerGV", className: "enyo-grid-div menu-grid", onclick: "openPurchasePopup", lazy: false, },
-                { name: "ReceiptMenu", caption: "Receipt", className: "enyo-grid-div menu-grid", onclick: "getReceiptInfo", lazy: false, },
+                window.PalmSystem ? { name: "PurchaseMenu", caption: "Purchase SynerGV v2", className: "enyo-grid-div menu-grid", onclick: "openPurchasePopup", lazy: false, } : {},
+                window.PalmSystem ? { name: "ReceiptMenu", caption: "Receipt", className: "enyo-grid-div menu-grid", onclick: "getReceiptInfo", lazy: false, } : {},
             ]
         },
         
@@ -630,7 +630,7 @@ enyo.kind({
                                             [
                                                 { content: "GVoice uses this built in web-browser to playback voicemails, as webOS security features do not allow apps to download media from secure sites." },
                                                 { content: "<P>Please also login here, so that you may retrieve voicemails properly." },
-                                                { content: "<P>This message should only appear for a brief time at startup, unless you use the Logout option from the app menu, reinstall GVoice, or your Google login information otherwise changes."},
+                                                { content: "<P>This message should only appear for a brief time at startup, unless you use the Logout option from the app menu, reinstall SynerGV, or your Google login information otherwise changes."},
                                             ]
                                         }
                                     ]
@@ -827,7 +827,7 @@ enyo.kind({
     purchaseSynergy: function(inSender, inEvent)
     {
         this.$.PurchaseSynergyPopup.close();
-        this.$.HPPaymentService.call({ itemId: "1", quantity: 1, vendorData: "GVoice Purchase: 1" }, { method: "purchaseItem" });
+        this.$.HPPaymentService.call({ itemId: "1", quantity: 1, vendorData: "SynerGV Purchase: 1" }, { method: "purchaseItem" });
     },
     openPurchasePopup: function(inSender, inEvent) {
         this.$.PurchaseSynergyPopup.open();
@@ -857,7 +857,7 @@ enyo.kind({
         {
             var url = "http://www.ericbla.de/synergv/new-in-v1/";
             prefs.set("firstrun", appver);
-            enyo.windows.addBannerMessage("GVoice: What's New", '{}', "images/google-voice-icon24.png", "/media/internal/ringtones/Triangle (short).mp3")
+            enyo.windows.addBannerMessage("SynerGV: What's New", '{}', "images/google-voice-icon24.png", "/media/internal/ringtones/Triangle (short).mp3")
             console.log("Loading browser to " + url);
             Platform.browser(url, this)();            
             console.log("Browser loaded.");
@@ -1369,7 +1369,7 @@ enyo.kind({
             return;
         }
         if(Platform.isLargeScreen()) // PRE - smaller title
-            this.$.TitleBar.setContent("GVoice - " + this.PrimaryData.userName + " - " + this.PrimaryData.number.formatted);
+            this.$.TitleBar.setContent("SynerGV - " + this.PrimaryData.userName + " - " + this.PrimaryData.number.formatted);
         else {
             //this.$.TitleBar.setContent("GVoice-" + this.PrimaryData.number.formatted);
         }
@@ -1392,11 +1392,11 @@ enyo.kind({
             
         if(!this.wasDND && this.PrimaryData.number.dnd == true)
         {
-            enyo.windows.addBannerMessage("GVoice: DnD Enabled", '{}', "images/google-voice-icon24.png", "/media/internal/ringtones/Triangle (short).mp3")
+            enyo.windows.addBannerMessage("SynerGV: DnD Enabled", '{}', "images/google-voice-icon24.png", "/media/internal/ringtones/Triangle (short).mp3")
             this.wasDND = true;
         }
         else if(this.wasDND && this.PrimaryData.number.dnd == false) {
-            enyo.windows.addBannerMessage("GVoice: DnD Disabled", '{}', "images/google-voice-icon24.png", "/media/internal/ringtones/Triangle (short).mp3")
+            enyo.windows.addBannerMessage("SynerGV: DnD Disabled", '{}', "images/google-voice-icon24.png", "/media/internal/ringtones/Triangle (short).mp3")
             this.wasDND = false;
         }
         if(this.$.DNDButton) {

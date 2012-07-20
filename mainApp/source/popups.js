@@ -8,9 +8,9 @@ enyo.kind({
     components: [
         { kind: "VFlexBox", components:
             [
-                { content: "Thank you for pre-purchasing SynerGV. It should be available in the HP App Catalog by the end of July. " },
-                { content: "You will receive a Promo Code to get it for free from the catalog via GVoice, within 2-3 days of catalog approval."},
-                { content: "If you do not receive your Promo Code by July 31st, please open the GVoice App Menu, select 'Receipt', and email your Receipt Number, as well as your catalog country info to blade.eric@gmail.com ."},
+                { content: "Thank you for pre-purchasing SynerGV v2!. It should be available in the HP App Catalog by the end of July. " },
+                { content: "You will receive a Promo Code to get it for free from the catalog via SynerGV, within 2-3 days of catalog approval."},
+                { content: "If you do not receive your Promo Code by July 31st, please open the SynerGV App Menu, select 'Receipt', and email your Receipt Number, as well as your catalog country info to blade.eric@gmail.com ."},
                 { content: "Thank you so very much for your support. GO WEBOS!" },
                 { kind: "Spacer" },
                 { kind: "Button", caption: "OK", onclick: "close" },
@@ -31,7 +31,7 @@ enyo.kind({
     },
     components:
     [
-        { content: "Attention webOS tablet users! A major new upgrade for GVoice, called SynerGV will be available soon (mid to late July)!" },
+        { content: "Attention webOS tablet users! A major new upgrade for SynerGV, called SynerGV v2 will be available soon (mid to late July)!" },
         { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
         { content: "Much time and effort has been spent into integrating the Google Voice(tm) SMS text service directly to the webOS Messaging application." },
         { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
@@ -39,11 +39,11 @@ enyo.kind({
         { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
         { content: "The purchase price for new users, after the release, will be US$4.99. Click the button below for more info, or to purchase." },
         { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
-        { content: "Purchases will be made via HP's payment system, and a proof of purchase will be sent to the GVoice webOS support SMS number at 9519993267." },
+        { content: "Purchases will be made via HP's payment system, and a proof of purchase will be sent to the SynerGV webOS support SMS number at 9519993267." },
         { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
-        { content: "You will receive a promo code after SynerGV is available, via GVoice message." },
+        { content: "You will receive a promo code after SynerGV v2 is available, via SynerGV message." },
         { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
-        { content: "If you would like to do this later, you may tap the App Menu in the upper-left corner, then select 'Purchase SynerGV'." },        
+        { content: "If you would like to do this later, you may tap the App Menu in the upper-left corner, then select 'Purchase SynerGV v2'." },        
         { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
         { kind: "HFlexBox", components:
             [
@@ -74,9 +74,9 @@ enyo.kind({
             [
                 { content: "Thank you for your purchase! If any errors are found in the transaction, a seperate notification will arrive." },
                 { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
-                { content: "When the Synergy Messaging Integration is available, expected in July, you will receive further instructions via GVoice." },
+                { content: "When the Synergy Messaging Integration is available, expected in July, you will receive further instructions via SynerGV." },
                 { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
-                { content: "You may view your purchase receipt information by selecting the 'Receipt' button on the GVoice app menu." },
+                { content: "You may view your purchase receipt information by selecting the 'Receipt' button on the SynerGV app menu." },
                 { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
                 { content: "If you have any questions, please don't hesitate to send me an email at blade.eric@gmail.com. Thank you!" },
                 { kind: "HtmlContent", flex: 1, allowHtml: true, content: "&nbsp;" },
@@ -117,7 +117,7 @@ enyo.kind({
                                     { nodeTag: "P" },
                                     { content: "With more support, the developer can spend more of their time working to bring you fixes and new features." },
                                     { nodeTag: "P" },
-                                    { content: "If you have already reviewed GVoice, I thank you very much, and tapping the Review button should make this message go away forever." },
+                                    { content: "If you have already reviewed SynerGV, I thank you very much, and tapping the Review button should make this message go away forever." },
                                     { nodeTag: "P" },
                                     { content: "If you have not, please take a few moments to write a review." },
                                 ]
@@ -130,7 +130,7 @@ enyo.kind({
                                 [
                                     { kind: enyo.Image, src: !window.PalmSystem ? "mainApp/images/star.png" : "images/star.png" },                                    
                                     { kind: "Spacer" },
-                                    { content: "Review GVoice :) " },
+                                    { content: "Review SynerGV :) " },
                                     { kind: "Spacer" },
                                 ]
                             },
@@ -172,8 +172,8 @@ enyo.kind(
                                     { kind: enyo.Image, src: !window.PalmSystem ? "mainApp/images/google-voice-icon48.png" : "images/google-voice-icon48.png" },
                                     { kind: "VFlexBox", pack: "center", components:
                                         [
-                                            { name: "NameLabel", content: "GVoice", },
-                                            { name: "versionLabel", className: "enyo-item-ternary", style: "color: black;", content: "version 0.9.9" },
+                                            { name: "NameLabel", content: "SynerGV", },
+                                            { name: "versionLabel", className: "enyo-item-ternary", style: "color: black;", content: "version 1.1.2" },
                                         ]
                                     }
                                 ]
@@ -192,7 +192,7 @@ enyo.kind(
                                         [
                                             { kind: enyo.Image, src: Platform.isLargeScreen() ? (!window.PalmSystem ? "mainApp/images/browser32.png" : "images/browser32.png") : (!window.PalmSystem ? "mainApp/images/browser16.png" : "images/browser16.png") },
                                             { kind: "Spacer" },
-                                            { pack: "center", content: "GVoice Logo: iconshock.com" },
+                                            { pack: "center", content: "SynerGV Logo: iconshock.com" },
                                             { kind: "Spacer" },
                                         ]
                                     },
@@ -219,7 +219,7 @@ enyo.kind(
                                         [
                                             { kind: enyo.Image, src: Platform.isLargeScreen() ? (!window.PalmSystem ? "mainApp/images/browser32.png" : "images/browser32.png") : (!window.PalmSystem ? "mainApp/images/browser16.png" : "images/browser16.png") },
                                             { kind: "Spacer" },
-                                            { content: "GVoice Web Site", },
+                                            { content: "SynerGV Web Site", },
                                             { kind: "Spacer" },
                                         ]
                                     },
@@ -237,29 +237,35 @@ enyo.kind(
                                 [
                                     { kind: enyo.Image, src: !window.PalmSystem ? "mainApp/images/star.png" : "images/star.png" },                                    
                                     { kind: "Spacer" },
-                                    { content: "Review GVoice :) " },
+                                    { content: "Review SynerGV :) " },
                                     { kind: "Spacer" },
                                 ]
                             },
                             { kind: "HFlexBox", components:
                                 [
                                     { kind: "Spacer" },
-                                    { content: "GVoice and GVoice Pre for webOS (c) 2011-2012 Eric Blade", style: "color: black;", className: "enyo-item-ternary" },
+                                    { content: "SynerGV, formerly GVoice and GVoice Pre for webOS (c) 2011-2012 Eric Blade", style: "color: black;", className: "enyo-item-ternary" },
                                     { kind: "Spacer" },
                                 ]
                             },
                             { kind: "HFlexBox", components:
                                 [
                                     { kind: "Spacer" },
-                                    { content: "GVoice for BlackBerry Playbook (c) 2012 Eric Blade", style: "color: black;", className: "enyo-item-ternary" },
+                                    { content: "SynerGV, formerly GVoice for BlackBerry Playbook (c) 2012 Eric Blade", style: "color: black;", className: "enyo-item-ternary" },
                                     { kind: "Spacer" },
                                 ]
                             },
                             { kind: "HFlexBox", components:
                                 [
                                     { kind: "Spacer" },
-                                    { content: "GVoiceA for Android (c) 2012 Eric Blade", style: "color: black;", className: "enyo-item-ternary" },
+                                    { content: "SynerGV, formerly GVoiceA for Android (c) 2012 Eric Blade", style: "color: black;", className: "enyo-item-ternary" },
                                     { kind: "Spacer" },
+                                ]
+                            },
+                            { kind: "HFlexBox", components:
+                                [
+                                    { kind: "Spacer" },
+                                    { content: "SynerGV, formerly GVoice for Chrome (c) 2012 Eric Blade", style: "color: black;", className: "enyo-item-ternary" },
                                 ]
                             },
                             { kind: "Button", caption: "OK", className: "enyo-button-affirmative", onclick: "close", },
@@ -362,7 +368,7 @@ enyo.kind(
                             },
                         ]
                     },
-                    { name: "NotifyTwo", content: "Refresh times less than 5 minutes will only run when GVoice is open. When the app is closed, it will refresh at a 5-minute minimum." + (window.PalmSystem ? " A Dashboard Panel will open to allow refresh rates faster than 5 minutes. When closed, refresh rate will return to minimum 5 minutes.  Refresh times of less than 5 minutes may have adverse effects on battery time." : ""),
+                    { name: "NotifyTwo", content: "Refresh times less than 5 minutes will only run when SynerGV is open. When the app is closed, it will refresh at a 5-minute minimum." + (window.PalmSystem ? " A Dashboard Panel will open to allow refresh rates faster than 5 minutes. When closed, refresh rate will return to minimum 5 minutes.  Refresh times of less than 5 minutes may have adverse effects on battery time." : ""),
                         className: "enyo-item-ternary"
                     },
                     { name: "NotifyThree", content: "It is not possible to do push notifications without giving your password to a 3rd party.", className: "enyo-item-ternary" },
@@ -442,7 +448,7 @@ enyo.kind(
                             }
                         ]
                     },
-                    { name: "RestartNotifier", kind: "TimedNotification", msg: "Restart GVoice for changes to take effect.", lazy: false },
+                    { name: "RestartNotifier", kind: "TimedNotification", msg: "Restart SynerGV for changes to take effect.", lazy: false },
                     { kind: "Button", caption: "OK", className: "enyo-button-affirmative", onclick: "closePopup" },
                     { kind: "Divider", caption: "" }
                 ]

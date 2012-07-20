@@ -12,10 +12,10 @@
 	(function () {
                 if(typeof enyo == "undefined")
                 {
-                    console.log("GVoice: Enyo not found.");
+                    console.log("SynerGV: Enyo not found.");
                     window.open("./requiresEnyo.html");
                 } else {
-                    console.log("Bringing up GVoice on BlackBerry?!");
+                    console.log("Bringing up SynerGV on BlackBerry?!");
                     var launcher = enyo.application.launcher = new myAppLaunch();
      
                     enyo.applicationRelaunchHandler = function (params) {
