@@ -1,3 +1,4 @@
+// TODO: Chrome: just download the farking voicemails
 // TODO: Android: when AppMenu is open, back should close it. When any popups are open, Back should close them.
 // TODO: probably need to setup the slidingview to not go into tablet mode until we hit > 800px, need to see how that works on PlayBook though
 // TODO: we need an icon for "missed call", as well as it should have some text saying such in the message area.
@@ -301,6 +302,8 @@ enyo.kind({
             case "getAvailableItems":
                 if(inResponse.itemInfos[0].itemId == "1" && inResponse.itemInfos[0].itemStatus.timesPurchased === 0) {
                     this.$.PurchaseSynergyPopup.open();
+                } else {
+                    this.$.PurchaseThankYou.open();
                 }
                 break;
             case "purchaseItem":
@@ -415,6 +418,7 @@ enyo.kind({
         { kind: "phonePopupMenu" },
         { name: "PurchaseSynergyPopup", kind: "purchasePopup", onPurchase: "purchaseSynergy" },
         { name: "PurchasedPopup", kind: "purchasedPopup", },
+        { name: "PurchaseThankYou", kind: "purchaseThankYou" },
         { name: "purchaseError", kind: "purchaseError", },
         { kind: "emailPopupMenu", onSendSelected:"emailFromPopup" },
         { kind: "preferencesPopup", onClose: "popupClosed", onPrefsChanged: "prefsChanged" },

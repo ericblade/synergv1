@@ -1,4 +1,25 @@
 enyo.kind({
+    name: "purchaseThankYou",
+    kind: "Popup",
+    height: "80%",
+    width: "95%",
+    modal: true,
+    scrimWhenModal: true,
+    components: [
+        { kind: "VFlexBox", components:
+            [
+                { content: "Thank you for pre-purchasing SynerGV. It should be available in the HP App Catalog by the end of July. " },
+                { content: "You will receive a Promo Code to get it for free from the catalog via GVoice, within 2-3 days of catalog approval."},
+                { content: "If you do not receive your Promo Code by July 31st, please open the GVoice App Menu, select 'Receipt', and email your Receipt Number, as well as your catalog country info to blade.eric@gmail.com ."},
+                { content: "Thank you so very much for your support. GO WEBOS!" },
+                { kind: "Spacer" },
+                { kind: "Button", caption: "OK", onclick: "close" },
+            ]
+        }        
+    ]
+});
+
+enyo.kind({
     name: "purchasePopup",
     kind: "Popup",
     height: "80%",
