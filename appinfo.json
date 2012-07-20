@@ -6,14 +6,14 @@
     "splashIcon": "mainApp/images/splashicon.png",
     "splashicon": "mainApp/images/splashicon.png",
     "noDeprecatedStyles": true,
-    "keywords": [ "text", "sms", "voice", "phone", "dial", "google", "gvoice" ],
+    "keywords": [ "text", "sms", "voice", "phone", "dial", "google", "gvoice", "synergv" ],
     "vendor": "Eric Blade",
-    "vendorurl": "http://www.ericbla.de/gvoice-webos",
+    "vendorurl": "http://www.ericbla.de/synergv",
     "type": "web",
     "main": "index-webos.html",
     "universalSearch": {
         "action": {
-            "displayName": "Send Text with GVoice",
+            "displayName": "Send Text with SynerGV 1",
             "url": "com.ericblade.googlevoiceapp",
             "launchParam": {
                 "action": "compose", "text":"#{searchTerms}"

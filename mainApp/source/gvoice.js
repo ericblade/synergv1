@@ -855,7 +855,7 @@ enyo.kind({
         
         if(prefs.get("firstrun") != appver)
         {
-            var url = "http://ericbla.de/gvoice-webos/?page_id=141";
+            var url = "http://www.ericbla.de/synergv/new-in-v1/";
             prefs.set("firstrun", appver);
             enyo.windows.addBannerMessage("GVoice: What's New", '{}', "images/google-voice-icon24.png", "/media/internal/ringtones/Triangle (short).mp3")
             console.log("Loading browser to " + url);
