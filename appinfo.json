@@ -28,5 +28,6 @@
     "tapToShareSupported": false,
     "appWorldId": "86606",
     "chromeAppId": "obpljmpleobggclmlondpjfekjepojbe",
+    "tapToShareSupported": true,
     "plug-ins": true
 }

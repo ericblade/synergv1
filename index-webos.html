@@ -19,6 +19,7 @@
                     var launcher = enyo.application.launcher = new myAppLaunch();
      
                     enyo.applicationRelaunchHandler = function (params) {
+                        enyo.log("index applicationRelaunchHandler", params);
                             enyo.application.launcher.relaunch(params);
                     };
      

@@ -373,7 +373,7 @@ enyo.kind({
           onBack: "goBack", onLoad: "windowLoaded", onWindowRotated: "windowRotated",
           onOpenAppMenu: "appMenuOpened", onWindowActivated: "windowActivated",
           onWindowDeactivated: "windowDeactivated", onSearch: "jumpToSearch",
-          onUnload: "windowUnloaded",
+          onUnload: "windowUnloaded", onWindowParamsChange: "windowParamsChanged",
         },
         { name: "gvService", kind: "PalmService", service:"palm://com.ericblade.googlevoiceapp.service" },
         //{ name: "PeoplePicker", kind: "enyo.AddressingPopup", addressTypes: "phoneNumbers" },        
@@ -458,7 +458,7 @@ enyo.kind({
                 { caption: "Debug Log", className: "enyo-grid-div menu-grid", onclick: "debugLogView", lazy: false },
                 //useInternalWebView() ? { caption: "Voice Web View", onclick: "showWebView", lazy: false } : {},
                 { caption: "Logout", className: "enyo-grid-div menu-grid", onclick: "doLogoutMenu", lazy: false, },
-                window.PalmSystem ? { name: "PurchaseMenu", caption: "Purchase SynerGV v2", className: "enyo-grid-div menu-grid", onclick: "openPurchasePopup", lazy: false, } : {},
+                window.PalmSystem ? { name: "PurchaseMenu", caption: "Purchase SynerGV 2", className: "enyo-grid-div menu-grid", onclick: "openPurchasePopup", lazy: false, } : {},
                 window.PalmSystem ? { name: "ReceiptMenu", caption: "Receipt", className: "enyo-grid-div menu-grid", onclick: "getReceiptInfo", lazy: false, } : {},
             ]
         },
@@ -969,7 +969,7 @@ enyo.kind({
         this.scrollLeftToTop();
     },
     windowParamsChanged: function() {
-        //this.log(this.windowParams);
+        this.log("************* NEW WINDOW PARAMS= ", this.windowParams);
     },
     receiveMessage: function(message) {
         // received message: data, origin, source

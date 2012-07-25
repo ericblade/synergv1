@@ -31,19 +31,19 @@ enyo.kind({
     },
     components:
     [
-        { content: "Attention webOS tablet users! A major new upgrade for SynerGV, called SynerGV v2 will be available soon (mid to late July)!" },
+        { content: "Attention webOS tablet users! SynerGV 2 is now available in the HP webOS App Catalog!" },
         { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
-        { content: "Much time and effort has been spent into integrating the Google Voice(tm) SMS text service directly to the webOS Messaging application." },
+        { allowHtml: true, content: "Much time and effort has been spent into integrating the Google Voice&trade; SMS text service directly to the webOS Messaging and Contacts applications." },
         { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
-        { content: "I am offering to you, as a loyal GVoice user, the ability to purchase the new SynerGV Messaging Integration at a discounted price of only US$2.49." },
+        { content: "I am offering to you, as a loyal GVoice user, an offer to purchase the new SynerGV Messaging Integration at a discounted price of only US$2.49 - 50% off the full price." },
         { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
-        { content: "The purchase price for new users, after the release, will be US$4.99. Click the button below for more info, or to purchase." },
+        { content: "Tap the buttons below for more info, or to purchase." },
         { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
-        { content: "Purchases will be made via HP's payment system, and a proof of purchase will be sent to the SynerGV webOS support SMS number at 9519993267." },
+        { content: "Purchases will be made via HP's in-app payment system, and a proof of purchase will be sent to the SynerGV webOS support SMS number at 9519993267." },
         { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
-        { content: "You will receive a promo code after SynerGV v2 is available, via SynerGV message." },
+        { allowHtml: true, content: "You will receive a promo code normally within 24 hrs, possibly longer during backlogs, via Google Voice&trade; message." },
         { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
-        { content: "If you would like to do this later, you may tap the App Menu in the upper-left corner, then select 'Purchase SynerGV v2'." },        
+        { content: "If you would like to do this later, you may tap the App Menu in the upper-left corner, then select 'Purchase SynerGV 2'." },        
         { kind: "HtmlContent", allowHtml: true, content: "&nbsp;" },
         { kind: "HFlexBox", components:
             [
@@ -55,7 +55,7 @@ enyo.kind({
     ],
     moreInfo: function(inSender, inEvent) 
     {
-        Platform.browser("http://ericbla.de/gvoice-webos/?p=500", this)();
+        Platform.browser("http://www.ericbla.de/synergv/", this)();
         return;
     },
     

@@ -90,6 +90,7 @@ enyo.kind({
 			// something when the app is close
 			onUnload: "cleanup",
                         onWindowActived: "windowActivated", onWindowDeactived: "windowDeactivated",
+                        onWindowParamsChanged: "windowParamsChanged",
 		},
             { kind: "PalmService", service: "palm://com.palm.power/timeout/", onFailure: "timerFailure", components:
                 [
@@ -101,6 +102,9 @@ enyo.kind({
 			{ name: "GetSynergyAccount", kind: "PalmService", service: "palm://com.palm.service.accounts/", method: "getAccountInfo", onSuccess: "synergyAccountReceived", onFailure: "synergyAccountInfoFail" },
  
 	],
+        windowParamsChanged: function() {
+            this.log("************** WINDOW PARAMS CHANGED ", enyo.windowParams);
+        },
 	createSynergyAccount: function()
 	{
 		this.$.CreateSynergyAccount.call(
