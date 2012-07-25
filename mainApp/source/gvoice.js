@@ -969,7 +969,7 @@ enyo.kind({
         this.scrollLeftToTop();
     },
     windowParamsChanged: function() {
-        this.log("************* NEW WINDOW PARAMS= ", this.windowParams);
+        this.log("************* NEW WINDOW PARAMS= ", enyo.windowParams);
     },
     receiveMessage: function(message) {
         // received message: data, origin, source
