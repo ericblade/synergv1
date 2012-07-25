@@ -451,7 +451,7 @@ enyo.kind({
 				setTimeout(function() {
 					wkn.requestPermission(enyo.bind(this, this.actuallyPostNotification, msgid, msg, nonamemsg, msgtext));
 				}, 2000);
-			} else {
+			} else if(this.checkedPermission) {
 				this.actuallyPostNotification(msgid, msg, nonamemsg, msgtext);
 			}
 		} 
