@@ -365,6 +365,7 @@ enyo.kind({
     components:
     [
         { name: "ttsPlugin", kind: enyo.Hybrid, width: 0, height: 0, executable: "sdltts", takeKeyboardFocus: false, onPluginReady: "handlePluginReady" },
+        { name: "sendDataToShare", kind: "PalmService", service: "palm://com.palm.stservice", method: "shareData", onSuccess: "tapSendSuccess", onFailure: "tapSendFailure" },		        
         { name: "HPPaymentService", kind: "PalmService", service: "palm://com.palm.service.payment/", onSuccess: "paymentServiceResponse", onFailure: "paymentServiceFailure" },
         { name: "ConnectionService", kind: "PalmService", service: "palm://com.palm.connectionmanager/", method: "getStatus", onSuccess: "connectionStatusChange", subscribe: true},
         { name: "RingerSwitchService", kind: "PalmService", service: "palm://com.palm.keys/switches", method: "status", onSuccess: "ringerSwitchChange" },
@@ -970,6 +971,36 @@ enyo.kind({
     },
     windowParamsChanged: function() {
         this.log("************* NEW WINDOW PARAMS= ", enyo.windowParams);
+        if(enyo.windowParams.sendDataToShare) {
+            var dataToSend = { "type": "rawdata", "mimetype": "text/html" };
+            var x = this.$.rightPane.getView();
+            switch(x.name) {
+                case "conversationView":
+                    this.log("Sharing conversation View");
+                    var index = this.getMessageIndexById(this.selectedID);
+                    this.log("id=" + this.selectedID + " index=" + index);
+                    if(this.messages[index].labels.indexOf("voicemail") > -1) {
+                        dataToSend.target = "http://synergv/playVoicemail/unknown/" + this.selectedID;
+                    } else {
+                        dataToSend.target = "http://synergv/openMessage/unknown/" + this.selectedID;
+                    }
+                    break;
+                case "overviewView":
+                    dataToSend.target = "http://synergv/openWindow/unknown/unknown";
+                    break;
+                case "contactsView":
+                    dataToSend.target = "http://synergv/doSomethingWithAContact/unknown/unknown";
+                    break;
+                case "errorView":
+                    dataToSend.target = "http://www.ericbla.de/synergv/";
+                    break;
+                default:
+                    break;
+            }
+            if(dataToSend.target) {
+                this.$.sendDataToShare.call({ "data": dataToSend });
+            }
+        }
     },
     receiveMessage: function(message) {
         // received message: data, origin, source
