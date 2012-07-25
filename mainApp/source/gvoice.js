@@ -980,9 +980,9 @@ enyo.kind({
                     this.log("Sharing conversation View");
                     var index = this.getMessageIndexById(this.selectedID);
                     this.log("id=" + this.selectedID + " index=" + index);
-                    this.log("message=", JSON.stringify(this.Messages[index]));
-                    this.log("index=", JSON.stringify(this.MessageIndex[index]));
-                    if(this.Messages[index].labels.indexOf("voicemail") > -1) {
+                    //this.log("message=", JSON.stringify(this.Messages[index]));
+                    //this.log("index=", JSON.stringify(this.MessageIndex[index]));
+                    if(this.MessageIndex[index].labels.indexOf("voicemail") > -1) {
                         this.log("-- Voicemail!");
                         dataToSend.target = "http://synergv/playVoicemail/unknown/" + this.selectedID;
                     } else {
