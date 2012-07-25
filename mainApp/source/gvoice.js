@@ -705,6 +705,7 @@ enyo.kind({
         enyo.application.mainApp.$.errorView.render();
     },
     delayedStartup: function() {
+        this.log();
         if(useInternalWebView() && this.$.HackWebView.$.view)
         {
             this.originalDocLoadFinished = this.$.HackWebView.$.view.documentLoadFinished;
@@ -1127,6 +1128,7 @@ enyo.kind({
     },
     openLoginPopup: function() {
         ////enyo.log("***OpenLoginPopup");
+        this.log("openLoginPopup");
         if(enyo.application.api.AuthCode) // the other window is already logged in, just run with it
         {
             this.LoginReceived();
