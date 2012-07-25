@@ -871,7 +871,7 @@ enyo.kind({
         }
     
         var runcount = parseInt(prefs.get("runcount"));
-        if(runcount >= 10 && !prefs.get("reviewed"))
+        if(runcount >= 10 && !prefs.get("reviewed") && !Platform.isWebWorks())
         {
             this.$.ReviewPopup.openAtCenter();
         }

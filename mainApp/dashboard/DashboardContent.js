@@ -209,7 +209,7 @@ enyo.kind({
 	create: function() {
 		this.inherited(arguments);
 		this.swipeableChanged();
-		if(window.innerHeight > 52) {
+		if(window.innerHeight > 100) {
 			this.$.client.createContainedComponent({
 				kind: "HFlexBox",
 				components: [
