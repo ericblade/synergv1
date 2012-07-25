@@ -980,7 +980,8 @@ enyo.kind({
                     this.log("Sharing conversation View");
                     var index = this.getMessageIndexById(this.selectedID);
                     this.log("id=" + this.selectedID + " index=" + index);
-                    if(this.messages[index].labels.indexOf("voicemail") > -1) {
+                    if(this.Messages[index].labels.indexOf("voicemail") > -1) {
+                        this.log("-- Voicemail!");
                         dataToSend.target = "http://synergv/playVoicemail/unknown/" + this.selectedID;
                     } else {
                         dataToSend.target = "http://synergv/openMessage/unknown/" + this.selectedID;
@@ -999,8 +1000,10 @@ enyo.kind({
                     break;
             }
             if(dataToSend.target) {
+                this.log("Sharing!");
                 this.$.sendDataToShare.call({ "data": dataToSend });
             }
+            this.log("Share should be complete.");
         }
     },
     receiveMessage: function(message) {
