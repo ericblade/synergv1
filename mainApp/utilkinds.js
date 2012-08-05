@@ -85,30 +85,30 @@ enyo.kind({
     },*/
     keyInput: function(inSender, inEvent)
     {
-        var str = this.$.InputBox.getValue().toLowerCase();
-        this.suggestions = new Array();
-        var testcase = str;
-        
-        if(this.numericOnly)
-            testcase = str.replace(/[^0-9]/g, '');
-        for (var s in this.suggestlist)
-        {
-            var suggestiontest = this.suggestlist[s];
-            if(this.numericOnly) {
-                suggestiontest = suggestiontest.replace(/[^0-9]/g, '');
-            }
-            if(suggestiontest.indexOf(testcase) != -1)
+        if(!Platform.isAndroid()) {
+            var str = this.$.InputBox.getValue().toLowerCase();
+            this.suggestions = new Array();
+            var testcase = str;
+            
+            if(this.numericOnly)
+                testcase = str.replace(/[^0-9]/g, '');
+            for (var s in this.suggestlist)
             {
-                this.suggestions.push(this.suggestlist[s]);
+                var suggestiontest = this.suggestlist[s];
+                if(this.numericOnly) {
+                    suggestiontest = suggestiontest.replace(/[^0-9]/g, '');
+                }
+                if(suggestiontest.indexOf(testcase) != -1)
+                {
+                    this.suggestions.push(this.suggestlist[s]);
+                }
             }
+            if(this.suggestions.length == 0)
+                this.$.AutocompleteBox.hide();
+            else
+                this.$.AutocompleteBox.show();
+            this.$.AutocompleteRepeater.render();
         }
-        if(this.suggestions.length == 0)
-            this.$.AutocompleteBox.hide();
-        else
-            this.$.AutocompleteBox.show();
-        this.$.AutocompleteRepeater.render();
-        if(!window.PalmSystem)
-            this.forceFocus();
         return true;
     },
     getSuggestion: function(inSender, inRow)
