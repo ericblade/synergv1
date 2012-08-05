@@ -107,6 +107,8 @@ enyo.kind({
         else
             this.$.AutocompleteBox.show();
         this.$.AutocompleteRepeater.render();
+        if(!window.PalmSystem)
+            this.forceFocus();
         return true;
     },
     getSuggestion: function(inSender, inRow)
