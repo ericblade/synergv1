@@ -908,7 +908,7 @@ enyo.kind(
                         { kind: "HFlexBox", components:
                             [
                                 { content: "To", className: "login-box-caption", },
-                                { name: "callToNumber", flex: 1, kind: "autoCompleteInput", onfocus: "showDialpad", autoKeyModifier: "num-lock", className: "login-input" },
+                                { name: "callToNumber", flex: 1, kind: "autoCompleteInput", onfocus: "showDialpad", alwaysLooksFocused: true, autoKeyModifier: "num-lock", className: "login-input" },
                                 { kind: "Button", caption: "<<", onclick: "deleteLastNumber" },
                             ]
                         },
@@ -938,7 +938,7 @@ enyo.kind(
                 onCancelCall: "",
             },
             showDialpad: function() {
-                if(!Platform.isLargeScreen())
+                if(!Platform.isLargeScreen() && window.PalmSystem)
                     this.$.dialpad.show();
             },
             hideDialpad: function() {
