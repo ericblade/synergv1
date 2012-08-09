@@ -157,7 +157,7 @@ enyo.kind({
                 { name: "message", kind: "Control", components:
                     [
                         { name: "timestampleft", kind: "Control", style: "float: left;", className: "enyo-item-ternary", showing: false },
-                        { name: "listItem", kind: "HtmlContent", allowHtml: true, onLinkClick: "linkClicked", },
+                        { name: "listItem", kind: "HtmlContent", style: "display: inline;", allowHtml: true, onLinkClick: "linkClicked", },
                         { name: "timestamp", kind: "Control", style: "float: right;", className: "enyo-item-ternary", },
                     ]
                 }
