@@ -4,7 +4,7 @@ enyo.kind( {
     autoHorizontal: false,
     horizontal: false,
     autoVertical: true,
-    accelerated: useAccelerated(),
+    accelerated: true,
     events:
         { "onContactSelected":"", },
     components:
@@ -16,7 +16,7 @@ enyo.kind( {
                 ]
             },*/
             
-            { kind: "VirtualRepeater", flex: 1, onSetupRow: "getContactsIndexItem", onclick: "indexClick", accelerated: useAccelerated(), components:
+            { kind: "VirtualRepeater", flex: 1, onSetupRow: "getContactsIndexItem", onclick: "indexClick", accelerated: true, components:
                 [
                     { kind: "Item", layoutKind: "HFlexLayout", onclick: "selected", components:
                         [
