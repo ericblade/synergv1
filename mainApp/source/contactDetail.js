@@ -8,9 +8,9 @@ enyo.kind(
         },
         components:
             [
-                { kind: "Scroller", flex: 1, autoHorizontal: false, horizontal: false, autoVertical: true, accelerated: true, components:
+                { kind: "Scroller", flex: 1, autoHorizontal: false, horizontal: false, autoVertical: true, accelerated: useAccelerated(), components:
                     [
-                        { name: "list", kind: "VirtualRepeater", flex: 1, onSetupRow: "getListItem", onclick: "selected", accelerated: true, components:
+                        { name: "list", kind: "VirtualRepeater", flex: 1, onSetupRow: "getListItem", onclick: "selected", accelerated: useAccelerated(), components:
                             [
                                 { kind: "Divider", caption: "" },
                                 //{ kind: "Item", layoutKind: "HFlexLayout", components:

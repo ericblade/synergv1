@@ -483,7 +483,7 @@ enyo.kind({
                         },
                         { name: "leftPane", kind: "Pane", flex: 1, transitionKind:enyo.transitions.LeftRightFlyin, components:
                             [
-                                { name: "indexView", kind: "TransformScroller", horizontal: false, autoHorizontal: false, autoVertical: true, accelerated: Platform.isLargeScreen(), components:
+                                { name: "indexView", kind: "TransformScroller", horizontal: false, autoHorizontal: false, autoVertical: true, accelerated: useAccelerated(), components:
                                     [
                                         { kind: "HFlexBox", components:
                                             [
@@ -495,7 +495,7 @@ enyo.kind({
                                                 },
                                             ]
                                         },
-                                        { name: "IndexList", kind: "VirtualRepeater", onSetupRow: "getIndexListItem", onclick: "IndexListClick", onmousehold: "indexHold", accelerated: Platform.isLargeScreen(), components:
+                                        { name: "IndexList", kind: "VirtualRepeater", onSetupRow: "getIndexListItem", onclick: "IndexListClick", onmousehold: "indexHold", accelerated: useAccelerated(), components:
                                             [
                                                 { name: "IndexListItem", className: "indexitem", kind: "SwipeableItem", confirmCaption: "Delete", onConfirm: "swipeDelete", components:
                                                     [
@@ -564,9 +564,9 @@ enyo.kind({
                                                 }
                                             ]
                                         },
-                                        { name: "conversationScroller", flex: 1, kind: "TransformScroller", autoHorizontal: true, autoVertical: true, vertical: true, accelerated: Platform.isLargeScreen(), components:
+                                        { name: "conversationScroller", flex: 1, kind: "TransformScroller", autoHorizontal: true, autoVertical: true, vertical: true, accelerated: useAccelerated(), components:
                                             [
-                                                { name: "conversationList", kind: "VirtualRepeater", onSetupRow: "getConversationListItem", onclick: "listItemClick", accelerated: Platform.isLargeScreen(), components:
+                                                { name: "conversationList", kind: "VirtualRepeater", onSetupRow: "getConversationListItem", onclick: "listItemClick", accelerated: useAccelerated(), components:
                                                     [
                                                         { kind: "Item", layoutKind: "VFlexLayout", className: "noborders", components:
                                                             [
@@ -591,12 +591,12 @@ enyo.kind({
                                                 { name: "overviewHeader", content: "Overview: " + prefs.get("defaultBox"), },
                                             ]
                                         },
-                                        { name: "overviewScroller", kind: "TransformScroller", flex: 1, autoHorizontal: false, horizontal: false, autoVertical: true, accelerated: Platform.isLargeScreen(),
+                                        { name: "overviewScroller", kind: "TransformScroller", flex: 1, autoHorizontal: false, horizontal: false, autoVertical: true, accelerated: useAccelerated(),
                                         components:
                                             [
                                                 { kind: "VFlexBox", flex: 1, components:
                                                     [
-                                                        { name: "overviewList", kind: "VirtualRepeater", onSetupRow: "overviewListRender", accelerated: Platform.isLargeScreen(), components:
+                                                        { name: "overviewList", kind: "VirtualRepeater", onSetupRow: "overviewListRender", accelerated: useAccelerated(), components:
                                                             [
                                                                 { name: "overviewTitle", kind: "Divider", className: "gvoice-divider", allowHtml: true, components:
                                                                     [
