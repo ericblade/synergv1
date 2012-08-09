@@ -3,7 +3,8 @@ function useAccelerated() {
         return Platform.version > 2;
     }
     if(Platform.isWebOS()) {
-        return Platform.version >= 3;
+        //return Platform.version >= 3;
+        return false;
     }
     if(Platform.isWebWorks()) {
         return true;
