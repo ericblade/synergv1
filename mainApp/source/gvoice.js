@@ -501,7 +501,7 @@ enyo.kind({
                                                     [
                                                         //{ kind: "HFlexBox", components:
                                                             //[
-                                                                { name: "IndexImage", kind: "enyo.Image", className: "avatar" },
+                                                                { name: "IndexImage", kind: "enyo.Image", style: "display: inline;", className: "avatar" },
                                                                 { kind: "VFlexBox" , pack: "center", flex: 1, components:
                                                                     [
                                                                         { name: "IndexName", /*style: "display: inline;"*/ },
