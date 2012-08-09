@@ -12,7 +12,7 @@ enyo.kind(
                     [
                         { name: "list", kind: "VirtualRepeater", flex: 1, onSetupRow: "getListItem", onclick: "selected", accelerated: useAccelerated(), components:
                             [
-                                { kind: "Divider", caption: "" },
+                                //{ kind: "Divider", caption: "" },
                                 //{ kind: "Item", layoutKind: "HFlexLayout", components:
                                 //{ kind: "HFlexBox", components:
                                     //[
