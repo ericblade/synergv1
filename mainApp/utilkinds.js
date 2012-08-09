@@ -1,5 +1,15 @@
 // various utility kinds
 
+function useAccelerated() {
+    if(Platform.isAndroid()) {
+        return Platform.version > 2;
+    }
+    if(Platform.isWebOS()) {
+        return Platform.version >= 3;
+    }
+    return false;
+}
+
 enyo.kind({
     name: "StatefulImage",
     kind: "Image",
@@ -141,7 +151,7 @@ enyo.kind({
     kind: "VFlexBox",
     components:
     [
-        { kind: "VirtualRepeater", onSetupRow: "renderItem", accelerated: true, onclick: "repeaterClick", components:
+        { kind: "VirtualRepeater", onSetupRow: "renderItem", accelerated: useAccelerated(), onclick: "repeaterClick", components:
             [
                 { kind: "Control", layoutKind: "VFlexLayout", className: "noborders", onclick: "listClick", components:
                     [
