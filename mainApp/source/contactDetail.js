@@ -8,7 +8,7 @@ enyo.kind(
         },
         components:
             [
-                { kind: "Scroller", flex: 1, autoHorizontal: false, horizontal: false, autoVertical: true, accelerated: useAccelerated(), components:
+                { kind: "Scroller", flex: 1, autoHorizontal: true, horizontal: false, vertical: true, autoVertical: true, accelerated: useAccelerated(), components:
                     [
                         { name: "list", kind: "VirtualRepeater", flex: 1, onSetupRow: "getListItem", onclick: "selected", accelerated: useAccelerated(), components:
                             [
