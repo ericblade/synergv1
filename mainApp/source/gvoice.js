@@ -502,7 +502,7 @@ enyo.kind({
                                                         //{ kind: "HFlexBox", components:
                                                             //[
                                                                 { name: "IndexImage", kind: "enyo.Image", style: "display: inline;", className: "avatar" },
-                                                                { kind: "VFlexBox" , pack: "center", flex: 1, components:
+                                                                { kind: "VFlexBox", style: "display: inline;", pack: "center", flex: 1, components:
                                                                     [
                                                                         { name: "IndexName", /*style: "display: inline;"*/ },
                                                                         { name: "IndexLocation", className: "enyo-item-ternary" },                                                            
