@@ -499,8 +499,8 @@ enyo.kind({
                                             [
                                                 { name: "IndexListItem", className: "indexitem", kind: "SwipeableItem", confirmCaption: "Delete", onConfirm: "swipeDelete", components:
                                                     [
-                                                        { kind: "HFlexBox", components:
-                                                            [
+                                                        //{ kind: "HFlexBox", components:
+                                                            //[
                                                                 { name: "IndexImage", kind: "enyo.Image", className: "avatar" },
                                                                 { kind: "VFlexBox" , pack: "center", flex: 1, components:
                                                                     [
@@ -516,8 +516,8 @@ enyo.kind({
                                                                         { name: "StarIndicator", className: "indicator", kind: "enyo.Image", src: window.PalmSystem ? "images/star.png" : "mainApp/images/star.png", showing: false },
                                                                     ]
                                                                 },
-                                                            ]
-                                                        },
+                                                            //]
+                                                        //},
                                                     ]
                                                 },
                                             ]
