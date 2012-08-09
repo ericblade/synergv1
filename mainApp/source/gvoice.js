@@ -509,13 +509,13 @@ enyo.kind({
                                                                         { name: "IndexTime", className: "enyo-item-ternary" }
                                                                     ]
                                                                 },
-                                                                { kind: "HFlexBox", align: "start", components:
-                                                                    [
+                                                                //{ kind: "HFlexBox", align: "start", components:
+                                                                    //[
                                                                         { name: "NoteIndicator", className: "indicator", kind: "enyo.Image", src: window.PalmSystem ? "images/note.png" : "mainApp/images/note.png", showing: false },
                                                                         { name: "VoiceMailIndicator", className: "indicator", kind: "enyo.Image", src: window.PalmSystem ? "images/Blade_voice2.png" : "mainApp/images/Blade_voice2.png", showing: false },
                                                                         { name: "StarIndicator", className: "indicator", kind: "enyo.Image", src: window.PalmSystem ? "images/star.png" : "mainApp/images/star.png", showing: false },
-                                                                    ]
-                                                                },
+                                                                    //]
+                                                                //},
                                                             //]
                                                         //},
                                                     ]

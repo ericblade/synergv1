@@ -67,7 +67,7 @@
 
 .default .avatar { padding-right: 2px; width: 42px; }
 .default .timestamp { padding-right: 10px; }
-.default .indicator { padding-right: 1px; width: 18px; }
+.default .indicator { padding-right: 1px; width: 18px; float: right; }
 
 .enyo-search-input-search {
 	background-image: none; /*url(images/searchicon24.png);*/
