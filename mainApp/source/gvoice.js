@@ -2111,7 +2111,11 @@ enyo.kind({
     },
     emailFromPopup: function(inSender)
     {
-        this.$.AppManService.call( { target: "mailto:" + this.clickedEmail } );
+        if(window.PalmSystem)
+            this.$.AppManService.call( { target: "mailto:" + this.clickedEmail } );
+        else
+            Platform.browser("mailto:" + this.clickedEmail, this)();
+        return true;
     },
     popupCallClicked: function(inSender, inEvent)
     {
