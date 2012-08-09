@@ -1,3 +1,5 @@
+// TODO: Call page does not work on Android phones?
+// TODO: must replace the autocomplete inputs with something else on Android ...
 // TODO: Chrome: just download the farking voicemails
 // TODO: Android: when AppMenu is open, back should close it. When any popups are open, Back should close them.
 // TODO: probably need to setup the slidingview to not go into tablet mode until we hit > 800px, need to see how that works on PlayBook though

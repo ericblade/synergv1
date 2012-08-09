@@ -143,7 +143,7 @@ enyo.kind({
     [
         { kind: "VirtualRepeater", onSetupRow: "renderItem", accelerated: true, onclick: "repeaterClick", components:
             [
-                { kind: "Control", layoutKind: "VFlexLayout", className: "noborders", onclick: "listClick", components:
+                /*{ kind: "Control", layoutKind: "VFlexLayout", className: "noborders", onclick: "listClick", components:
                     [
                         { name: "message", kind: "HFlexBox", components:
                             [
@@ -153,7 +153,10 @@ enyo.kind({
                             ]
                         },
                     ]
-                }
+                }*/
+                { name: "timestampleft", kind: "Control", style: "float: left;", className: "enyo-item-ternary", showing: false },
+                { name: "listItem", kind: "HtmlContent", allowHtml: true, onLinkClick: "linkClicked", },
+                { name: "timestamp", kind: "Control", style: "float: right;", className: "enyo-item-ternary", },
             ]
         }
     ],
