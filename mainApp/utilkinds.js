@@ -156,9 +156,7 @@ enyo.kind({
                 }*/
                 { name: "message", kind: "Control", components:
                     [
-                        { name: "timestampleft", kind: "Control", style: "float: left;", className: "enyo-item-ternary", showing: false },
-                        { name: "listItem", kind: "HtmlContent", allowHtml: true, onLinkClick: "linkClicked", },
-                        { name: "timestamp", kind: "Control", style: "float: right;", className: "enyo-item-ternary", },
+                        { name: "listItem", kind: "HtmlContent", allowHtml: true, onLinkClick: "linkClicked", style: "display: inline;", },
                     ]
                 },
             ]
@@ -224,6 +222,7 @@ enyo.kind({
         
         if(message)
         {
+            var timestampfloat;
             if(prefs.get("smallFonts") === true && !this.$.listItem.hasClass("enyo-item-secondary"))
             {
                 this.$.listItem.addClass("enyo-item-secondary");
@@ -234,17 +233,20 @@ enyo.kind({
                 {
                     this.$.message.addClass("gvoice-inbox-message-self");
                 }
-                this.$.timestamp.setShowing(false);
-                this.$.timestampleft.setShowing(true);
-                this.$.timestampleft.setContent(message.SentTime);
+                timestampfloat = "left";
             }
             else
             {
+                timestampfloat = "right";
                 if(!this.$.message.hasClass("gvoice-inbox-message-alt"))
                 {
                     this.$.message.addClass("gvoice-inbox-message-alt");
                 }
             }
+            this.$.message.createComponent(
+                    { name: "timestamp", kind: "Control", style: "float: " + timestampfloat + ";", className: "enyo-item-ternary", content: message.SentTime},
+                    { owner: this.$.message }
+            );
             
             if(messageIndex.isVoicemail) // TODO: our dumb asses can search "MessageIndex[index].labels" for this such as "missed", "voicemail", etc, rather than parsing the fucking html
             {
