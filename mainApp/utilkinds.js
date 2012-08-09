@@ -151,7 +151,19 @@ enyo.kind({
     kind: "VFlexBox",
     components:
     [
-        { kind: "VirtualRepeater", onSetupRow: "renderItem", accelerated: useAccelerated(), onclick: "repeaterClick", components:
+        { content: "PreRepeater" },
+        { kind: "VirtualRepeater", onSetupRow: "renderItemNew", accelerated: useAccelerated(), onclick: "repeaterClick", components:
+            [
+                { name: "message", kind: "HFlexBox", style: "border: outset 2px;", flex: 1, components:
+                    [
+                        { name: "listItem", flex: 1, },
+                        { name: "timestamp", className: "enyo-item-ternary", style: "padding-left: 5px; padding-right: 5px;" },
+                    ]
+                }
+            ]
+        },
+        { content: "PostRepeater" }
+        /*{ kind: "VirtualRepeater", onSetupRow: "renderItem", accelerated: useAccelerated(), onclick: "repeaterClick", components:
             [
                 { kind: "Control", layoutKind: "VFlexLayout", className: "noborders", onclick: "listClick", components:
                     [
@@ -165,7 +177,7 @@ enyo.kind({
                     ]
                 }
             ]
-        }
+        }*/
     ],
     published: {
         messageId: "",
@@ -192,6 +204,95 @@ enyo.kind({
     {
         //this.log(inSender, ".", inEvent, ".", this.messageId);
         inEvent.preventDefault();
+    },
+    renderItemNew: function(inSender, inRow) {
+        var overviewMsg = enyo.application.mainApp ? enyo.application.mainApp.overviewMsg : -1;
+
+        if(overviewMsg == -1) // no messages at all!
+        {
+            if(inRow == 0)
+            {
+                //this.$.overviewTitle.hide();
+                this.$.listItem.setContent("No messages found in this view.  Send and ye shall receive!");
+                return true;
+            }
+            return false;
+        }
+
+        var index = inRow - 1;
+        
+        if(index == -1)
+        {
+            this.$.message.hide();
+            return true;
+        }
+        
+        var messageIndex = enyo.application.mainApp.MessageIndex[overviewMsg];        
+        var title = "";
+        var str = "";
+        var message = enyo.application.mainApp.Messages && enyo.application.mainApp.Messages[overviewMsg] ? enyo.application.mainApp.Messages[overviewMsg][index] : undefined;
+        
+        //this.log(overviewMsg);
+        //this.log(index);
+        //this.log(messageIndex);
+        //this.log(message);
+        
+        if(message)
+        {
+            this.$.timestamp.setContent("TS");
+            
+            if(prefs.get("smallFonts") === true && !this.$.listItem.hasClass("enyo-item-secondary"))
+            {
+                this.$.listItem.addClass("enyo-item-secondary");
+            }
+            if(message.SentBy == "Me:")
+            {
+                this.$.timestamp.applyStyle("float","left");
+                this.$.listItem.applyStyle("display", "inline");
+                if(!this.$.message.hasClass("gvoice-inbox-message-self"))
+                {
+                    this.$.message.addClass("gvoice-inbox-message-self");
+                }
+            }
+            else
+            {
+                //this.$.timestamp.applyStyle("float","right");
+                if(!this.$.message.hasClass("gvoice-inbox-message-alt"))
+                {
+                    this.$.message.addClass("gvoice-inbox-message-alt");
+                }
+            }
+            
+            if(messageIndex.isVoicemail) // TODO: our dumb asses can search "MessageIndex[index].labels" for this such as "missed", "voicemail", etc, rather than parsing the fucking html
+            {
+                if(message.VoicemailTranscript) {
+                    str = message.VoicemailTranscript;
+                }
+                else {
+                    str = "Transcript not available.";
+                }
+            } else {
+                if(message.SentMessage)
+                    str = message.SentMessage;
+                else
+                    str = "Message not available.";
+                if(this.$.timestamp)
+                    this.$.timestamp.setContent(message.SentTime);
+                //str += " (" + message.SentTime + ")";
+            }
+            this.$.listItem.setContent(str);
+            return true;
+        } else 
+        if(index == 0) {
+            this.$.listItem.addClass("gvoice-inbox-message-alt");
+            this.$.listItem.setContent("No information available");
+            return true;
+        }
+        return false;
+
+        if(message) {
+        }
+        return false;
     },
     renderItem: function(inSender, inRow) // TODO: reflow this so we aren't returning half a dozen times from it
     {

@@ -1,3 +1,16 @@
+function useAccelerated() {
+    if(Platform.isAndroid()) {
+        return Platform.version > 2;
+    }
+    if(Platform.isWebOS()) {
+        return Platform.version >= 3;
+    }
+    if(Platform.isWebWorks()) {
+        return true;
+    }
+    return false;
+}
+
 prefs = {
     set: function(prop, setting)
     {
