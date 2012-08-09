@@ -151,7 +151,6 @@ enyo.kind({
     kind: "VFlexBox",
     components:
     [
-        { content: "PreRepeater" },
         { kind: "VirtualRepeater", onSetupRow: "renderItemNew", accelerated: useAccelerated(), onclick: "repeaterClick", components:
             [
                 { name: "message", kind: "HFlexBox", style: "border: outset 2px;", flex: 1, components:
@@ -162,7 +161,6 @@ enyo.kind({
                 }
             ]
         },
-        { content: "PostRepeater" }
         /*{ kind: "VirtualRepeater", onSetupRow: "renderItem", accelerated: useAccelerated(), onclick: "repeaterClick", components:
             [
                 { kind: "Control", layoutKind: "VFlexLayout", className: "noborders", onclick: "listClick", components:
