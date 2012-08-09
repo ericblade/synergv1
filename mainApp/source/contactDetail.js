@@ -16,7 +16,7 @@ enyo.kind(
                                 //{ kind: "Item", layoutKind: "HFlexLayout", components:
                                 //{ kind: "HFlexBox", components:
                                     //[
-                                        { kind: "Item", style: "float: left;", flex: 1, components:
+                                        { kind: "Item", style: "float: left; border: outset;", flex: 1, components:
                                             [
                                                 { name: "contactInfo", kind: "HtmlContent", },
                                                 { name: "contactType", className: "enyo-item-secondary", },
