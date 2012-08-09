@@ -236,9 +236,7 @@ enyo.kind({
         //this.log(message);
         
         if(message)
-        {
-            this.$.timestamp.setContent("TS");
-            
+        {            
             if(prefs.get("smallFonts") === true && !this.$.listItem.hasClass("enyo-item-secondary"))
             {
                 this.$.listItem.addClass("enyo-item-secondary");
@@ -274,10 +272,10 @@ enyo.kind({
                     str = message.SentMessage;
                 else
                     str = "Message not available.";
-                if(this.$.timestamp)
-                    this.$.timestamp.setContent(message.SentTime);
                 //str += " (" + message.SentTime + ")";
             }
+            if(this.$.timestamp)
+                this.$.timestamp.setContent(message.SentTime);
             this.$.listItem.setContent(str);
             return true;
         } else 
@@ -285,10 +283,6 @@ enyo.kind({
             this.$.listItem.addClass("gvoice-inbox-message-alt");
             this.$.listItem.setContent("No information available");
             return true;
-        }
-        return false;
-
-        if(message) {
         }
         return false;
     },
