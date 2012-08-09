@@ -153,7 +153,7 @@ enyo.kind({
     [
         { kind: "VirtualRepeater", onSetupRow: "renderItemNew", accelerated: useAccelerated(), onclick: "repeaterClick", components:
             [
-                { name: "message", kind: "HFlexBox", style: "border: outset 2px;", flex: 1, components:
+                { name: "message", kind: "HFlexBox", flex: 1, components:
                     [
                         { name: "listItem", flex: 1, },
                         { name: "timestamp", className: "enyo-item-ternary", style: "padding-left: 5px; padding-right: 5px;" },
