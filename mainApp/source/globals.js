@@ -1,4 +1,5 @@
 function useAccelerated() {
+    return true;
     if(Platform.isAndroid()) {
         return Platform.version > 2;
     }
