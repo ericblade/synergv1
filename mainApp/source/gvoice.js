@@ -1952,8 +1952,9 @@ enyo.kind({
             enyo.windows.addBannerMessage("No Outgoing Phone Selected", '{}', "images/google-voice-icon24.png", "")
             return;
         }
-        this.log("phones=" + JSON.stringify(this.PrimaryData.phones));
-        return;
+        //this.log("phones=" + JSON.stringify(this.PrimaryData.phones));
+        //return;
+        this.log("using phone=" + JSON.stringify(this.PrimaryData.phones[phone]));
         var params = {
             outgoingNumber:recp,
             forwardingNumber:this.PrimaryData.phones[phone].phoneNumber,
