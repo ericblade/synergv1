@@ -1208,8 +1208,13 @@ enyo.kind({
     openPlaceCallPopup: function(recp)
     {
         //this.$.placeCallPopup.openAtCenter(recp);
-        //this.$.placeCallPopup.open(recp);
-        this.$.rightPane.selectViewByName("placeCallView");
+        if(window.PalmSystem && window.innerHeight < 700) {
+            this.$.placeCallPopup.open(recp);
+        } else {
+            this.$.rightPane.selectViewByName("placeCallView");
+            if(window.innerHeight < 800)
+                this.$.slidingPane.selectViewByName("right");
+        }
     },
     closePlaceCallPopup: function()
     {
