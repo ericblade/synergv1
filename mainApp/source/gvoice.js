@@ -1938,6 +1938,7 @@ enyo.kind({
             phoneType:this.PrimaryData.phones[phone].type,
             _rnr_se:this.PrimaryData._rnr_se
         };
+        enyo.log("Placing phone call with parameters: " + JSON.stringify(params));
         this.$.CallNumber.headers = { "Authorization":"GoogleLogin auth="+this.AuthCode };
         //enyo.log("calling " +params.outgoingNumber + " from " + params.forwardingNumber);
         this.$.CallNumber.call(params);
