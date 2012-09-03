@@ -624,7 +624,7 @@ enyo.kind({
                                         { name: "contactView", flex: 1, kind: "contactDetail", onPhoneSelected: "doPhoneMenu", onEmailSelected: "doEmailMenu" },                                                
                                     ]
                                 },
-                                { name: "placeCallView", kind: "placeCallView" },
+                                { name: "placeCallView", kind: "placeCallView", onCancelCall: "cancelOutgoingCall", onPlaceCall: "actionPlaceCall" },
                                 { name: "errorView", kind: "errorDetail", allowHtml: false },
                                 (useInternalWebView() ? { name: "webView", kind: "HFlexBox", components:
                                     [

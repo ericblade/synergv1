@@ -383,6 +383,10 @@ enyo.kind({
     published: {
         phones: "",
     },
+    events: {
+        onCancelCall: "",
+        onPlaceCall: ""        
+    },
     components: [
         { kind: "HFlexBox", flex: 1, components:
             [
@@ -570,5 +574,30 @@ enyo.kind({
             inEvent.stopPropagation();
             return true;
     },
-    
-})
+    placeOrEndCall: function(inSender, inEvent)
+    {
+        if(this.onCall)
+        {
+            //this.$.EndCall.call({ accountId: enyo.application.accountId });
+            this.doCancelCall();
+            this.$.PlaceCallButton.setCaption("Place Call");
+            this.onCall = false;
+        } else {
+            this.onCall = true;
+            //this.$.RedialButton.setDisabled(true);
+            var phone = this.getPhoneIndexByName(this.$.PhoneSelector.getValue());
+            
+            this.lastNumberCalled = this.$.toInput.getValue();
+            
+            /*this.$.PlaceCall.call({
+                accountId: enyo.application.accountId,
+                outgoingNumber: this.$.toInput.getValue(),
+                forwardingNumber: this.phones[phone].phoneNumber,
+                phoneType: this.phones[phone].type
+            });*/
+            this.doPlaceCall(this.$.toInput.getValue(), phone);
+            this.$.PlaceCallButton.setCaption("End Call"); // yes, keep the multiple settings of it, just so we're sure
+        }
+        this.$.PlaceCallButton.addRemoveClass("enyo-button-negative", this.onCall);
+    },    
+});
