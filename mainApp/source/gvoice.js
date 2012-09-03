@@ -840,8 +840,10 @@ enyo.kind({
     checkFirstRun: function() {
         var appInfo;
         if(!Platform.isWebOS() || Platform.platformVersion < 3) {
-            this.$.ReceiptMenu.hide();
-            this.$.PurchaseMenu.hide();
+            if(this.$.ReceiptMenu)
+                this.$.ReceiptMenu.hide();
+            if(this.$.PurchaseMenu)
+                this.$.PurchaseMenu.hide();
         }
         /*if(Platform.isAndroid())
         {
@@ -1389,7 +1391,7 @@ enyo.kind({
     },
     PrimaryDataReceived: function(inSender, inResponse)
     {
-        console.log("PrimaryDataReceived");
+        enyo.log("********** PrimaryDataReceived");
         if(!this.PrimaryData) // if it's our first time receiving it, then fire an Inbox load too
             enyo.nextTick(this, enyo.bind(this, this.RetrieveInbox, prefs.get("defaultBox")));
         //this.PrimaryData = ParsePrimaryData(inResponse);

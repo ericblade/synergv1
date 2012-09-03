@@ -1084,7 +1084,7 @@ enyo.kind({
     },
     mobileLoginSuccess: function(inSender, inResponse)
     {
-        enyo.log("mobileLoginSuccess inResponse=" + inResponse);
+        //enyo.log("mobileLoginSuccess inResponse=" + inResponse);
         this.doLogin(prefs.get("gvUsername"), prefs.get("gvPassword"));
     },
     doLogin: function(username, password)
