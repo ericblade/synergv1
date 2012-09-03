@@ -1218,6 +1218,9 @@ enyo.kind({
             this.$.rightPane.selectViewByName("placeCallView");
             if(window.innerHeight < 800)
                 this.$.slidingPane.selectViewByName("right");
+            if(recp) {
+                this.$.placeCallView.setPhoneNumber(recp);
+            }
         }
     },
     closePlaceCallPopup: function()

@@ -382,6 +382,7 @@ enyo.kind({
     kind: "VFlexBox",
     published: {
         phones: "",
+        phoneNumber: "",
     },
     events: {
         onCancelCall: "",
@@ -535,6 +536,9 @@ enyo.kind({
                 ]
         }, 
     ],
+    phoneNumberChanged: function() {
+            this.$.toInput.setValue(this.phoneNumber);
+    },    
     phonesChanged: function() {
         enyo.log("phonesChanged", this.phones);
             var phoneItems = [];
