@@ -1212,7 +1212,7 @@ enyo.kind({
     {
         //this.$.placeCallPopup.openAtCenter(recp);
         this.log("openPlaceCallPopup height=" + window.innerHeight);
-        if(window.PalmSystem && window.innerHeight < 700) {
+        if(window.PalmSystem && window.innerHeight < 477) {
             this.$.placeCallPopup.open(recp);
         } else {
             this.$.rightPane.selectViewByName("placeCallView");
