@@ -380,6 +380,9 @@ enyo.kind({
 enyo.kind({
     name: "placeCallView",
     kind: "VFlexBox",
+    published: {
+        phones: "",
+    },
     components: [
         { kind: "HFlexBox", flex: 1, components:
             [
@@ -526,7 +529,45 @@ enyo.kind({
                         { content: "If the Purchase page does not open immediately, close this window and click the credit button again.", className: "enyo-item-ternary" },
                         { name: "Browser", style: "height: 580px; width: 100%;", kind: "WebView", url: "https://www.google.com/voice/#billing" },
                 ]
-        },
-        
-    ]
+        }, 
+    ],
+    phonesChanged: function() {
+            var phoneItems = [];
+            if(this.phones.length > 0) {
+                    for(var x = 0; x < this.phones.length; x++) {
+                            phoneItems.push(this.phones[x].name);
+                    }
+                    this.$.PhoneSelector.setItems(phoneItems);
+                    this.$.PhoneSelector.setValue(this.phones[0].name); // TODO: need to save the last selected phone for this account, and restore it
+            } else {
+                    this.$.PhoneSelector.setItems([ "NO PHONES CONFIGURED!" ]);
+                    this.$.PhoneSelect.setValue("NO PHONES CONFIGURED!");
+            }
+    },
+    getPhoneIndexByName: function(str) {
+            var phoneItems = [];
+            for(var x = 0; x < this.phones.length; x++) {
+                    phoneItems.push(this.phones[x].name);
+            }
+            return phoneItems.indexOf(str);
+    },
+    phoneNumberChanged: function() {
+            this.$.toInput.setValue(this.phoneNumber);
+    },
+    dialpadClick: function(inSender, inEvent)
+    {
+        this.log("dialpadClick", inSender, inEvent);
+        this.doDialpadClick(inSender.content);
+		this.$.toInput.setValue(this.$.toInput.getValue() + inSender.content.substring(0,1));
+        inEvent.stopPropagation();
+        return true;
+    },
+    deleteLastNumber: function(inSender, inEvent)
+    {
+            var str = this.$.toInput.getValue();
+            this.$.toInput.setValue(str.substring(0, str.length-1));
+            inEvent.stopPropagation();
+            return true;
+    },
+    
 })
