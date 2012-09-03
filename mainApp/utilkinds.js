@@ -561,7 +561,7 @@ enyo.kind({
     },
     dialpadClick: function(inSender, inEvent)
     {
-        this.log("dialpadClick", inSender, inEvent);
+        //this.log("dialpadClick", inSender, inEvent);
         //this.doDialpadClick(inSender.content);
 	this.$.toInput.setValue(this.$.toInput.getValue() + inSender.content.substring(0,1));
         inEvent.stopPropagation();
