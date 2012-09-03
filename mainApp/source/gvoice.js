@@ -1177,6 +1177,7 @@ enyo.kind({
     },
     newCallButtonClick: function(inSender, inEvent)
     {
+        this.log("newCallButtonClick");
         if(this.selectedID != "" && (!this.$.PhoneTabs || (this.$.slidingPane.getViewName() == "right" && this.$.rightPane.getViewName() == "conversationView")))
         {
             var index = this.getMessageIndexById(this.selectedID);
@@ -1210,6 +1211,7 @@ enyo.kind({
     openPlaceCallPopup: function(recp)
     {
         //this.$.placeCallPopup.openAtCenter(recp);
+        this.log("openPlaceCallPopup height=" + window.innerHeight);
         if(window.PalmSystem && window.innerHeight < 700) {
             this.$.placeCallPopup.open(recp);
         } else {
