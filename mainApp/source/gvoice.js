@@ -1941,6 +1941,7 @@ enyo.kind({
     },
     placeOutgoingCall: function(recp, phone)
     {
+        this.log(recp, phone);
         if(!recp || recp == "") {
             enyo.windows.addBannerMessage("No Recipient Given", '{}', "images/google-voice-icon24.png", "")
             return;
@@ -2504,6 +2505,7 @@ enyo.kind({
     },
     actionPlaceCall: function(inSender, num, phone) // called from the onPlaceCall event in the placeCallPopup
     {
+        this.log(num, phone);
         this.placeOutgoingCall(num, phone);
     },
     webviewTitleChange: function(x, y, z)
