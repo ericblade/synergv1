@@ -1946,8 +1946,9 @@ enyo.kind({
             enyo.windows.addBannerMessage("No Recipient Given", '{}', "images/google-voice-icon24.png", "")
             return;
         }
-        if(!this.selectedPhone)
+        if(!this.selectedPhone && !phone && !this.PrimaryData.phones[phone])
         {
+            console.log("***************** NO OUTGOING PHONE SELECTED??????????????? ******************");
             enyo.windows.addBannerMessage("No Outgoing Phone Selected", '{}', "images/google-voice-icon24.png", "")
             return;
         }
