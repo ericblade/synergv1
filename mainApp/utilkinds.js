@@ -532,6 +532,7 @@ enyo.kind({
         }, 
     ],
     phonesChanged: function() {
+        enyo.log("phonesChanged", this.phones);
             var phoneItems = [];
             if(this.phones.length > 0) {
                     for(var x = 0; x < this.phones.length; x++) {
