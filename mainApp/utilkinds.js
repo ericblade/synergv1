@@ -391,7 +391,7 @@ enyo.kind({
                                 { kind: "HFlexBox", components:
                                     [
                                         { content: "To", pack: "center", align: "center", },
-                                        { name: "toInput", kind: "Input" },
+                                        { name: "toInput", hint: "Phone Number", kind: "Input" },
                                         { kind: "Button", caption: "<<", onclick: "deleteLastNumber" },
                                     ]
                                 },

@@ -642,7 +642,7 @@ enyo.kind({
                             ]
                         },
 
-                        { kind: "Toolbar", className: "bottom-toolbar", onclick: "scrollRightToBottom", layoutKind: "HFlexLayout", components:
+                        { name: "RightToolbar", kind: "Toolbar", className: "bottom-toolbar", onclick: "scrollRightToBottom", layoutKind: "HFlexLayout", components:
                             [
                                 {kind: "GrabButton", allowDrag:true, slidingHandler: true}, // TODO: stop propagation of clicks on the Grab Button to the Toolbar!
                                 { name: "quickComposeInput", flex: 1, onclick: "cancelEvent", onfocus: "qcFocus", onblur: "qcBlur",  kind: "quickInput", /*style: "background: white;",*/ onkeypress: /*Platform.isLargeScreen() ?*/ "quickComposeKeypress" /*: ""*/ , onkeyup: Platform.isLargeScreen() ? "": "quickComposeKeypress", disabled: true, hint: "", },
@@ -2607,6 +2607,8 @@ enyo.kind({
                 this.$.PhoneTabs.setValue(0);
             } else if(inNewView.name == "right") {
                 var n = this.$.rightPane.getViewName();
+                if(n != "placeCallView")
+                    this.$.RightToolbar.show();
                 switch(n)
                 {
                     case "overviewView":
@@ -2616,6 +2618,9 @@ enyo.kind({
                         this.$.PhoneTabs.setValue(2);
                         //this.$.conversationScroller.scrollTo(this.$.conversationScroller.getBoundaries().bottom, 0);
                         this.$.conversationScroller.scrollToBottom();
+                        break;
+                    case "placeCallView":
+                        this.$.RightToolbar.hide();
                         break;
                     default:
                         this.$.PhoneTabs.setValue(10);
