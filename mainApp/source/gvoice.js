@@ -624,6 +624,7 @@ enyo.kind({
                                         { name: "contactView", flex: 1, kind: "contactDetail", onPhoneSelected: "doPhoneMenu", onEmailSelected: "doEmailMenu" },                                                
                                     ]
                                 },
+                                { name: "placeCallView", kind: "placeCallView" },
                                 { name: "errorView", kind: "errorDetail", allowHtml: false },
                                 (useInternalWebView() ? { name: "webView", kind: "HFlexBox", components:
                                     [
@@ -1207,7 +1208,8 @@ enyo.kind({
     openPlaceCallPopup: function(recp)
     {
         //this.$.placeCallPopup.openAtCenter(recp);
-        this.$.placeCallPopup.open(recp);
+        //this.$.placeCallPopup.open(recp);
+        this.$.rightPane.selectViewByName("placeCallView");
     },
     closePlaceCallPopup: function()
     {

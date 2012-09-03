@@ -376,3 +376,157 @@ enyo.kind({
     name: "ThreeWaySlidingView",
     kind: "SlidingView",
 });
+
+enyo.kind({
+    name: "placeCallView",
+    kind: "VFlexBox",
+    components: [
+        { kind: "HFlexBox", flex: 1, components:
+            [
+                { kind: "Spacer", },
+                { kind: "VFlexBox", components:
+                    [
+                        { kind: "Group", caption: "Call Info", style: "max-width: 480px;", components:
+                            [
+                                { kind: "HFlexBox", components:
+                                    [
+                                        { content: "To", pack: "center", align: "center", },
+                                        { name: "toInput", kind: "Input" },
+                                        { kind: "Button", caption: "<<", onclick: "deleteLastNumber" },
+                                    ]
+                                }
+                            ]
+                        },
+                        { kind: "Group", caption: "Dialpad", style: "max-width: 480px;", components:
+                            [
+                                { kind: "HFlexBox", components:
+                                    [
+                                        { kind: "Button", flex: 1, content: "1", className: "dialpadbutton", onclick: "dialpadClick", components:
+                                            [
+                                                { content: "" },
+                                                { content: "1" },
+                                            ]
+                                        },
+                                        { kind: "Button", flex: 1, content: "2", className: "dialpadbutton", onclick: "dialpadClick", components:
+                                            [
+                                                { content: "ABC" },
+                                                { content: "2" },
+                                            ]
+                                        },
+                                        { kind: "Button", flex: 1, content: "3", className: "dialpadbutton", onclick: "dialpadClick", components:
+                                            [
+                                                { content: "DEF" },
+                                                { content: "3" },
+                                            ]
+                                        },
+                                    ]
+                                },
+                                { kind: "HFlexBox", components:
+                                    [
+                                        { kind: "Button", flex: 1, content: "4", className: "dialpadbutton", onclick: "dialpadClick", components:
+                                            [
+                                                { content: "GHI" },
+                                                { content: "4" },
+                                            ]
+                                        },
+                                        { kind: "Button", flex: 1, content: "5", className: "dialpadbutton", onclick: "dialpadClick", components:
+                                            [
+                                                { content: "JKL" },
+                                                { content: "5" },
+                                            ]
+                                        },
+                                        { kind: "Button", flex: 1, content: "6", className: "dialpadbutton", onclick: "dialpadClick", components:
+                                            [
+                                                { content: "MNO" },
+                                                { content: "6" },
+                                            ]
+                                        },
+                                    ]
+                                },
+                                { kind: "HFlexBox", components:
+                                    [
+                                        { kind: "Button", flex: 1, content: "7", className: "dialpadbutton", onclick: "dialpadClick", components:
+                                            [
+                                                { content: "PQRS" },
+                                                { content: "7" },
+                                            ]
+                                        },
+                                        { kind: "Button", flex: 1, content: "8", className: "dialpadbutton", onclick: "dialpadClick", components:
+                                            [
+                                                { content: "TUV" },
+                                                { content: "8" },
+                                            ]
+                                        },
+                                        { kind: "Button", flex: 1, content: "9", className: "dialpadbutton", onclick: "dialpadClick", components:
+                                            [
+                                                { content: "WXYZ" },
+                                                { content: "9" },
+                                            ]
+                                        },
+                                    ]
+                                },
+                                { kind: "HFlexBox", components:
+                                    [
+                                        { kind: "Button", flex: 1, content: "*", className: "dialpadbutton", onclick: "dialpadClick", components:
+                                            [
+                                                { content: "*" },
+                                                { content: "" },
+                                            ]
+                                        },
+                                        { kind: "Button", flex: 1, content: "0", className: "dialpadbutton", onclick: "dialpadClick", components:
+                                            [
+                                                { content: "0" },
+                                                { content: "" },
+                                            ]
+                                        },
+                                        { kind: "Button", flex: 1, content: "#", className: "dialpadbutton", onclick: "dialpadClick", components:
+                                            [
+                                                { content: "#" },
+                                                { content: "" },
+                                            ]
+                                        },
+                                    ]
+                                },                                
+                            ]
+                        },
+                        { kind: "Group", caption: "Origination Phone", components:
+                            [
+                                { kind: "HFlexBox", components:
+                                    [
+                                        { name: "PhoneSelector", kind: "ListSelector", style: "padding-left: 2px; padding-right: 2px;", flex: 1, value: "My Cell", items: [ "Select Phone", "My Cell", "Home", "Work" ] },
+                                    ]
+                                }
+                            ]
+                        },
+                        { name: "PlaceCallButton", kind: "Button", caption: "Place Call", className: "enyo-button-affirmative", onclick: "placeOrEndCall" },
+                    ]
+                },
+                { kind: "Spacer" },				
+            ]
+        },
+        { kind: "Toolbar", components:
+                [
+                        { name: "BackButton", icon: "images/new/back_white.png", onclick: "doBack" },
+                        { kind: "Spacer" },
+                        { name: "RedialButton", caption: "Redial", onclick: "redial", disabled: true },
+                        { kind: "Spacer" },
+                        { kind: "Control", content: "Call Credit: ", style: "color: white;", },
+                        { name: "BillingCreditLabel", caption: "$0.00", onclick: "openBrowser" },
+                ]
+        },
+        { name: "BrowserPopup", kind: "ModalDialog", style: "position: fixed; top: 3%; left: 3%; width: 94%; height: 94%;", components:
+                [
+                        { kind: "PageHeader", components:
+                                [
+                                        { content: "Click " },
+                                        { kind: "Button", caption: "Close Browser", onclick: "closeBrowser", },
+                                        { content: "to return to SynerGV" },
+                                ]
+                        },
+                        { content: "If the Purchase page does not open immediately, close this window and click the credit button again.", className: "enyo-item-ternary" },
+                        { name: "Browser", style: "height: 580px; width: 100%;", kind: "WebView", url: "https://www.google.com/voice/#billing" },
+                ]
+        },
+        
+    ]
+})
