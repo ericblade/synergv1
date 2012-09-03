@@ -305,7 +305,7 @@ enyo.kind({
                 if(inResponse.itemInfos[0].itemId == "1" && inResponse.itemInfos[0].itemStatus.timesPurchased === 0) {
                     this.$.PurchaseSynergyPopup.open();
                 } else {
-                    this.$.PurchaseThankYou.open();
+                    //this.$.PurchaseThankYou.open();
                 }
                 break;
             case "purchaseItem":
@@ -1949,8 +1949,8 @@ enyo.kind({
     cancelOutgoingCall: function(inSender, inEvent)
     {
         var params = {
-            outgoingNumber: "undefined",
-            forwardingNumber: "undefined",
+            outgoingNumber: "",
+            forwardingNumber: "",
             cancelType: "C2C",
             _rnr_se: this.PrimaryData._rnr_se
         };
