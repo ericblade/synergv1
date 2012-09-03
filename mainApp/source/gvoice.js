@@ -1461,7 +1461,16 @@ enyo.kind({
             }
             this.AutoCompleteNames.push(this.PrimaryData.contacts[x].name);
         }
-        this.$.placeCallView.setPhones(this.PrimaryData.phones);
+        
+		var phones = [];
+		//enyo.application.settings = inResponse.settings;
+		for(var x in this.PrimaryData.phones) {
+			phones.push(this.PrimaryData.phones[x]);
+		}
+		//enyo.log("** Settings received: phones=", phones);
+		enyo.application.phones = phones;
+		this.$.placeCallView.setPhones(phones);
+        
         this.RetrieveBillingCredit();          
         this.endScrim();
     },
