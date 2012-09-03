@@ -386,19 +386,19 @@ enyo.kind({
                 { kind: "Spacer", },
                 { kind: "VFlexBox", components:
                     [
-                        { kind: "Group", caption: "Call Info", style: "max-width: 480px;", components:
-                            [
+                        //{ kind: "Group", caption: "Call Info", style: "max-width: 480px;", components:
+                        //    [
                                 { kind: "HFlexBox", components:
                                     [
                                         { content: "To", pack: "center", align: "center", },
                                         { name: "toInput", kind: "Input" },
                                         { kind: "Button", caption: "<<", onclick: "deleteLastNumber" },
                                     ]
-                                }
-                            ]
-                        },
-                        { kind: "Group", caption: "Dialpad", style: "max-width: 480px;", components:
-                            [
+                                },
+                        //    ]
+                        //},
+                        //{ kind: "Group", caption: "Dialpad", style: "max-width: 480px;", components:
+                        //    [
                                 { kind: "HFlexBox", components:
                                     [
                                         { kind: "Button", flex: 1, content: "1", className: "dialpadbutton", onclick: "dialpadClick", components:
@@ -487,8 +487,8 @@ enyo.kind({
                                         },
                                     ]
                                 },                                
-                            ]
-                        },
+                        //    ]
+                        //},
                         { kind: "Group", caption: "Origination Phone", components:
                             [
                                 { kind: "HFlexBox", components:
@@ -504,7 +504,7 @@ enyo.kind({
                 { kind: "Spacer" },				
             ]
         },
-        { kind: "Toolbar", components:
+        /*{ kind: "Toolbar", components:
                 [
                         { name: "BackButton", icon: "images/new/back_white.png", onclick: "doBack" },
                         { kind: "Spacer" },
@@ -513,7 +513,7 @@ enyo.kind({
                         { kind: "Control", content: "Call Credit: ", style: "color: white;", },
                         { name: "BillingCreditLabel", caption: "$0.00", onclick: "openBrowser" },
                 ]
-        },
+        },*/
         { name: "BrowserPopup", kind: "ModalDialog", style: "position: fixed; top: 3%; left: 3%; width: 94%; height: 94%;", components:
                 [
                         { kind: "PageHeader", components:
