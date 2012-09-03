@@ -595,7 +595,7 @@ enyo.kind({
                 forwardingNumber: this.phones[phone].phoneNumber,
                 phoneType: this.phones[phone].type
             });*/
-            this.doPlaceCall(this.$.toInput.getValue(), phone);
+            this.doPlaceCall(this.$.toInput.getValue(), this.phones[phone].id);
             this.$.PlaceCallButton.setCaption("End Call"); // yes, keep the multiple settings of it, just so we're sure
         }
         this.$.PlaceCallButton.addRemoveClass("enyo-button-negative", this.onCall);
