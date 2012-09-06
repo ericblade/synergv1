@@ -182,7 +182,7 @@ enyo.kind({
 	},
 	create: function (inSender, inEvent) {
         //this.USESYNERGY = true;
-		/*this.USESYNERGY = false;
+		this.USESYNERGY = false;
 			
         prefs.def("fgRefresh", 2);
         prefs.def("bgRefresh", 5);
@@ -224,7 +224,7 @@ enyo.kind({
 				this.querySynergyAccount();
 			else
 				this.createSynergyAccount();
-		}*/
+		}
 	},
  
 	constructor: function() {
@@ -306,10 +306,10 @@ enyo.kind({
                 if(window.PalmSystem && !isNaN(window.PalmSystem.deviceInfo.platformVersion))
                 {
                     if(!isNaN(window.PalmSystem.deviceInfo.platformVersion)) {
-                        enyo.log("**** using windows.activate to launch new card");
+                        enyo.error("**** using windows.activate to launch new card");
                         this.mainApp = enyo.windows.activate(path, type, windowParams);
                     } else {
-                        enyo.log("**** attempting to render into current card");
+                        enyo.error("**** attempting to render into current card");
                         new MyApps.GVoice().renderInto(document.body);
                     }
                 }
