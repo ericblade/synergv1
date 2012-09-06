@@ -765,6 +765,7 @@ enyo.kind({
         return;
     },
     rendered: function() {
+        enyo.log("*** SynerGV rendered");
         this.inherited(arguments);
         this.ringerStatus = true;        
         this.AuthCode = "";
