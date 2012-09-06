@@ -812,7 +812,7 @@ enyo.kind({
     },
     ready: function()
     {
-        /*this.inherited(arguments);
+        this.inherited(arguments);
         if(Platform.isWebOS())
         {
             if(isNaN(Platform.platformVersion)) {
@@ -824,9 +824,9 @@ enyo.kind({
                 this.$.RingerSwitchService.call({ get: "ringer" }, { subscribe: false });
                 this.$.RingerSwitchService.call({ subscribe: true }, { subscribe: true });
             }
-        }*/
+        }
         console.log("checking firstrun");
-        //enyo.asyncMethod(this, "checkFirstRun");
+        enyo.asyncMethod(this, "checkFirstRun");
     },
     checkPendingPurchase: function() {
         this.$.HPPaymentService.call({ orderNo: this.pendingOrderNumber }, { method: "getPendingPurchaseInfo" });
@@ -856,7 +856,7 @@ enyo.kind({
             this.$.conversationScroller.setAccelerated(false);
             this.$.overviewScroller.setAccelerated(false);
         }*/
-        console.log("checkFirstRun");
+        enyo.log("**** checkFirstRun");
         try {
             appInfo = JSON.parse(enyo.fetchAppInfo());
         } catch(err) {
