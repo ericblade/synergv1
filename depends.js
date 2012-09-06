@@ -1,4 +1,4 @@
-if(window.PalmSystem)
+if(window.PalmSystem && !isNaN(window.PalmSystem.deviceInfo.platformVersion))
 {
     enyo.depends(
         "mainApp/source/globals.js",
