@@ -328,6 +328,10 @@ enyo.kind({
         },
         setAlarm: function() // TODO: need to make this accept an incoming time, and set "in" to that
         {
+            if(Platform.isWebOS() && isNaN(Platform.platformVersion) ) {
+                enyo.log("setAlarm bailing on Open webOS, as the service may not be yet available");
+                return;
+            }
 			var bg = prefs.get("bgRefresh");
 			if(bg === undefined)
 			    bg = 5;
