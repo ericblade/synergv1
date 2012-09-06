@@ -812,7 +812,7 @@ enyo.kind({
     },
     ready: function()
     {
-        this.inherited(arguments);
+        /*this.inherited(arguments);
         if(Platform.isWebOS())
         {
             if(isNaN(Platform.platformVersion)) {
@@ -824,7 +824,7 @@ enyo.kind({
                 this.$.RingerSwitchService.call({ get: "ringer" }, { subscribe: false });
                 this.$.RingerSwitchService.call({ subscribe: true }, { subscribe: true });
             }
-        }
+        }*/
         console.log("checking firstrun");
         //enyo.asyncMethod(this, "checkFirstRun");
     },
