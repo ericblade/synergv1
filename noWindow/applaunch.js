@@ -303,8 +303,8 @@ enyo.kind({
 		}
  
 		// open the window
-                if(window.PalmSystem)
-		    this.mainApp = enyo.windows.activate(path, type, windowParams);
+                if(window.PalmSystem && !isNaN(window.PalmSystem.deviceInfo.platformVersion))
+		            this.mainApp = enyo.windows.activate(path, type, windowParams);
                 else if( (typeof PhoneGap !== "undefined") )
                     new MyApps.GVoice().renderInto(document.body);
                 else {
