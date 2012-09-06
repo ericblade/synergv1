@@ -818,6 +818,7 @@ enyo.kind({
             if(isNaN(Platform.platformVersion)) {
                 enyo.log("*** ready: not calling service setup on desktop Open webOS, as the services are not available");
             } else {
+                enyo.log("*** ready: webOS version should support services");
                 if(Platform.platformVersion >= 2)
                     this.clearVoicemail();
                 this.$.RingerSwitchService.call({ get: "ringer" }, { subscribe: false });
