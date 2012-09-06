@@ -816,7 +816,7 @@ enyo.kind({
         if(Platform.isWebOS())
         {
             if(isNaN(Platform.platformVersion)) {
-                enyo.log("*** ready: not calling service setup on desktop Open webOS, as the services are not available");
+                enyo.log("*** ready: not calling service setup on desktop Open webOS, as the ringer and nodeJS services are not available");
             } else {
                 enyo.log("*** ready: webOS version should support services");
                 if(Platform.platformVersion >= 2)
