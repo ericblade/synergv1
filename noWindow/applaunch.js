@@ -303,13 +303,13 @@ enyo.kind({
 		}
  
 		// open the window
-                if(window.PalmSystem && !isNaN(window.PalmSystem.deviceInfo.platformVersion))
+                if(window.PalmSystem)
                 {
                     if(!isNaN(window.PalmSystem.deviceInfo.platformVersion)) {
-                        enyo.error("**** using windows.activate to launch new card");
+                        enyo.log("**** using windows.activate to launch new card");
                         this.mainApp = enyo.windows.activate(path, type, windowParams);
                     } else {
-                        enyo.error("**** attempting to render into current card");
+                        enyo.log("**** attempting to render into current card");
                         new MyApps.GVoice().renderInto(document.body);
                     }
                 }
