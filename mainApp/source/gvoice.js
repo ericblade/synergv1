@@ -815,13 +815,17 @@ enyo.kind({
         this.inherited(arguments);
         if(Platform.isWebOS())
         {
+            if(isNaN(Platform.platformVersion)) {
+                enyo.log("*** ready: not doing anything on desktop Open webOS, as the services are not available");
+                return;
+            }
             if(Platform.platformVersion >= 2)
                 this.clearVoicemail();
             this.$.RingerSwitchService.call({ get: "ringer" }, { subscribe: false });
             this.$.RingerSwitchService.call({ subscribe: true }, { subscribe: true });
         }
         console.log("checking firstrun");
-        enyo.asyncMethod(this, "checkFirstRun");
+        enyo.asyncMethod(this, "checkFirstRun");*/
     },
     checkPendingPurchase: function() {
         this.$.HPPaymentService.call({ orderNo: this.pendingOrderNumber }, { method: "getPendingPurchaseInfo" });
