@@ -20,7 +20,7 @@
             }
         }
     },
-    "noWindow": true,    
+    "noWindow": false,    
     "title": "SynerGV v1",
     "uiRevision": "2",
     "version": "1.2.1",
