@@ -182,7 +182,7 @@ enyo.kind({
 	},
 	create: function (inSender, inEvent) {
         //this.USESYNERGY = true;
-		this.USESYNERGY = false;
+		/*this.USESYNERGY = false;
 			
         prefs.def("fgRefresh", 2);
         prefs.def("bgRefresh", 5);
@@ -224,7 +224,7 @@ enyo.kind({
 				this.querySynergyAccount();
 			else
 				this.createSynergyAccount();
-		}
+		}*/
 	},
  
 	constructor: function() {
