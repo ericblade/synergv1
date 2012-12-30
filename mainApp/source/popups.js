@@ -55,7 +55,7 @@ enyo.kind({
     ],
     moreInfo: function(inSender, inEvent) 
     {
-        Platform.browser("http://www.ericbla.de/synergv/", this)();
+        Platform.browser("http://www.ericbla.de/", this)();
         return;
     },
     
@@ -215,7 +215,7 @@ enyo.kind(
                             },
                             { kind: "Group", caption: "Support", components:
                                 [
-                                    { kind: "Item", url: "http://www.ericbla.de/synergv", onclick: "linkClicked", layoutKind: "HFlexLayout", components:
+                                    { kind: "Item", url: "http://ericbla.de/e107_plugins/forum/forum.php", onclick: "linkClicked", layoutKind: "HFlexLayout", components:
                                         [
                                             { kind: enyo.Image, src: Platform.isLargeScreen() ? (!window.PalmSystem ? "mainApp/images/browser32.png" : "images/browser32.png") : (!window.PalmSystem ? "mainApp/images/browser16.png" : "images/browser16.png") },
                                             { kind: "Spacer" },

@@ -1,6 +1,6 @@
 ﻿{
     "name": "SynerGV for Google Chrome™",
-    "version": "1.2.1.0",
+    "version": "1.2.2.0",
     "description": "A Google Voice™ SMS client and manager application for use with Google Chrome™",
     "icons": {
         "16": "mainApp/images/google-voice-icon16.png",
@@ -17,5 +17,5 @@
         }
     },
     "permissions": ["notifications", "tts", "unlimitedStorage", "tabs", "https://www.google.com/", "https://voice.google.com/", "http://google.com/", "https://www.google.com/", "https://accounts.google.com/" ],
-    "homepage_url": "http://www.ericbla.de/synergv"
+    "homepage_url": "http://www.ericbla.de/"
 }

@@ -8,7 +8,7 @@
     "noDeprecatedStyles": true,
     "keywords": [ "text", "sms", "voice", "phone", "dial", "google", "gvoice", "synergv" ],
     "vendor": "Eric Blade",
-    "vendorurl": "http://www.ericbla.de/synergv",
+    "vendorurl": "http://www.ericbla.de/",
     "type": "web",
     "main": "index-webos.html",
     "universalSearch": {

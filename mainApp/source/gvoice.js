@@ -868,7 +868,7 @@ enyo.kind({
         
         if(prefs.get("firstrun") != appver)
         {
-            var url = "http://www.ericbla.de/synergv/new-in-v1/";
+            var url = "http://ericbla.de/e107_plugins/forum/forum_viewtopic.php?2.0";
             prefs.set("firstrun", appver);
             enyo.windows.addBannerMessage("SynerGV: What's New", '{}', "images/google-voice-icon24.png", "/media/internal/ringtones/Triangle (short).mp3")
             console.log("Loading browser to " + url);
