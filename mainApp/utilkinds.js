@@ -193,7 +193,7 @@ enyo.kind({
     },
     listClick: function(inSender, inEvent)
     {
-        //this.log(inSender, ".", inEvent, ".", this.messageId);
+        this.log(inSender, ".", inEvent, ".", this.messageId);        
         this.doMessageClick(inEvent, this.messageId);
         //inEvent.preventDefault();
         //inEvent.stopPropagation();
