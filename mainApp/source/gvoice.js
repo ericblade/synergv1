@@ -2195,7 +2195,8 @@ enyo.kind({
         enyo.nextTick(this, this.RetrieveInbox);
     },
     playVoicemail: function(msgid)
-    {        
+    {
+        console.log("playVoicemail: msgid=", msgid);
         if(Platform.isWebOS())
         {
             if(Platform.platformVersion >= 2)
