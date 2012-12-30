@@ -128,7 +128,10 @@ function ParseMessages(html)
     var messagelength = "unknown";
     if(gcmessageplay.length > 0) {
         var lengthblock = gcmessageplay[0].getElementsByClassName("goog-inline-block")[0];
-        if(lengthblock) messagelength = lengthblock.innerHtml;
+        if(lengthblock) {
+            console.log("lengthblock=" + lengthblock);
+            messagelength = lengthblock.innerHtml;
+        }
     }
     console.log("picked up message length = " + messagelength);
     var missedCallCheck = tmp.getElementsByClassName("gc-message-icon-0");
