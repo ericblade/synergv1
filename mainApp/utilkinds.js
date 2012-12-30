@@ -200,7 +200,7 @@ enyo.kind({
     },
     repeaterClick: function(inSender, inEvent)
     {
-        //this.log(inSender, ".", inEvent, ".", this.messageId);
+        this.log(inSender, ".", inEvent, ".", this.messageId);
         inEvent.preventDefault();
     },
     renderItemNew: function(inSender, inRow) {
