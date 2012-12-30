@@ -1630,7 +1630,7 @@ enyo.kind({
         
         var content = Platform.isLargeScreen() ? type : (this.displayNameOrNumber(index) + " @ ");
         if(this.MessageIndex[index].messageLength !== "unknown") {
-            content = "(" + enyo.string.trim(this.MessageIndex[index].messageLength) + ")";
+            content = "(" + enyo.string.trim(this.MessageIndex[index].messageLength) + ")" + content;
         }
         this.$.conversationType.setContent(content);
         /*if(Platform.isLargeScreen())
