@@ -1719,6 +1719,9 @@ enyo.kind({
         ////this.log(inSender, ".", inEvent, ".", inMessageId);
         ////this.log(inSender.messageId + "." + inEvent.rowIndex + "." + inSender.name + "." + id + "." + index);
         
+        if(index == -1) {
+            index = this.getMessageIndexById(enyo.application.mainApp.selectedID);
+        }
         if(this.Messages[index].html)
         {
             ////enyo.log(this.Messages[index].html);

@@ -124,6 +124,13 @@ function ParseMessages(html)
             }        
         }
     }
+    var gcmessageplay = tmp.getElementsByClassName("gc-message-play");
+    var messagelength = "unknown";
+    if(gcmessageplay.length > 0) {
+        var lengthblock = gcmessageplay[0].getElementsByClassName("goog-inline-block")[0];
+        if(lengthblock) messagelength = lengthblock.innerHtml;
+    }
+    console.log("picked up message length = " + messagelength);
     var missedCallCheck = tmp.getElementsByClassName("gc-message-icon-0");
     ret.isMissedCall = (missedCallCheck.length > 0);
     var blockedCallerCheck = tmp.getElementsByClassName("gc-message-blocked");
@@ -131,6 +138,7 @@ function ParseMessages(html)
     ret.html = html;
     ret.Portrait = tmp.getElementsByTagName("img")[0]; //ret.Portrait.getElementsByTagName("img");
     ret.Location = tmp.getElementsByClassName("gc-message-location");
+    ret.messageLength = messagelength;
     if(ret.Location.length > 0)
     {
         ret.Location = ret.Location[0].textContent;
