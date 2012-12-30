@@ -305,13 +305,13 @@ enyo.kind({
 		// open the window
                 if(window.PalmSystem)
                 {
-                    if(!isNaN(window.PalmSystem.deviceInfo.platformVersion)) {
+                    //if(!isNaN(window.PalmSystem.deviceInfo.platformVersion)) {
                         enyo.log("**** using windows.activate to launch new card");
                         this.mainApp = enyo.windows.activate(path, type, windowParams);
-                    } else {
-                        enyo.log("**** attempting to render into current card");
-                        new MyApps.GVoice().renderInto(document.body);
-                    }
+                    //} else {
+                    //    enyo.log("**** attempting to render into current card");
+                    //    new MyApps.GVoice().renderInto(document.body);
+                    //}
                 }
                 else if( (typeof PhoneGap !== "undefined") )
                     new MyApps.GVoice().renderInto(document.body);

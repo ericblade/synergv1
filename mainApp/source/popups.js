@@ -1208,6 +1208,7 @@ enyo.kind(
             var vmAvail = (Platform.isWebOS() && Platform.platformVersion >= 2) ||
                           (Platform.isBlackBerry()) ||
                           (Platform.isAndroid());
+            vmAvail = true;
             /*if(vmAvail)
             {
                 var ai = enyo.fetchAppInfo();
