@@ -1901,7 +1901,10 @@ enyo.kind({
             inSender.messageId = this.MessageIndex[inRow].id;
             
             if(messageIndex.Location != "")
-                title += " " + messageIndex.Location; 
+                title += " " + messageIndex.Location;
+            if(messageIndex.messageLength && messageIndex.messageLength !== "unknown") {
+                title += "(" + enyo.string.trim(messageIndex.messageLength) + ")";
+            }
             title += " @ " + messageIndex.displayStartDateTime;
             if(messageIndex.star)
                 this.$.overviewStar.setState("starred");

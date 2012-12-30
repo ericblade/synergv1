@@ -129,11 +129,11 @@ function ParseMessages(html)
     if(gcmessageplay.length > 0) {
         var lengthblock = gcmessageplay[0].getElementsByClassName("goog-inline-block")[0];
         if(lengthblock) {
-            console.log("lengthblock=" + lengthblock);
+            //console.log("lengthblock=" + lengthblock);
             messagelength = lengthblock.innerHTML;
         }
     }
-    console.log("picked up message length = " + messagelength);
+    //console.log("picked up message length = " + messagelength);
     var missedCallCheck = tmp.getElementsByClassName("gc-message-icon-0");
     ret.isMissedCall = (missedCallCheck.length > 0);
     var blockedCallerCheck = tmp.getElementsByClassName("gc-message-blocked");
