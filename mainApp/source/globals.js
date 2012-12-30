@@ -130,7 +130,7 @@ function ParseMessages(html)
         var lengthblock = gcmessageplay[0].getElementsByClassName("goog-inline-block")[0];
         if(lengthblock) {
             console.log("lengthblock=" + lengthblock);
-            messagelength = lengthblock.innerHtml;
+            messagelength = lengthblock.innerHTML;
         }
     }
     console.log("picked up message length = " + messagelength);
