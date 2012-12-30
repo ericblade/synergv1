@@ -1525,6 +1525,7 @@ enyo.kind({
                 j = inboxHTML.indexOf('<div id="', i+1);
                 this.Messages[index] = ParseMessages(inboxHTML.substring(i,j));
                 this.MessageIndex[index] = inboxJSON.messages[id];
+                this.MessageIndex[index].messageLength = this.Messages[index].messageLength;
                 this.MessageIndex[index].note = decodeURI(this.MessageIndex[index].note);
                 
                 this.MessageIndex[index].isMissedCall = this.Messages[index].isMissedCall;
