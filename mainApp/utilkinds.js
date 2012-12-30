@@ -193,14 +193,16 @@ enyo.kind({
     },
     listClick: function(inSender, inEvent)
     {
-        this.log(inSender, ".", inEvent, ".", this.messageId);        
+        //this.log(inSender, ".", inEvent, ".", this.messageId);        
         this.doMessageClick(inEvent, this.messageId);
         //inEvent.preventDefault();
         //inEvent.stopPropagation();
     },
     repeaterClick: function(inSender, inEvent)
     {
-        this.log(inSender, ".", inEvent, ".", this.messageId);
+        // THIS one is called when we click on the repeater.
+        //this.log(inSender, ".", inEvent, ".", this.messageId);
+        this.doMessageClick(inEvent, this.messageId);
         inEvent.preventDefault();
     },
     renderItemNew: function(inSender, inRow) {
