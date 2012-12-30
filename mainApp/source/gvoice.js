@@ -1628,7 +1628,11 @@ enyo.kind({
         }*/
         //this.log("conversationHeader", type);
         
-        this.$.conversationType.setContent(Platform.isLargeScreen() ? type : (this.displayNameOrNumber(index) + " @ ") );
+        var content = Platform.isLargeScreen() ? type : (this.displayNameOrNumber(index) + " @ ");
+        if(this.MessageIndex[index].messageLength !== "unknown") {
+            content = "(" + enyo.string.trim(this.MessageIndex[index].messageLength) + ")";
+        }
+        this.$.conversationType.setContent(content);
         /*if(Platform.isLargeScreen())
             name = " @ " + name;*/
         this.$.conversationName.setContent(name);
@@ -1821,7 +1825,11 @@ enyo.kind({
                 
                 if(inIndex == 0 && (!messages || messages.length == 0))
                 { // here is where we come if we don't have any messages to display ..
-                    this.$.description.setContent("No further information available.");
+                    var content = "No further information available.";
+                    if(messageIndex.messageLength !== "unknown") {
+                        content = "Recorded length: " + messageIndex.messageLength + "<BR>";
+                    }
+                    this.$.description.setContent(content);
                     inSender.messageId = this.Messages[x].id;
                     return true;
                 }
