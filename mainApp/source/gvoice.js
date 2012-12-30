@@ -1902,6 +1902,7 @@ enyo.kind({
             
             if(messageIndex.Location != "")
                 title += " " + messageIndex.Location;
+            enyo.log("messageIndex=" + messageIndex);
             enyo.log("messageLength=" + messageIndex.messageLength);
             if(messageIndex.messageLength && messageIndex.messageLength !== "unknown") {
                 title += "(" + enyo.string.trim(messageIndex.messageLength) + ")";
