@@ -1712,12 +1712,19 @@ enyo.kind({
     },
     listItemClick: function(inSender, inEvent, inMessageId)
     {
-        if(this.$.overviewScroller.isScrolling && this.$.overviewScroller.isScrolling())
+        console.log("listItemClick");
+        if(this.$.overviewScroller.isScrolling && this.$.overviewScroller.isScrolling()) {
+            console.log("listItemClick cancelled due to overviewScroller.isScrolling");
             return false;
-        if(this.$.conversationScroller.isScrolling && this.$.conversationScroller.isScrolling())
+        }
+        if(this.$.conversationScroller.isScrolling && this.$.conversationScroller.isScrolling()) {
+            console.log("listItemClick cancelled due to conversationScroller.isScrolling");
             return false;
-        if(typeof blackberry !== "undefined" && inEvent.cancelable)
+        }
+        if(typeof blackberry !== "undefined" && inEvent.cancelable) {
+            console.log("listItemClick cancelled due to being on blackberry and receiving a cancelable event (event duplication??)");
             return false;
+        }
         
         var id = inMessageId ? inMessageId : inSender.messageId;
         var index = this.getMessageIndexById(id);
@@ -1911,8 +1918,8 @@ enyo.kind({
             
             if(messageIndex.Location != "")
                 title += " " + messageIndex.Location;
-            enyo.log("messageIndex=" + messageIndex);
-            enyo.log("messageLength=" + messageIndex.messageLength);
+            //enyo.log("messageIndex=" + messageIndex);
+            //enyo.log("messageLength=" + messageIndex.messageLength);
             if(messageIndex.messageLength && messageIndex.messageLength !== "unknown") {
                 title += "(" + enyo.string.trim(messageIndex.messageLength) + ")";
             }
@@ -2199,7 +2206,7 @@ enyo.kind({
         if(!msgid) {
             msgid = enyo.application.mainApp.selectedID;
         }
-        console.log("playVoicemail: msgid=", msgid);
+        //console.log("playVoicemail: msgid=", msgid);
         if(Platform.isWebOS())
         {
             if(Platform.platformVersion >= 2)
