@@ -202,7 +202,8 @@ enyo.kind({
     {
         // THIS one is called when we click on the repeater.
         //this.log(inSender, ".", inEvent, ".", this.messageId);
-        this.doMessageClick(inEvent, this.messageId);
+        if(!Platform.isAndroid())
+            this.doMessageClick(inEvent, this.messageId);
         inEvent.preventDefault();
     },
     renderItemNew: function(inSender, inRow) {
