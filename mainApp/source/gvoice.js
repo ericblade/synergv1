@@ -2056,6 +2056,7 @@ enyo.kind({
         var index = inEvent.rowIndex;
         if(this.selectedID != "")
             index = this.getMessageIndexById(this.selectedID);
+        console.log("Listen clicked, index=" + index);
         this.$.vmDownload.headers = { "Authorization":"GoogleLogin auth="+this.AuthCode };
         var params = {
             messages:this.MessageIndex[index].id,
