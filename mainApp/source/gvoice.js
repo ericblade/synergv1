@@ -2196,10 +2196,10 @@ enyo.kind({
     },
     playVoicemail: function(msgid)
     {
-        console.log("playVoicemail: msgid=", msgid);
         if(!msgid) {
             msgid = enyo.application.mainApp.selectedID;
         }
+        console.log("playVoicemail: msgid=", msgid);
         if(Platform.isWebOS())
         {
             if(Platform.platformVersion >= 2)
