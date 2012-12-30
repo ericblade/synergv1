@@ -148,7 +148,7 @@ function ParseMessages(html)
     } else {
         ret.Location = "";
     }
-    delete tmp.innerHtml;
+    delete tmp.innerHTML;
     return ret;
 }
 
