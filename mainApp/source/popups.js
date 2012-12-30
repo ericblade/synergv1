@@ -1215,7 +1215,7 @@ enyo.kind(
                     ai = JSON.parse(ai);
                 vmAvail = vmAvail && (ai["id"] != "com.ericblade.gvoicepre");
             }*/
-            this.$.ListenButton.setDisabled(!vmAvail || !this.messageIndex.isVoicemail);
+            this.$.ListenButton.setDisabled(!vmAvail || (!this.messageIndex.hasMp3 && !this.messageIndex.hasOgg));
             if(!vmAvail)
                 this.$.ListenButton.hide();
             this.$.ArchiveButton.setDisabled(enyo.application.mainApp.$.boxPicker.getValue() != "Inbox"); // disable it if we're not looking at the inbox since we can't tell if it's in the inbox otherwise
