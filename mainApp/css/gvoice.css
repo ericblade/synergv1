@@ -1,0 +1,63 @@
+.enyo-picker-label {
+	color: black;
+	font-size: 12px;
+	text-shadow: white 0px 1px 0px;
+	text-transform: none;
+	padding-right: 0px;
+        position: relative;
+        top: -25px;
+        left: +32px;
+}
+
+.box-picker { position: relative; top: -7px; }
+
+.page-picker { position: relative; left: -20px; top: -7px; }
+
+.noborders { border: none; padding: 0px; margin: 0px; }
+
+.small-font { font-size: 85%; }
+
+.default { }
+.default .gvoice-divider { background-color: #61A5F3; color: white; padding-left: 4px; padding-right: 4px; }
+.default .enyo-divider-caption { background-color: #61A5F3; color: white;  }
+.default .enyo-toolbar-light { background-color: #61A5F3; }
+.default .enyo-toolbar { background-color: #4185C3; }
+
+.default .bottom-toolbar { height: auto; max-height: 192px; }
+.default .bottom-toolbar .enyo-input { margin-left: 56px; margin-right: 11px; }
+.default .bottom-toolbar .enyo-scroller-scrollee { padding-top: 0px; padding-bottom: 0px; }
+
+.default .searchbar .enyo-scroller-scrollee { padding-top: 0px; padding-bottom: 0px; }
+
+.default .login-box-caption { background-color: #4185D3; color: white; }
+.default .login-button { background-color: #61A5F3; color: white; }
+.default .login-popup { border: 0px; color: #4185F3; }
+.default .login-input { background-color: #f0f0f0; }
+.default .gvoice-header { background-color: #4185D3; height: 64px; padding: 0px; }
+.default .pane-header { height: 64px; background-color: #61A5F3; }
+.default .gvoice-inbox-message { background-color: #CFCFDF; }
+.default .gvoice-inbox-message-alt { background-color: #DFDFFF !important; }
+.default .gvoice-inbox-message-self { background-color: #CFCFDF; padding-left: 25px; }
+
+.default .indexitem { padding: none; margin: none; background-color: #CFCFDF; }
+.default .indexselected {
+    font-weight: bold;
+    background-color: #ADADCE;
+}
+
+.default .avatar { padding: none; margin: none; }
+.default .timestamp { padding-right: 10px; }
+
+.enyo-search-input-search {
+	background-image: none; /*url(images/searchicon24.png);*/
+}
+
+
+/*.default*/ .login-popup { border: 0px; color: #4185F3; }
+/*.default*/ .input-group { background-color: #4185D3; }
+/*.default*/ .input-group-sms { background-color: #4185D3; /*width: 320px;*/ }
+
+.itemmenu-disabled .enyo-menuitem-caption {
+    color: DarkGray;
+   opacity: 1.0;
+}

@@ -1,0 +1,2588 @@
+//*** Featured in the "SWEETHEART TIME" App Catalog Featured Apps, February 2012!! ***
+// TODO: Deleting / Archiving a message with a notification should clear the notification
+// TODO: Home/End functions in the big input boxes?
+// TODO: way to search contacts
+// TODO: translate names into numbers in recipient boxes
+// TODO: outboxHandler should use prefs() not localStorage
+// TODO: "Back" button is showing up when hitting "Contacts" even on phones .. 
+// TODO: at startup, before doing anything, run a check for an "announcement" file of some kind at ericbla.de, if one exists and has updated information,
+//      pop a web browser.  
+// TODO: Fix "About" buttons on all non-webOS platforms
+// TODO: Investigate a Popup option to automatically enable keyboard when opening the Compose popup?
+// TODO: Ignore auto-refresh if Offline, or if typing?
+// TODO: Dashboard window for webOS notifications faster than 5 minutes.
+// TODO: use our file downloader to download and cache icons? might solve the icon images with 2-step problem?
+// TODO: UNblock gives the same warning as BLOCK.. ?
+// TODO: not run Text-To-Speech if notifier switch is off
+// TODO: turn off voicemail transcription, leave a few voicemails, figure out why we can't listen to htem (probably has to do with us checking for transcription to decide if we can or not)
+// TODO: Android gap is apparently keyboard space without the keyboard.
+// TODO:invalidopcode: also, i would suggest that when a user is typing a text message that you might want to disable the auto-refresh, because when it refreshes it freezes the text box which is kindof annoying when your trying to type a message
+// TODO: new file picker, for picking ringtones for alert.. select via MediaIndexer, or via Node service???
+// TODO: consider new Preferences page on it's own view
+// TODO: add Just Type support for calling, add a second app that can launch it since we're already using our single just type action
+// TODO: Make new apps that can connect to Just Type for additional actions, such as Google Calendar
+// TODO: onLinkClick on location names = open map?
+// TODO: need to make it not refresh the current view on timed update, in case you're not looking at the inbox! interruptions are bad.
+// TODO: fontsel ?!
+// You can change the URL of the WebView and adjust the hash value to let onhashchange code in the view run. From the embedded page, you can change the page title and detect that through events sent by the WebView.
+// ... so you could setHTML on the webview to setup a frame that loads the target page, and use the title in that frame to communicate back and forth .. ?
+// TODO: audio-only notification, minus banner message or seperate from banner message, include option to use both a specific wav ("You have a new message from") followed by TTS
+// TODO: allow pre-recorded wavs for numeric voice output?
+// TODO: use a published variable to hold the baseUrl, in it's Changed event, setup all the WebService URLs to use it
+// TODO: using the "Delete" function on a message in Trash undeletes it.  Nice.  Must implement.
+// TODO: Call/Text for feedback (to the gvoice number)
+// TODO: Email to Evernote button
+// TODO: Receive multiple messages in multiple conversations, banner each one, but TTS "3 new text messages"?
+// TODO: add option to use device's dialar to make calls (ie, dont' go through GVoice)
+// TODO: Just Type search connect to GVoice Search
+// TODO: Optional 3-panel display, with the center panel becoming the Overview ?
+/*2:06:23 AM) Kris Venden: not an issue on Touchpad cause you already see them in the overview and you do label the differences there
+(2:06:37 AM) Kris Venden: but on the phones, all we see is the inbox unless we go to overview tab
+(2:07:05 AM) Kris Venden: wonder about a tiny phone icon or different color or something for voicemails vs. text messages in inbox*/
+// TODO: add support for google calendar thing?
+
+var inboxButton={ name: "InboxButton", kind: "ActivityButton", caption: "Reload Inbox", onclick: "InboxClick" };
+
+enyo.kind({
+    name: "iScroller",
+    kind: "Control",
+    components: [
+        { name: "client" },
+    ],
+    rendered: function() {
+        this.inherited(arguments);
+        var node = this.parent.hasNode();
+        this.log("node=", node);
+        if(node && !this.scroller)
+            this.scroller = new iScroll(node.id);
+        enyo.nextTick(this.scroller, this.scroller.refresh);
+    },
+});
+
+enyo.kind({
+    name: "MyApps.GVoice",
+    kind: "VFlexBox",
+    className: "default small-font",
+    published: {
+        windowParams: null,
+    },
+    setCallButtonsDisabled: function(bOn)
+    {
+        this.$.newCallButton.setDisabled(bOn);
+        this.$.newCallButtonPhone.setDisabled(bOn);
+        this.$.voicemailButton.setDisabled(bOn);
+        this.$.voicemailButtonPhone.setDisabled(bOn);
+    },
+    billingCreditReceived: function(inSender, billingCredit) {
+        this.billingCredit = billingCredit;
+        
+        this.setCallButtonsDisabled(false);
+        
+        if(this.reopenCall) {
+            this.openPlaceCallPopup(this.reopenCall);
+            this.reopenCall = false;
+        }
+    },
+    getBillingCredit: function()
+    {
+        return this.billingCredit;
+    },
+    billingCreditFailed: function(x, y) {
+        this.log("billingCreditFailed " + x + " " + y);
+        //this.doLogin(prefs.get("gvUsername"), prefs.get("gvPassword"));
+        //this.cookieLoginAttempt = true;        
+    },
+    DownloadSuccess: function(x,y) {
+        this.debugLog("DownloadSuccess");
+    },
+    DownloadFailed: function(x,y) {
+        this.debugLog("DownloadFailed");
+    },
+    CallCancelled: function(x,y) {
+        this.debugLog("CallCancelled");
+    },
+    CallCancelFailed: function(x,y) {
+        this.debugLog("CallCancel Failure");
+    },
+    deleteSuccess: function(x,y) {        
+        this.debugLog("DeleteSuccess");
+        enyo.application.mainApp.RetrieveInbox();
+    },
+    deleteFailed: function(x, y) {
+        this.debugLog("DeleteFailed");
+    },
+    settingsChanged: function(x, y) {
+        this.debugLog("SettingsChanged");
+    },
+    settingsFailed: function(x, y) {
+        this.debugLog("settingsFailed");
+    },
+    setDnD: function()
+    {
+        this.$.genSettings.headers= { "Authorization":"GoogleLogin auth="+this.AuthCode };        
+        this.$.genSettings.call( { doNotDisturb:"1", _rnr_se:this.PrimaryData._rnr_se } );
+        enyo.application.api.RetrievePrimaryData();
+    },
+    unsetDnD: function()
+    {
+        this.$.genSettings.headers = { "Authorization":"GoogleLogin auth="+this.AuthCode };
+        this.$.genSettings.call ( { doNotDisturb:"0", _rnr_se:this.PrimaryData._rnr_se } );
+        enyo.application.api.RetrievePrimaryData();
+    },
+    toggleDND: function()
+    {
+        if(this.PrimaryData.number.dnd)
+            this.unsetDnD();
+        else
+            this.setDnD();
+    },
+    windowActivated: function()
+    {
+        //this.log("windowActivated");
+        if(enyo.application.mainApp)
+        {
+            enyo.application.mainApp.isForeground = true;
+            setTimeout(function(thisObj) { thisObj.restartTimedRetrieval(); }, 1000, this);        
+        }
+        //enyo.asyncMethod(this, this.restartTimedRetrieval);
+        //enyo.nextTick(this, enyo.bind(this, this.restartTimedRetrieval));
+    },
+    windowDeactivated: function()
+    {
+        enyo.application.mainApp.isForeground = false;
+        this.restartTimedRetrieval();
+        enyo.nextTick(this, enyo.bind(this, this.restartTimedRetrieval));
+    },
+    windowLoaded: function()
+    {
+        this.startScrim();
+        ////this.log();
+    },
+    windowRotated: function()
+    {
+        //this.log();
+    },
+    appMenuOpened: function(inSender, inEvent)
+    {
+        //if(Platform.isWebOS())
+        //{
+            this.$.AppMenu.open();
+        //}
+    },
+    prefsChanged: function()
+    {
+        this.restartTimedRetrieval();
+    },
+    connectionStatusChange: function(inSender,status,inRequest) {
+        /* status:
+            errorCode
+            errorText
+            isInternetConnectionAvailable
+            returnValue (true if we are initially subscribing, otherwise nonexistent)
+            wifi [object]
+            wan [object]
+            btpan [object]
+        */
+        if(status.isInternetConnectionAvailable != this.Online)
+        {
+            var enabled = status.isInternetConnectionAvailable ? "Online" : "Offline";
+            this.Online = status.isInternetConnectionAvailable;
+            this.debugLog("Internet Status Change: " + enabled);
+            enyo.windows.addBannerMessage("GVoice: "+enabled, '{}', "images/google-voice-icon24.png", "")
+            if(this.Online)
+            {
+                if(!this.PrimaryData) {
+                    //this.log("internet connection restored, attempting to login");
+                    enyo.application.api.beginLogin(prefs.get("gvUsername"), prefs.get("gvPassword"));
+                    this.cookieLoginAttempt = true;
+                }
+
+                this.StartTimedRetrieval();
+                this.$.outbox.startTimer();
+            } else {
+                this.StopTimedRetrieval();
+                this.$.outbox.stopTimer();
+            }
+        }
+    },
+    requestHeadersReceived: function(inSender, response)
+    {
+        this.debugLog("requestHeadersReceived=" + response);  
+    },
+    StarSuccess: function(x, y, z)
+    {
+        //this.log(x, y, z);
+    },
+    StarFailed: function(x, y, z)
+    {
+        //this.log(x, y, z);
+    },
+    TestButtonClicked: function(inSender, inEvent, x, y, z)
+    {
+        //this.$.gvService.call( {arg:"arg!" }, { method:"command", onSuccess: "gvServiceCommandSuccess", onFailure: "gvServiceCommandFailure" });
+        //this.$.dialpadPopup.openAtCenter();
+    },
+    gvServiceCommandSuccess: function()
+    {
+        //this.log();
+    },
+    gvServiceCommandFailure: function()
+    {
+        //this.log();
+    },
+    newMarkReadFailed: function(inSender, response) {
+        //this.log(inSender, response);
+    },
+    newMarkReadSucceed: function(inSender, inResponse) {
+        //this.log(inSender, inResponse);
+    },
+    newPlayVoicemailFailed: function(inSender, inResponse) {
+        //this.log(inSender, inResponse);
+    },
+    newPlayVoicemailSucceed: function(inSender, inResponse) {
+        //this.log(inSender, inResponse);
+        this.$.AppManService.call( { target: inResponse.file } );  
+    },
+    ttsPluginReady: false,
+    components:
+    [
+        { name: "ttsPlugin", kind: enyo.Hybrid, width: 0, height: 0, executable: "sdltts", takeKeyboardFocus: false, onPluginReady: "handlePluginReady" },
+        { name: "ConnectionService", kind: "PalmService", service: "palm://com.palm.connectionmanager/", method: "getStatus", onSuccess: "connectionStatusChange", subscribe: true},
+        { name: "AppManService", kind: "PalmService", service: "palm://com.palm.applicationManager/", method: "open"},
+        { kind: /*"ApplicationEvents"*/ "maklesoft.cross.ApplicationEvents",
+          onBack: "goBack", onLoad: "windowLoaded", onWindowRotated: "windowRotated",
+          onOpenAppMenu: "appMenuOpened", onWindowActivated: "windowActivated",
+          onWindowDeactivated: "windowDeactivated", onSearch: "jumpToSearch",
+        },
+        { name: "gvService", kind: "PalmService", service:"palm://com.ericblade.googlevoiceapp.service" },
+        //{ name: "PeoplePicker", kind: "enyo.AddressingPopup", addressTypes: "phoneNumbers" },        
+        // all the different Web accesses we may need to make
+        { kind: "WebService", onFailure: "webFailure", components:
+            [
+                { contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                },
+                //{ name: "getRequestHeaders", method: "GET", onSuccess: "requestHeadersReceived", url:"http://www.maxwell-media.com/php-request-data/all-request-varibles-and-my-request-data/my_server.php" },
+                { name: "getInbox",       method: "GET",  onSuccess: "InboxReceived",       onFailure: "InboxFailed",       url: "https://www.google.com/voice/inbox/recent/inbox" },
+                { name: "messageSearch",  method: "GET",  onSuccess: "InboxReceived",       onFailure: "InboxFailed",       url: "https://www.google.com/voice/inbox/search" },
+                { name: "CallNumber",     method: "POST", onSuccess: "CallSent",            onFailure: "CallFailed",        url: "https://www.google.com/voice/call/connect/" },
+                { name: "callCancel",     method: "POST", onSuccess: "CallCancelled",       onFailure: "CallCancelFailed",  url: "https://www.google.com/voice/call/cancel/" },
+                { name: "markRead", method: "POST", onSuccess: "MarkReadSuccess", onFailure: "MarkReadFailed", url:"https://www.google.com/voice/inbox/mark/" /*"https://www.google.com/voice/m/mark",*/ },
+                { name: "archiveMessages",       method: "POST", onSuccess: "archiveSuccess",     onFailure: "archiveFailed",    url: "https://www.google.com/voice/inbox/archiveMessages/", },
+                { name: "deleteMessage",      method: "POST", onSuccess: "deleteSuccess",       onFailure: "deleteFailed",      url: "https://www.google.com/voice/inbox/deleteMessages/" },
+                { name: "deleteForeverMessage", method: "POST", onSuccess: "deleteForeverSuccess", onFailure: "deleteForeverFailed", url: "https://www.google.com/voice/inbox/deleteForeverMessage/" },
+                { name: "starMessage",    method: "POST", onSuccess: "StarSuccess",         onFailure: "StarFailed",        url: "https://www.google.com/voice/inbox/star/", },
+                { name: "vmDownload",     method: "GET", onSuccess: "DownloadSuccess",     onFailure: "DownloadFailure",   url: "https://www.google.com/voice/media/send_voicemail/" },
+                { name: "queryBillingCredit", method: "POST", onSuccess: "billingCreditReceived", onFailure: "billingCreditFailed", url: "https://www.google.com/voice/settings/billingcredit/", components: [ { contentType: "application/x-www-form-urlencoded; charset=utf-8" }, ]},
+                // TODO: can you /getGeneralSettings/ ?
+                { name: "genSettings", method: "POST", onSuccess: "settingsChanged", onFailure: "settingsFailed", url: "https://www.google.com/voice/settings/editGeneralSettings/" },
+                { name: "gvAddToContacts", method: "POST", onSuccess: "addContactSuccess", onFailure: "addContactFailure", url: "https://www.google.com/voice/phonebook/quickAdd/", },
+                { name: "editDefaultForwarding", method: "POST", onSuccess: "forwardingChanged", url: "https://www.google.com/voice/settings/editDefaultForwarding/" },
+                { name: "blockCaller", method: "POST", onSuccess: "callerBlocked", url: "https://www.google.com/voice/inbox/block/", },
+            ]
+        },
+        { name: "CreateVoicemailDir", kind: "PalmService", service: "palm://com.ericblade.googlevoiceapp.service/", method: "createVoicemailDir" }, /* Assume Success! */
+        { name: "DeleteVoicemailDir", kind: "PalmService", service: "palm://com.ericblade.googlevoiceapp.service/", method: "deleteVoicemailDir" }, /* Assume Success! */
+        { name: "newMarkRead", kind: "PalmService", service: "palm://com.ericblade.googlevoiceapp.service/", method: "httpsRequest", onFailure: "newMarkReadFailed", onSuccess: "newMarkReadSucceed", },
+        { name: "newPlayVoicemail", kind: "PalmService", service: "palm://com.ericblade.googlevoiceapp.service/", method: "httpsRequest", onFailure: "newPlayVoicemailFailed", onSuccess: "newPlayVoicemailSucceed" },
+        // TODO: Why doesn't this show up?
+        { name: "mainSpinner", kind: "SpinnerLarge", style: "position: absolute; top: 400px; left: 350px; z-index: 10;", showing: false },
+        //{ name: "fileDownload", kind: "PalmService", service: "palm://com.palm.downloadmanager/", method: "download", onSuccess: "downloadFinished", subscribe: true },
+        { name: "outbox", kind: "outboxHandler", onAllMessagesSent: "messagesSent" },
+        { name: "LoginPopup", kind: "LoginPopup", onClose: "popupClosed" },
+        { kind: "composePopup", onClose: "popupClosed" },
+        { kind: "placeCallPopup", onClose: "popupClosed", onCreditPurchased: "RefreshBillingCredit", onCancelCall: "cancelOutgoingCall", onPlaceCall: "actionPlaceCall" },
+        { kind: "deletePopup", onClose: "popupClosed" },
+        { kind: "phonePopupMenu" },
+        { kind: "emailPopupMenu", onSendSelected:"emailFromPopup" },
+        { kind: "preferencesPopup", onClose: "popupClosed", onPrefsChanged: "prefsChanged" },
+        { kind: "aboutPopup", onClose: "popupClosed" },
+        { kind: "actionsMenu", onReply: "actionReply", onCall: "actionCall", onDelete: "actionDelete", onArchive: "actionArchive", onVoicemail: "actionVoicemail", onAddContact: "openAddContactPopup", onBlockUnblock: "confirmBlockUnblock", },
+        { kind: "contactAddPopup", onAddContact: "addContact", onClose: "popupClosed" },
+        { name: "blockConfirmDialog", kind: "ConfirmDialog", onClose: "popupClosed", onConfirm: "performBlockUnblock", okcaption: "Block Sender", 
+            msg: "<b>WARNING</b>: This will move this conversation to the Spam box, and <B>BLOCK</b> that person from sending you messages or calling you." },
+        // Titlebar!
+        Platform.isLargeScreen() ?
+            { kind: "PageHeader", className: "gvoice-header", onclick: "scrollRightToTop", components:
+                [
+                    !window.PalmSystem && typeof blackberry == 'undefined' ? { name: "MenuButton", kind: "Button", caption: "Menu", onclick: "openAppMenuHandler" } : {},
+                    { kind: "Image", src: !window.PalmSystem ? "mainApp/images/google-voice-icon48.png" : "images/google-voice-icon48.png", style: "padding-right: 10px", onclick: "headerIconClick" }, 
+                    { name: "TitleBar", content: "GVoice", flex: 1 },
+                    //{ kind: "Spacer" },
+                    //{ name: "TestButton", kind: "Button", caption: "Test Button", onclick: "TestButtonClicked", },
+                    { name: "DNDButton", kind: "Button", caption: "DnD: ", onclick: "toggleDND", showing: false },
+                    inboxButton,
+                ]
+            }
+            :
+            { name: "PhoneTabs", kind: "TabGroup", onChange: "tabSelect", components:
+                [
+                    { name: "IndexTab", caption: "Index", },
+                    { name: "OverviewTab", caption: "Overview" },
+                    { name: "ConversationTab", caption: "Conv", disabled: true, },
+                    //{ name: "ContactsTab", icon: "images/contacts2.png", }, // 4 tabs looks like crap on a pre
+                ]
+            },
+        { name: "AppMenu", kind: "AppMenu", lazy: false, components:
+            [
+                { caption: "About", onclick: "openAbout", lazy: false },
+                { name: "DNDMenu", caption: "DnD: ", onclick: "toggleDND", disabled: true, lazy: false, },
+                { name: "reloadInboxMenu", caption: "Reload Inbox", onclick: "InboxClick", disabled: true, lazy: false, },
+                { caption: "Preferences", onclick: "openPreferences", lazy: false },
+                { caption: "Debug Log", onclick: "debugLogView", lazy: false },
+                useInternalWebView() ? { caption: "Voice Web View", onclick: "showWebView", lazy: false } : {},
+                { caption: "Logout", onclick: "doLogoutMenu", lazy: false, }
+            ]
+        },
+        
+        { name: "slidingPane", kind: "SlidingPane", onSelectView: "viewChange", flex: 1, components:
+            [
+                { name: "left", style: "width: 170px;", edgeDragging: true, kind:"SlidingView", components:
+                    [
+                        { name: "LeftHeader", kind: "Header", className: "pane-header", components:
+                            [
+                                { kind: "PickerGroup", label: "", components:
+                                    [
+                                        { name: "boxPicker", value: "Inbox", onChange: "selectBox", className: "box-picker", items: ["Inbox", "All", "Voicemail", "SMS", "Recorded", "Placed", "Received", "Missed", "Starred", "Spam", "Trash", "Search"] },
+                                        { name: "pagePicker", label: "Page", className: "page-picker", kind: "IntegerPicker", onChange: "selectPage", min: 1, max: 10 },
+                                    ]
+                                },
+                                !Platform.isLargeScreen() ? inboxButton : {},
+                            ]
+                        },
+                        { name: "leftPane", kind: "Pane", flex: 1, transitionKind:enyo.transitions.LeftRightFlyin, components:
+                            [
+                                { name: "indexView", kind: "TransformScroller", flex: 1, horizontal: false, autoHorizontal: false, autoVertical: true, accelerated: Platform.isLargeScreen(), components:
+                                //{ name: "indexView", kind: "iScroller", flex: 1, components:
+                                    [
+                                        { kind: "HFlexBox", components:
+                                            [
+                                                !window.PalmSystem && !Platform.isLargeScreen() ? { name: "MenuButton", kind: "Button", caption: "Menu", onclick: "openAppMenuHandler" } : {},        
+                                                { name: "messageSearchInput", flex: 1, hint: "Search", className: "searchbar", kind: "RoundedSearchInput", style: "height: 38px; max-height: 38px", onkeypress: Platform.isLargeScreen() ? "messageSearchKeypress" : "", onkeyup: Platform.isLargeScreen() ? "" : "messageSearchKeypress", onclick: "messageSearchClick", components:
+                                                    [
+                                                        { kind: "Image", src: (!window.PalmSystem) ? "mainApp/images/searchicon24.png" : "images/searchicon24.png" },
+                                                    ]
+                                                },
+                                            ]
+                                        },
+                                        { name: "IndexList", kind: "VirtualRepeater", flex: 1, onSetupRow: "getIndexListItem", onclick: "IndexListClick", onmousehold: "indexHold", accelerated: Platform.isLargeScreen(), components:
+                                            [
+                                                { name: "IndexListItem", className: "indexitem", kind: "SwipeableItem", confirmCaption: "Delete", onConfirm: "swipeDelete", layoutKind: "VFlexLayout", components:
+                                                    [
+                                                        { kind: "HFlexBox", components:
+                                                            [
+                                                                { kind: "VFlexBox" , pack: "center", flex: 1, components:
+                                                                    [
+                                                                        { name: "IndexName", /*style: "display: inline;"*/ },
+                                                                        { name: "IndexLocation", className: "enyo-item-ternary" },                                                            
+                                                                        { name: "IndexTime", className: "enyo-item-ternary" }
+                                                                    ]
+                                                                },
+                                                                { name: "IndexImage", style: "display: inline;", kind: "HtmlContent", allowHtml: true, className: "avatar" },
+                                                            ]
+                                                        },
+
+                                                    ]
+                                                },
+                                            ]
+                                        }
+                                    ]
+                                },
+                                { kind: "contactsIndex", flex: 1, onContactSelected: "showContactView" },
+                            ]
+                        },
+                        { kind: "Toolbar", components:
+                            [
+                                //{ kind: "GrabButton", allowDrag:true },
+                                { name: "contactsButton", kind: "ToolButton", icon: (!window.PalmSystem) ? "mainApp/images/contacts2.png" : "images/contacts2.png",/*caption: "Contacts",*/ onclick: "openContactsView", disabled: true },
+                                { name: "addContactButton", kind: "ToolButton", icon: (!window.PalmSystem) ? "mainApp/images/contactsaddnew.png" : "images/contactsaddnew.png",/*caption: "+",*/ onclick: "openAddContact", disabled: true },
+                                //{ kind: "Button", caption: "OS Contacts", onclick: "openPeoplePicker" },
+                                { name: "PhoneToolButtons", kind: "HFlexBox", showing: false, components:
+                                    [
+                                        { name: "composeButtonPhone", kind: "ToolButton", icon: (!window.PalmSystem) ? "mainApp/images/Blade_msg1.png" : "images/Blade_msg1.png", className: "enyo-light-menu-button", onclick: "composeButtonClick" },
+                                        { name: "newCallButtonPhone", kind: "ToolButton", icon: (!window.PalmSystem) ? "mainApp/images/Blade_phone1.png" : "images/Blade_phone1.png", className: "enyo-light-menu-button", onclick: "newCallButtonClick", disabled: true },
+                                        { name: "voicemailButtonPhone", kind: "ToolButton", icon: (!window.PalmSystem) ? "mainApp/images/Blade_voice1.png" : "images/Blade_voice1.png", className: "enyo-light-menu-button", onclick: "callVoicemail", disabled: true },
+                                    ]
+                                },
+                                Platform.isLargeScreen() ? { } : { kind: "GrabButton", allowDrag:true, onclick: "selectRightView", style: "left: 90%",  },                                
+                            ]
+                        }
+                    ]   
+                },
+                { name: "right", kind:"ThreeWaySlidingView", flex: 1, peekWidth: 65, edgeDragging: false, dragAnywhere: false, components:
+                    [
+                        useInternalWebView() ? { name: "HackWebViewX", kind: "WebView", height: "1px", width: "1px", showing: false } : {},
+                        { name: "rightPane", flex: 1, onSelectView: "viewChange", kind: "Pane", transitionKind:enyo.transitions.Simple, components:
+                            [
+                                { name: "conversationView", kind: "VFlexBox", components:
+                                    [
+                                        { name: "conversationHeader", kind: "Header", className: "pane-header", onclick: "scrollRightToTop", layoutKind: Platform.isLargeScreen() ? "HFlexLayout" : "VFlexLayout", components:
+                                            [
+                                                { name: "conversationType", content: "Conversation" }, // BUG: Enyo - setContent on Header sets it to null?
+                                                { kind: "HFlexBox", components:
+                                                    [
+                                                        { name: "conversationName", flex: 1, content: "No One" },
+                                                        { name: "conversationStar", kind: "starImage", onclick: "doStar", },
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        { name: "conversationScroller", flex: 1, kind: "TransformScroller", autoHorizontal: true, autoVertical: true, accelerated: Platform.isLargeScreen(), components:
+                                            [
+                                                { name: "conversationList", kind: "VirtualRepeater", onSetupRow: "getConversationListItem", onclick: "listItemClick", accelerated: Platform.isLargeScreen(), components:
+                                                    [
+                                                        { kind: "Item", layoutKind: "VFlexLayout", className: "noborders", components:
+                                                            [
+                                                                { name: "messagefield", kind: "HFlexBox", className: "gvoice-inbox-message", components: [
+                                                                        { name: "description", flex: 1, kind: "HtmlContent", allowHtml: true, onLinkClick: "linkClicked"},
+                                                                        { name: "sentTime", kind: "HtmlContent", allowHtml: false, style: "padding-right: 10px; padding-left: 5px; max-width: 12%; ", className: "enyo-item-ternary" },
+                                                                    ]
+                                                                },
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                            ]
+                                        },
+                                    ]
+                                },
+                                { name: "overviewView", kind: "VFlexBox", components:
+                                    [
+                                        { kind: "Header", className: "pane-header", onclick: "scrollRightToTop", components:
+                                            [
+                                                { name: "overviewHeader", content: "Overview: Inbox", },
+                                            ]
+                                        },
+                                        { name: "overviewScroller", kind: "TransformScroller", flex: 1, autoHorizontal: false, horizontal: false, autoVertical: true, accelerated: true,
+                                        //{ name: "overviewScroller", kind: "iScroller", flex: 1, 
+                                        components:
+                                            [
+                                                { kind: "VFlexBox", flex: 1, components:
+                                                    [
+                                                        { name: "overviewList", kind: "VirtualRepeater", onSetupRow: "overviewListRender", accelerated: true, components:
+                                                            [
+                                                                { name: "overviewTitle", kind: "Divider", className: "gvoice-divider", allowHtml: true, components:
+                                                                    [
+                                                                        { name: "overviewStar", kind: "starImage", onclick: "doStar", },
+                                                                    ]
+                                                                },
+                                                                { kind: "messageListRepeater", onMessageClick: "listItemClick", onLinkClick: "linkClicked" },
+                                                                { kind: "Item", content: " " },
+                                                            ],
+                                                        },
+                                                    ]
+                                                },
+                                            ]
+                                        },
+                                    ]
+                                },
+                                { name: "contactsView", kind: "VFlexBox", components:
+                                    [
+                                        { kind: "Header", className: "pane-header", onclick: "scrollRightToTop", components:
+                                            [
+                                                { name: "contactHeader", content: "Contact" },
+                                            ]
+                                        },
+                                        { name: "contactView", flex: 1, kind: "contactDetail", onPhoneSelected: "doPhoneMenu", onEmailSelected: "doEmailMenu" },                                                
+                                    ]
+                                },
+                                { name: "errorView", kind: "errorDetail", allowHtml: false },
+                                (useInternalWebView() ? { name: "webView", kind: "HFlexBox", components:
+                                    [
+                                        { name: "HackWebView", kind: "WebView", height: "480px", width: "320px", /*height: "240px",*/ showing: true, onPageTitleChanged: "webviewTitleChange" },
+                                        //{ name: "HideWebViewButton", caption: "Hide WebView (login first!)", kind: "Button", onclick: "headerIconClick" },
+                                        { kind: "HtmlContent", flex: 1, components:
+                                            [
+                                                { content: "GVoice uses this built in web-browser to playback voicemails, as webOS security features do not allow apps to download media from secure sites." },
+                                                { content: "<P>Please also login here, so that you may retrieve voicemails properly." },
+                                                { content: "<P>This message should only appear for a brief time at startup, unless you use the Logout option from the app menu, reinstall GVoice, or your Google login information otherwise changes."},
+                                            ]
+                                        }
+                                    ]
+                                } : {}),
+                            ]
+                        },
+
+                        { kind: "Toolbar", className: "bottom-toolbar", onclick: "scrollRightToBottom", layoutKind: "HFlexLayout", components:
+                            [
+                                {kind: "GrabButton", allowDrag:true, slidingHandler: true}, // TODO: stop propagation of clicks on the Grab Button to the Toolbar!
+                                { name: "quickComposeInput", flex: 1, onclick: "cancelEvent", onfocus: "qcFocus", onblur: "qcBlur",  kind: "quickInput", /*style: "background: white;",*/ onkeypress: Platform.isLargeScreen() ? "quickComposeKeypress" : "" , onkeyup: Platform.isLargeScreen() ? "": "quickComposeKeypress", disabled: true, hint: "", },
+                                //Platform.isLargeScreen() ? { name: "qcSpacer", kind: "Spacer" } : {} ,
+                                { name: "composeButton", icon: (!window.PalmSystem) ? "mainApp/images/Blade_msg1.png" : "images/Blade_msg1.png", className: "enyo-light-menu-button", onclick: "composeButtonClick" },
+                                { name: "newCallButton", icon: (!window.PalmSystem) ? "mainApp/images/Blade_phone1.png" : "images/Blade_phone1.png", className: "enyo-light-menu-button", onclick: "newCallButtonClick", disabled: true },
+                                { name: "voicemailButton", icon: (!window.PalmSystem) ? "mainApp/images/Blade_voice1.png" : "images/Blade_voice1.png", className: "enyo-light-menu-button", onclick: "callVoicemail", disabled: true },
+                                //{ name: "voicemailStop", icon: "images/Blade_stop1.png", className: "enyo-light-menu-button", onclick: "stopPlayback", disabled: true },
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+    ],
+    jumpToSearch: function(inSender, inEvent)
+    {
+        this.$.messageSearchInput.forceFocus();
+    },
+    clearVoicemail: function(inSender, inEvent)
+    {
+        this.$.DeleteVoicemailDir.call();
+        this.$.CreateVoicemailDir.call();
+        //enyo.nextTick(this, enyo.bind(this, this.$.CreateVoicemailDir.call));
+    },
+    cancelEvent: function(inSender, inEvent)
+    {
+        inEvent.stopPropagation();
+        inEvent.preventDefault();
+        return -1;
+    },
+    popupClosed: function(inSender, inEvent, inReason)
+    {
+        if(inReason == "popup:escape")
+        {
+            inEvent.stopPropagation();
+            inEvent.preventDefault();
+            this.backClosedPopup = true;
+            return -1;
+        }
+    },
+    speak: function(str)
+    {
+        if(prefs.get("ttsdisable") != -1 && this.ttsPluginReady)
+        {
+            try {
+                this.$.ttsPlugin.callPluginMethodDeferred(null, "playAudio", str);    
+            } catch(err) {
+                
+            }            
+        }
+    },
+    handlePluginReady: function(inSender) {
+        this.ttsPluginReady = true;
+    },
+    debugLog: function(str)
+    {
+        str = stripHtml(str);
+        if(enyo.application.mainApp.$.errorView.$.ErrorBox.content.length > 4096)
+            enyo.application.mainApp.$.errorView.$.ErrorBox.content = "";
+        enyo.application.mainApp.$.errorView.$.ErrorBox.content += "*** " + str + "\r\n<br>";
+        enyo.application.mainApp.$.errorView.render();
+    },
+    delayedStartup: function() {
+        if(useInternalWebView() && this.$.HackWebView.$.view)
+        {
+            this.originalDocLoadFinished = this.$.HackWebView.$.view.documentLoadFinished;
+            this.$.HackWebView.$.view.documentLoadFinished = (function() { This.gvDocLoad(); });
+            this.$.HackWebView.setUrl("www.google.com/voice/m");
+        }
+        if(Platform.isWebOS())
+        {
+            this.$.ConnectionService.call();
+            //setTimeout(enyo.bind(this, this.openLoginPopup), 1);
+        } else { // TODO: will this work everywhere if we just nextTick it?
+            //this.openLoginPopup();
+        }
+        setTimeout(enyo.bind(this, this.openLoginPopup), 1);
+
+    },
+    goBack: function(inSender, inEvent, x)
+    {
+        if(this.backClosedPopup)
+        {
+            inEvent.stopPropagation();
+            inEvent.preventDefault();
+            this.backClosedPopup = false;
+            return -1;
+        }
+        var backpane = this.$.slidingPane.getView() == this.$.left ? this.$.leftPane : this.$.rightPane;
+        if(backpane.history.length == 0)
+            backpane = this.$.slidingPane;
+        if(backpane.history.length > 0)
+        {
+            backpane.back();
+            inEvent.stopPropagation();
+            inEvent.preventDefault();
+            return -1;
+        }
+        return;
+    },
+    rendered: function() {
+        this.inherited(arguments);
+        this.AuthCode = "";
+        this.Messages = [];
+        this.MessageIndex = [];
+        this.selectedID = "";
+        if(this.$.InboxButton)
+            this.$.InboxButton.hide();
+        this.LeftPaneView = 0;
+        this.selectedPhone = enyo.getCookie("selectedPhone");
+        
+        window.addEventListener("message", this.receiveMessage, false);
+        window.addEventListener("onmessage", this.receiveMessage, false);
+        enyo.application.mainApp = this;
+        enyo.application.mainApp.isForeground = true;
+        enyo.application.debuglog = this.debugLog;
+        this.$.leftPane.selectViewByName("indexView");
+        if(useInternalWebView())
+        {
+            if(Platform.isLargeScreen())
+            {
+                this.$.rightPane.selectViewByName("webView");
+            } else {
+                this.$.rightPane.selectViewByName("overviewView");
+                this.$.PhoneToolButtons.show();
+            }
+        } else {
+            this.$.rightPane.selectViewByName("overviewView");
+            if(!Platform.isLargeScreen())
+                this.$.PhoneToolButtons.show();
+        }
+        this.$.conversationHeader.setLayoutKind("VFlexLayout"); // TODO: I want this only on Phone, but I think it's going to require layout changes to conversationStar area
+        //if(Platform.isLargeScreen())
+        //{
+            this.$.slidingPane.selectViewByName("left");
+        //}
+        prefs.def("fgRefresh", 2);
+        prefs.def("bgRefresh", 5);
+        
+        this.Online = true; // assume online
+        this.$.quickComposeInput.hide();
+        
+        prefs.def("smallFonts", 1);
+        enyo.asyncMethod(this, "delayedStartup");
+    },
+    ready: function()
+    {
+        var appInfo;
+        try {
+            appInfo = JSON.parse(enyo.fetchAppInfo());
+        } catch(err) {
+            appInfo = enyo.fetchAppInfo();
+        }
+        this.inherited(arguments);
+        var appver = appInfo ? appInfo["version"] : "0.0.0";
+        
+        if(prefs.get("firstrun") != appver)
+        {
+            var url = "http://ericbla.de/gvoice-webos/?page_id=141";
+            prefs.set("firstrun", appver);
+            enyo.windows.addBannerMessage("GVoice: What's New", '{}', "images/google-voice-icon24.png", "/media/internal/ringtones/Triangle (short).mp3")
+            Platform.browser(url, this)();
+        }
+        if(Platform.isWebOS() && parseFloat(Platform.platformVersion) >= 2)
+        {
+            this.clearVoicemail();
+        }
+    },
+    debugLogView: function()
+    {
+        this.$.rightPane.selectViewByName("errorView");
+        this.$.slidingPane.selectViewByName("right");
+    },
+    selectRightView: function()
+    {
+        this.$.slidingPane.selectViewByName("right");
+        //this.log(this.$.rightPane.getViewName());
+    },
+    showWebView: function()
+    {
+        if(Platform.isLargeScreen())
+        {
+            //this.log("selecting webView, right");
+            this.$.rightPane.selectViewByName("webView");
+            this.$.slidingPane.selectViewByName("right");
+        }
+    },
+    showContactView: function(inSender, inContact)
+    {
+        //this.log("selecting contactsView");
+        this.$.rightPane.selectViewByName("contactsView");
+        this.$.contactHeader.setContent("Contact: " + inContact.name);
+        this.$.contactView.setContact(inContact);
+        if(!Platform.isLargeScreen()) // PRE - switch to right hand view automatically
+        {
+            //this.log("selecting right");
+            this.$.slidingPane.selectViewByName("right");
+        }
+    },
+    openAbout: function()
+    {
+        //this.$.aboutPopup.openAtCenter();
+        this.$.aboutPopup.open();
+    },
+    openPreferences: function()
+    {
+        //this.$.preferencesPopup.openAtCenter();
+        this.$.preferencesPopup.open();
+    },
+    resetSelectedID: function()
+    {
+        enyo.application.mainApp.selectedID = "";
+        enyo.application.mainApp.$.overviewHeader.setContent("Overview: " + this.$.boxPicker.getValue());
+        //this.log("selecting 0");
+        this.$.leftPane.selectViewByIndex(0);
+        ////this.log(this.webViewTitle);
+        if(!Platform.isLargeScreen() || this.webViewTitle != "Google Voice - One phone number, online voicemail, and enhanced call features")
+        {
+            //this.log("selecting overview");
+            this.$.rightPane.selectViewByName("overviewView");
+        }
+        this.$.contactsButton.setCaption("");
+        this.$.contactsButton.setIcon((!window.PalmSystem) ? "mainApp/images/contacts2.png" : "images/contacts2.png");
+
+        this.$.quickComposeInput.setHint("");
+        this.$.quickComposeInput.setDisabled(true);
+        this.$.quickComposeInput.hide();
+        this.$.messageSearchInput.setValue("");
+        this.scrollToNew();
+    },
+    selectBox: function()
+    {
+        //this.debugLog("Open box: " + this.$.boxPicker.getValue());
+        this.$.pagePicker.setValue("1");
+        this.resetSelectedID();
+        this.RetrieveInbox();
+        //this.log("selecting 0");
+        this.$.leftPane.selectViewByIndex(0);
+        this.$.contactsButton.setCaption("");
+        this.$.contactsButton.setIcon((!window.PalmSystem) ? "mainApp/images/contacts2.png" : "images/contacts2.png");
+        this.$.leftPane.render();
+        this.scrollLeftToTop();
+    },
+    selectPage: function()
+    {
+        //this.debugLog("Open page: " + this.$.pagePicker.getValue());
+        var bSearch = false;
+        if(this.$.boxPicker.getValue() == "Search")
+            bSearch = true;
+        this.resetSelectedID();
+        if(bSearch)
+        {
+            this.$.boxPicker.setValue("Search");
+            this.$.messageSearchInput.setValue(enyo.application.mainApp.messageSearch);
+        }
+        this.RetrieveInbox();
+        this.scrollLeftToTop();
+    },
+    windowParamsChanged: function() {
+        //this.log(this.windowParams);
+    },
+    receiveMessage: function(message) {
+        // received message: data, origin, source
+        if(message.data == "retrieveInbox") {
+            enyo.application.mainApp.RetrieveInbox();
+            return true;
+        } else if(message.data == 'enyoWindowParams={"palm-command":"open-app-menu"}') {
+            ////this.log("received app menu open!!!");
+            //enyo.application.mainApp.openAppMenuHandler();
+        } else {
+            ////enyo.log("receiveMessage message.data=", message.data);
+        }
+        return false;
+    },
+    gvDocLoad: function()
+    {
+        if(this.$.HackWebView && this.$.HackWebView.$.view) {
+            this.$.HackWebView.$.view.documentLoadFinished = this.originalDocLoadFinished;
+            // Attempting to get auto-logging in to work, don't seem to have enough control over the browser though
+            //this.$.HackWebView.$.view.onSingleTap = (function() { //this.log("*** ONSINGLETAP "); });
+             //this.$.HackWebView.$.view.node["clickAt"](20, 10, 5 );
+            //this.$.HackWebView.insertStringAtCursor("\t\tTEST");
+            // no
+            //this.$.HackWebView.setUrl("https://www.google.com/accounts/ClientLogin?accountType=GOOGLE&Email=bladeeric&Passwd=Armageddon01&service=grandcentral&source=ericBlade-GoogleLogin-0.1.0&PersistentCookie=yes");
+        }
+    },
+    headerIconClick: function(inSender, inEvent)
+    {
+        //this.log("headerIconClick viewname == ", this.$.rightPane.getViewName());
+        if(this.$.rightPane.getViewName() == "webView" || !Platform.isLargeScreen())
+        {
+            //this.log("selecting overview, left");
+            this.$.rightPane.selectViewByName("overviewView");
+            this.$.slidingPane.selectViewByName("left");
+            //this.$.HackWebView.showing = false;
+        }
+        else {
+            //this.$.HackWebView.showing = true;
+            //this.log("selecting webView, right");
+            this.$.rightPane.selectViewByName("webView");
+            this.$.slidingPane.selectViewByName("right");
+        }
+    },
+    getMessageIndexById: function(msgid)
+    {
+        for(x = 0; x < this.MessageIndex.length; x++)
+        {
+            if(msgid == this.MessageIndex[x].id)
+                return x;
+        }
+        return -1;
+    },
+    setHackWebURL: function(url)
+    {
+        if(!useInternalWebView())
+        {
+            //this.$.HackWebView.hide();
+            //this.$.HackWebViewX.hide();
+            return;
+        }
+        if(this.$.rightPane.getViewName() == "webView")
+        {
+            this.debugLog("WebView: loading " + url);
+            this.$.HackWebViewX.hide();
+            this.$.HackWebView.setUrl(url);
+        }
+        else {
+            this.debugLog("WebViewX: loading " + url);
+            this.$.HackWebViewX.show();
+            this.$.HackWebViewX.setUrl(url);
+        }
+    },
+    setHackWebHTML: function(html)
+    {
+        if(!useInternalWebView()) // PRE - does not work
+        {
+            this.$.HackWebView.hide();
+            this.$.HackWebViewX.hide();
+            return;
+        }
+        if(this.$.rightPane.getViewName() == "webView" /*this.$.HackWebView.showing*/)
+        {
+            this.debugLog("WebView: setting html to "+html);
+            this.$.HackWebViewX.hide();
+            this.$.HackWebView.setHTML("https://www.google.com/", html);
+        }
+        else {
+            this.debugLog("WebViewX: setting html to "+html);
+            this.$.HackWebViewX.show();
+            this.$.HackWebViewX.setHTML("https://www.google.com/", html);
+        }
+    },
+
+    markMessageRead: function(msgid) {
+        index = this.getMessageIndexById(msgid);
+               
+        /*this.$.newMarkRead.call({
+            //  POST /voice/inbox/mark/ messages=[message id]&read=1&_rnr_se=[pull from page] 
+            // host, port, path, method, headers, postdata 
+            host: "www.google.com",
+            path: "/voice/inbox/mark/?messages=" + encodeURI(msgid) + "&read=1&_rnr_se=" + encodeURI(this.PrimaryData._rnr_se),
+            method: "POST",
+            headers: {
+                "Authorization":"GoogleLogin auth=" + this.AuthCode
+            }
+        }); 
+        return; */
+        this.$.markRead.headers= { "Authorization":"GoogleLogin auth="+this.AuthCode };
+        if(!this.MessageIndex[index].isRead){
+            this.MessageIndex[index].isRead = true;
+            params = {
+                "messages":msgid,
+                "read":1,
+                "_rnr_se":this.PrimaryData._rnr_se
+            }
+            this.$.markRead.call( params );
+            this.$.IndexList.render();
+            this.clearNotificationsFor(this.MessageIndex[index].id);
+        }
+    },
+    clearNotificationsFor: function(msgid)
+    {
+        enyo.application.launcher.clearNotificationsFor(msgid);
+    },
+    openLoginPopup: function() {
+        ////enyo.log("***OpenLoginPopup");
+        if(enyo.application.api.AuthCode) // the other window is already logged in, just run with it
+        {
+            this.LoginReceived();
+            this.PrimaryDataReceived();
+            return;
+        } else {
+            var u = prefs.get("gvUsername");
+            var p = prefs.get("gvPassword");
+            if(!u || u == "undefined" || !p || p == "undefined")
+            {
+                this.openLogin();
+            } else {
+                enyo.application.api.beginLogin(prefs.get("gvUsername"), prefs.get("gvPassword"));
+                this.cookieLoginAttempt = true;                
+            }
+        }
+    },
+    composeButtonClick: function(inSender, inEvent)
+    {
+        if(this.selectedID != "" && (!this.$.PhoneTabs || (this.$.slidingPane.getViewName() == "right" && this.$.rightPane.getViewName() == "conversationView")))
+        {
+            var index = this.getMessageIndexById(this.selectedID);
+            this.openComposePopup(this.MessageIndex[index].displayNumber);
+        } else {
+            this.openComposePopup("");
+        }
+        if(inEvent)
+            inEvent.stopPropagation();
+    },
+    deleteButtonClick: function(inSender, inEvent)
+    {
+        var index = inEvent.rowIndex;
+        if(this.selectedID != "")
+            index = this.getMessageIndexById(this.selectedID);
+        this.openDeletePopup(index);
+    },
+    newCallButtonClick: function(inSender, inEvent)
+    {
+        if(this.selectedID != "" && (!this.$.PhoneTabs || (this.$.slidingPane.getViewName() == "right" && this.$.rightPane.getViewName() == "conversationView")))
+        {
+            var index = this.getMessageIndexById(this.selectedID);
+            this.openPlaceCallPopup(this.MessageIndex[index].displayNumber);
+        } else {
+            this.openPlaceCallPopup("");
+        }
+        inEvent.stopPropagation();
+    },
+    callVoicemail: function(inSender, inEvent)
+    {
+        this.openPlaceCallPopup(this.PrimaryData.number.raw);
+        inEvent.stopPropagation();
+    },
+    openComposePopup: function(recp, msg)
+    {
+        //this.$.composePopup.openAtCenter(recp, msg);
+        this.$.composePopup.open(recp, msg);  
+    },
+    openDeletePopup: function(index)
+    {
+        this.displayConversation(index);
+        this.$.deletePopup.setMessageIndex(this.MessageIndex[index]);
+        this.$.deletePopup.openAtCenter();
+        this.$.deletePopup.msgindex = index;
+    },
+    closeComposePopup: function()
+    {
+        this.$.composePopup.close();
+    },
+    openPlaceCallPopup: function(recp)
+    {
+        //this.$.placeCallPopup.openAtCenter(recp);
+        this.$.placeCallPopup.open(recp);
+    },
+    closePlaceCallPopup: function()
+    {
+        this.$.placeCallPopup.close();  
+    },
+    scrollLeftToTop: function()
+    {
+        this.$.indexView.scrollTo(0,0);
+    },
+    scrollRightToTop: function() {
+        //this.$.rightScroller.scrollTo(0,0);
+        this.$.conversationScroller.scrollTo(0,0);
+        this.$.overviewScroller.scrollTo(0,0);
+    },
+    scrollLeftToBottom: function()
+    {
+        this.$.indexView.scrollToBottom();
+    },
+    scrollToNew: function() {
+        //this.$.rightScroller.scrollToBottom();
+        //this.log();
+        this.$.conversationScroller.scrollToBottom();
+        this.$.overviewScroller.scrollTo(0,0);
+    },
+    scrollRightToBottom: function()
+    {
+         // TODO: make sure this function only affects the view that we are actually in.. derp derp.
+        //this.$.rightScroller.scrollToBottom();
+        this.$.conversationScroller.scrollToBottom();
+        this.$.overviewScroller.scrollToBottom();
+    },
+    InboxClick: function(inSender, inEvent)
+    {
+        this.$.boxPicker.setValue("Inbox");
+        this.$.pagePicker.setValue("1");
+        this.resetSelectedID();
+        this.RetrieveInbox("Inbox");
+    },
+    MarkReadSuccess: function(inSender, inResponse, inRequest) {
+        //console.log("MarkReadSuccess "+inResponse);
+        //this.log("MarkReadRequest ",inRequest);
+    },
+    MarkReadFailed: function(inSender, inResponse) {
+        console.log("MarkReadFailed "+inResponse);
+    },
+    LoginReceived: function(inSender, inResponse) {
+        this.$.LoginPopup.loginReceived();
+        this.AuthCode = enyo.application.api.AuthCode;
+        
+        if(Platform.isWebOS())
+        {
+            setTimeout(function(thisObj) { thisObj.$.LoginPopup.close(); if(useInternalWebView()) thisObj.gvDocLoad(); }, 100, this);
+        } else {
+            this.$.LoginPopup.close();            
+        }
+        enyo.application.mainAppWindow = window;
+    },
+    restartTimedRetrieval: function()
+    {
+        this.StopTimedRetrieval();
+        this.StartTimedRetrieval();
+    },
+    StartTimedRetrieval: function() {
+        if(enyo.application.launcher) {
+            var interval = enyo.application.mainApp.isForeground ? prefs.get("fgRefresh") : prefs.get("bgRefresh");
+            //this.log("retrieval interval", interval, "minutes");
+            enyo.application.launcher.startTimer(this);
+            window.addEventListener("message", this.receiveMessage, false);
+        }
+        else
+        {
+            var interval = enyo.application.mainApp.isForeground ? prefs.get("fgRefresh") : prefs.get("bgRefresh");
+            this.InboxInterval = setInterval(function(thisObj) { thisObj.RetrieveInbox(); }, 60 * interval * 1000, this);
+        }
+    },
+    StopTimedRetrieval: function() {
+        if(enyo.application.launcher)
+        {
+            enyo.application.launcher.stopTimer(this);
+        } else {
+            clearInterval(this.InboxInterval);
+        }
+    },
+    RetrieveInbox: function(type)
+    {
+        if(this.$.InboxButton)
+            this.$.InboxButton.setActive(true);
+        if(!type || type === "")
+            type = this.$.boxPicker.getValue();
+        type = type.toLowerCase();
+        //this.debugLog("Retrieving "+type+" https://www.google.com/voice/inbox/recent/" + type);
+        if(type == "search" && this.messageSearch) {
+            this.doSearch(this.messageSearch, this.$.pagePicker.getValue());
+        } else {
+            this.$.getInbox.setUrl("https://www.google.com/voice/inbox/recent/" + type + "/");
+            this.$.getInbox.headers= { "Authorization":"GoogleLogin auth="+this.AuthCode };
+            this.$.getInbox.call( { page:"p"+this.$.pagePicker.getValue() } );
+        }
+    },
+    webViewLogout: function()
+    {
+        This = this;
+        if(useInternalWebView())
+        {
+            this.originalDocLoadFinished = this.$.HackWebView.$.view.documentLoadFinished;
+            this.$.HackWebView.$.view.documentLoadFinished = (function() { This.gvDocLoad(); });
+            this.$.HackWebView.setUrl("www.google.com/voice/account/msignout");
+        }
+    },
+    doLogoutMenu: function()
+    {
+        enyo.application.api.doLogout();
+    },
+    doLogout: function()
+    {
+        this.log();
+        this.setCallButtonsDisabled(true);
+        this.openLogin();
+        delete this.PrimaryData;
+        this.MessageIndex.length = 0;
+        this.Messages.length = 0;
+        this.$.conversationList.render();
+        this.$.overviewList.render();
+        this.$.IndexList.render();
+    },
+    LoginFailed: function(inSender, inResponse) {
+        this.openLogin();
+        this.$.LoginPopup.loginFailed(inResponse);
+        this.debugLog("LoginFailed: " + inResponse);
+    },
+    openLogin: function()
+    {
+        this.endScrim();
+        if(useInternalWebView() && Platform.isLargeScreen())
+        {
+            //this.log("selecting webView");
+            this.$.rightPane.selectViewByName("webView");
+        }
+        this.$.LoginPopup.openAtCenter();
+        this.cookieLoginAttempt = false;
+    },
+    RetrieveBillingCredit: function()
+    {
+        this.$.queryBillingCredit.headers= { "Authorization":"GoogleLogin auth="+this.AuthCode };
+        this.$.queryBillingCredit.call( { _rnr_se:this.PrimaryData._rnr_se } );
+        this.reopenCall = false;
+    },
+    RefreshBillingCredit: function(inSender, num)
+    {
+        this.RetrieveBillingCredit();
+        this.reopenCall = num;
+    },
+    PrimaryDataReceived: function(inSender, inResponse)
+    {
+        console.log("PrimaryDataReceived");
+        if(!this.PrimaryData) // if it's our first time receiving it, then fire an Inbox load too
+            enyo.nextTick(this, enyo.bind(this, this.RetrieveInbox, "Inbox"));
+        //this.PrimaryData = ParsePrimaryData(inResponse);
+        this.PrimaryData = enyo.application.api.PrimaryData;
+        
+        this.AutoCompleteNumbers = [ ];
+        this.AutoCompleteNames = [ ];
+        
+        if(!this.PrimaryData || !this.PrimaryData.userName || !this.PrimaryData._rnr_se)
+        {
+            if(!this.PrimaryData)
+                console.log("NO PRIMARY DATA");
+            else 
+            {
+                if(!this.PrimaryData.userName)
+                    console.log("NO USERNAME");
+                if(!this.PrimaryData._rnr_se)
+                    console.log("NO RNR!");
+            }
+            console.log("inResponse:", inResponse);
+            //this.doLogin(prefs.get("gvUsername"), prefs.get("gvPassword"));
+            this.openLogin();
+            this.cookieLoginAttempt = true;
+            return;
+        }
+        if(Platform.isLargeScreen()) // PRE - smaller title
+            this.$.TitleBar.setContent("GVoice - " + this.PrimaryData.userName + " - " + this.PrimaryData.number.formatted);
+        else {
+            //this.$.TitleBar.setContent("GVoice-" + this.PrimaryData.number.formatted);
+        }
+        
+        this.$.conversationList.render();
+        this.$.overviewList.render();
+        this.$.IndexList.render();
+        
+        this.$.contactsButton.setDisabled(false);
+        this.$.addContactButton.setDisabled(false);
+        
+        if(!Platform.isLargeScreen() && this.$.voicemailStop) // PRE - does not work
+        {
+            this.$.voicemailStop.hide();
+        }
+        
+        if(Platform.isLargeScreen()) // PRE - interface change
+            this.$.DNDButton.show();
+        this.$.DNDMenu.setDisabled(false);
+            
+        if(!this.wasDND && this.PrimaryData.number.dnd == true)
+        {
+            enyo.windows.addBannerMessage("GVoice: DnD Enabled", '{}', "images/google-voice-icon24.png", "/media/internal/ringtones/Triangle (short).mp3")
+            this.wasDND = true;
+        }
+        else if(this.wasDND && this.PrimaryData.number.dnd == false) {
+            enyo.windows.addBannerMessage("GVoice: DnD Disabled", '{}', "images/google-voice-icon24.png", "/media/internal/ringtones/Triangle (short).mp3")
+            this.wasDND = false;
+        }
+        if(this.$.DNDButton) {
+            this.$.DNDButton.setCaption("DnD:"+ (this.PrimaryData.number.dnd ? "ON":"Off"));
+        }
+        this.$.DNDMenu.setCaption("DnD:" + (this.PrimaryData.number.dnd ? "ON":"Off"));
+        
+        for(x in this.PrimaryData.contacts)
+        {
+            for(p in this.PrimaryData.contacts[x].numbers)
+            {
+                this.AutoCompleteNumbers.push(this.PrimaryData.contacts[x].numbers[p].displayNumber);
+            }
+            this.AutoCompleteNames.push(this.PrimaryData.contacts[x].name);
+        }
+        this.RetrieveBillingCredit();          
+        this.endScrim();
+    },
+    PrimaryDataFailed: function(inSender, inResponse)
+    {
+        alert("Unable to retrieve outgoing sender information, please relogin");
+    },
+    InboxReceived: function(inSender, inResponse)
+    {
+        //this.debugLog("Inbox Received");
+        //console.log("InboxReceived", inResponse);
+        //return;
+        var i = inResponse.indexOf("<json><!")+14;
+        var j = inResponse.lastIndexOf("></json>")-1;
+        
+        try {
+            inboxJSON = JSON.parse(inResponse.substring(i, j))[0];
+        } catch(err) {
+            //this.log("********** UNABLE TO READ INBOX, ARE WE OFFLINE? i="+i+" j="+j);
+            //this.log("inResponse was", inResponse);
+            return;
+        }
+
+        this.$.reloadInboxMenu.setDisabled(false);
+        this.$.InboxButton.show();
+        
+        i = inResponse.indexOf("<div id=");
+        j = inResponse.indexOf("<div class=\"gc-footer\">");
+        var inboxHTML = inResponse.substring(i, j) + '<div id="';
+               
+        var index = 0;
+        // reset the display completely, so if we have fewer messages than last time, we don't get duplicates showing!
+        this.Messages.length = 0;
+        this.MessageIndex.length = 0;
+        
+        for( id in inboxJSON.messages )
+        {
+            if(inboxJSON.messages.hasOwnProperty(id))
+            {
+                i = inboxHTML.indexOf('<div id="'+id+'"');
+                j = inboxHTML.indexOf('<div id="', i+1);
+                this.Messages[index] = ParseMessages(inboxHTML.substring(i,j));
+                this.MessageIndex[index] = inboxJSON.messages[id];
+                
+                this.MessageIndex[index].isMissedCall = this.Messages[index].isMissedCall;
+                this.MessageIndex[index].isBlockedCaller = this.Messages[index].isBlockedCaller;
+                this.MessageIndex[index].Portrait = this.Messages[index].Portrait;
+                //enyo.WebosConnect.putFile(this.MessageIndex[index].Portrait, "/media/interal/gvoice-icons/"+id+".jpg");
+                this.MessageIndex[index].Location = this.Messages[index].Location;
+                
+                this.MessageIndex[index].isVoicemail = ("voicemail" in this.MessageIndex[index].labels);
+                               
+                for(i = 0; i < this.Messages[index].length; i++) {
+                    if(this.Messages[index][i].VoicemailTranscript)
+                        this.MessageIndex[index].isVoicemail = true;
+                    this.Messages[index][i].SentTime = enyo.string.trim(this.Messages[index][i].SentTime);
+                    this.Messages[index][i].UniqueID = this.MessageIndex[index].id + this.Messages[index][i].SentTime + this.Messages[index][i].SentBy;
+                    this.Messages[index][i].id = this.MessageIndex[index].id;
+                    this.Messages[index].id = this.MessageIndex[index].id;
+                }
+                
+                if(!this.MessageIndex[index].isRead)
+                {
+                    var type = "text";
+                    if(this.MessageIndex[index].isVoicemail)
+                        type = "voicemail";
+                    if(this.MessageIndex[index].isMissedCall)
+                        type = "missed call";
+                    var disable = prefs.get("newMessageNotifyDisable");
+                    if(!disable || disable == 0)
+                        this.PostNotification(this.MessageIndex[index].id, "New "+type+" from " + this.displayNameOrNumber(index), "New " + type + " received", this.Messages[index][i-1] ? this.Messages[index][i-1].SentMessage : "");
+                } else if(enyo.application.launcher && enyo.application.launcher.NotificationDashboards && enyo.application.launcher.NotificationDashboards[this.MessageIndex[index].id]) // TODO: get rid of this, send it to a getter or something
+                {
+                    this.clearNotificationsFor(this.MessageIndex[index].id);
+                }
+                index++;
+            }
+        }
+        //Array.prototype.sort.call(response[0].messages, function(a, b) {
+        //    return a.phoneNumber.localeCompare(b.phoneNumber);
+        //}
+        this.$.pagePicker.setMax(Math.ceil(inboxJSON.totalSize / inboxJSON.resultsPerPage));
+
+        this.$.overviewList.render();
+        this.$.overviewScroller.render();
+        this.$.conversationList.render();
+        this.$.IndexList.render();
+        this.$.outbox.timedMessageSend();
+        if(this.$.InboxButton)
+            this.$.InboxButton.setActive(false);
+        if(this.selectedID)
+            this.scrollToNew();
+    },
+    RetrievedMessages: function(x) {
+        console.log("RetrievedMessages", x);
+    },
+    FailedRetrieve: function(x) {
+        console.log("FailedRetrieve", x);
+    },
+    InboxFailed: function(inSender, inResponse) {
+        alert("Inbox Failed:"+inResponse);
+    },
+    IndexListClick: function(inSender, inEvent) {
+        this.displayConversation(inEvent.rowIndex);
+        this.$.IndexList.render();
+        inEvent.preventDefault();
+        inEvent.stopPropagation();
+    },
+    displayConversation: function(index)
+    {
+        if(this.$.PhoneTabs)
+        {
+            this.$.PhoneTabs.setValue(2);
+            this.$.ConversationTab.setDisabled(false);
+        }
+        var type = "";
+        var name = "";
+        this.selectedID = this.MessageIndex[index].id;
+        //this.log("selecting conversation");
+        this.$.rightPane.selectViewByName("conversationView");
+        //if(Platform.isLargeScreen()) // PRE - interface change
+        //{
+            if(this.MessageIndex[index].isMissedCall)
+                type += " Missed call";
+            if(this.MessageIndex[index].isVoicemail)
+                type += " Voicemail";
+            if(this.MessageIndex[index].isMissedCall || this.MessageIndex[index].isVoicemail)
+                type += " from ";
+            else
+                type += " Conversation with ";
+            type += this.displayNameOrNumber(index);
+            if(this.MessageIndex[index].isBlockedCaller)
+                type += " (BLOCKED)";
+            name = this.MessageIndex[index].displayStartDateTime;
+            //this.$.rightHeaderTitle.setContent(type);
+        //}
+        /*else
+        {
+            type = this.displayNameOrNumber(index);
+            name = this.MessageIndex[index].displayStartDateTime; // name is a misnomer, we're mostly using it for time.. ugh
+            //type = this.displayNameOrNumber(index) + "@" + this.MessageIndex[index].displayStartDateTime;
+        }*/
+        //this.log("conversationHeader", type);
+        this.$.conversationType.setContent(type);
+        /*if(Platform.isLargeScreen())
+            name = " @ " + name;*/
+        this.$.conversationName.setContent(name);
+        if(this.MessageIndex[index].star)
+            this.$.conversationStar.setState("starred");
+        else
+            this.$.conversationStar.setState("unstarred");
+        
+        this.markMessageRead(this.selectedID);
+        if(!Platform.isLargeScreen()) // PRE - switch view to right hand side
+        {
+            //this.log("selecting right");
+            this.$.slidingPane.selectViewByName("right");
+        }
+        this.$.conversationList.render();
+        this.$.quickComposeInput.show();
+        this.$.quickComposeInput.setDisabled(false);
+        this.$.quickComposeInput.setHint("Enter Message");
+        
+        this.scrollToNew();
+    },
+    displayNameOrNumber: function(index)
+    {
+        if(!this.MessageIndex[index])
+            return "";
+        if(!this.MessageIndex[index].displayName && !this.MessageIndex[index].displayNumber)
+            this.MessageIndex[index].displayName = "Unknown Caller";
+        ////this.log(this.MessageIndex[index].displayName + "," + this.MessageIndex[index].displayNumber + "," + this.MessageIndex[index].displayNumber.length);
+        if(this.MessageIndex[index].displayName)
+            return this.MessageIndex[index].displayName;
+        if(!this.PrimaryData || !this.PrimaryData.contacts) // eek, indices are setup and lists are running before contacts and PD are received.
+        {
+            ////this.log("no contacts loaded to fix");
+            return this.MessageIndex[index].displayNumber;
+        }
+        for(id in this.PrimaryData.contacts)
+        {
+            var numbers = this.PrimaryData.contacts[id].numbers;
+            for(var x = 0; x < numbers.length; x++)
+            {
+                ////this.log("comparing", numbers[x].displayNumber, this.MessageIndex[index].displayNumber);
+                if(numbers[x].displayNumber == this.MessageIndex[index].displayNumber)
+                {
+                    this.MessageIndex[index].displayName = this.PrimaryData.contacts[id].name;
+                    break;
+                }
+            }
+            if(this.MessageIndex[index].displayName)
+                break;
+            /*//this.log("comparing",this.PrimaryData.contacts[id].displayNumber, this.MessageIndex[index].displayNumber);
+            if(this.PrimaryData.contacts[id].displayNumber == this.MessageIndex[index].displayNumber)
+            {
+                this.MessageIndex[index].displayName = this.PrimaryData.contacts[id].name;
+                break;
+            }*/
+        }
+        return this.MessageIndex[index].displayName ? this.MessageIndex[index].displayName : this.MessageIndex[index].displayNumber;
+    },
+    getContactIndexByNumber: function(num)
+    {
+        for(var id in this.PrimaryData.contacts)
+        {
+            var numbers = this.PrimaryData.contacts[id].numbers;
+            for(var x = 0; x < numbers.length; x++)
+            {
+                ////this.log("comparing", numbers[x].displayNumber, num);
+                if(numbers[x].displayNumber == num)
+                {
+                    return id;
+                }
+            }
+        }
+        ////this.log("** Failed to find contact for", num);
+        return -1;
+    },
+    listItemClick: function(inSender, inEvent, inMessageId)
+    {
+        if(this.$.overviewScroller.isScrolling && this.$.overviewScroller.isScrolling())
+            return false;
+        var id = inMessageId ? inMessageId : inSender.messageId;
+        var index = this.getMessageIndexById(id);
+        ////this.log(inSender, ".", inEvent, ".", inMessageId);
+        ////this.log(inSender.messageId + "." + inEvent.rowIndex + "." + inSender.name + "." + id + "." + index);
+        
+        if(this.Messages[index].html)
+        {
+            ////enyo.log(this.Messages[index].html);
+            //console.log(this.MessageIndex[index]);
+            //console.log(this.Messages[index]);
+        }
+        else
+        {
+            console.log("* Clicked on nothing");
+        }
+
+        this.actionId = id;
+        this.actionIndex = index;
+        
+        //this.log(1);
+        this.$.actionsMenu.setMessageIndex(this.MessageIndex[index]);
+        //this.log(2);
+        this.$.actionsMenu.setContact(this.getContacts(this.getContactIndexByNumber(this.MessageIndex[index].displayNumber)));
+        //this.log(3);
+        this.$.actionsMenu.setNumber(this.MessageIndex[index].displayNumber);
+        //this.log(4);
+        this.$.actionsMenu.openAtEvent(inEvent);
+        //this.log(5);
+        inEvent.stopPropagation();
+    }, // TODO: clean up this function
+    indexHold: function(inSender, inEvent)
+    {
+        var index = inEvent.rowIndex;
+        var id = this.MessageIndex[index].id;
+        
+        
+        this.actionId = id;
+        this.actionIndex = index;
+        
+        this.$.actionsMenu.setMessageIndex(this.MessageIndex[index]);
+        this.$.actionsMenu.setContact(this.getContacts(this.getContactIndexByNumber(this.MessageIndex[index].displayNumber)));
+        this.$.actionsMenu.setNumber(this.MessageIndex[index].displayNumber);
+        this.$.actionsMenu.openAtEvent(inEvent);
+    },
+    getIndexListItem: function(inSender, inIndex)
+    {
+        var msgindex = this.MessageIndex ? this.MessageIndex[inIndex] : undefined;
+        if(msgindex) {
+            var listitem = this.$.IndexListItem;
+            var indexname = this.$.IndexName;
+            var str = "";
+            
+            if(msgindex.Portrait.src.indexOf("blue_ghost.jpg") != -1)
+            {
+                this.$.IndexImage.hide();
+            }
+            else {
+                this.$.IndexImage.setContent('<img src="' + msgindex.Portrait.src + '">');
+            }
+            
+            if(prefs.get("smallFonts") == 1)
+            {
+                indexname.addClass("enyo-item-secondary");
+            }
+            
+            listitem.addRemoveClass("indexselected", this.MessageIndex[inIndex].id == this.selectedID);
+
+            this.$.IndexName.setContent(this.displayNameOrNumber(inIndex));
+            this.$.IndexLocation.setContent(msgindex.Location);
+            this.$.IndexTime.setContent(msgindex.displayStartDateTime);
+            
+            this.$.IndexTime.setContent(this.MessageIndex[inIndex].displayStartTime);
+            if(!msgindex.isRead)
+            {
+                listitem.addClass("gvoice-inbox-message-alt");
+            }
+            return true;
+        }
+        return false;
+    },
+    getConversationListItem: function(inSender, inIndex) {
+        var str = "";
+        var len = this.Messages ? this.Messages.length : undefined;
+        for(var x = 0; x < len; x++)
+        {
+            if(this.MessageIndex[x].id != this.selectedID)
+                continue;
+            else
+            {
+                var messages = this.Messages[x];
+                var messageIndex = this.MessageIndex[x];
+                var messagefield = this.$.messagefield;
+                
+                if(inIndex == 0 && (!messages || messages.length == 0))
+                { // here is where we come if we don't have any messages to display ..
+                    this.$.description.setContent("No further information available.");
+                    inSender.messageId = this.Messages[x].id;
+                    return true;
+                }
+                else if(inIndex < messages.length)
+                {    
+                    inSender.messageId = messages.id;
+                    
+                    if(!messagefield.hasClass("enyo-item-secondary") && prefs.get("smallFonts") == 1)
+                    {
+                        messagefield.addClass("enyo-item-secondary");
+                    }
+
+                    if(messages[inIndex].SentBy == "Me:")    
+                    {
+                        if(!messagefield.hasClass("gvoice-inbox-message-self"))
+                        {
+                            messagefield.addClass("gvoice-inbox-message-self"); // it's the "primary" color not the alt, at least that's the intent
+                        }
+                    }
+                    else
+                    {
+                        if(!messagefield.hasClass("gvoice-inbox-message-alt"))
+                        {
+                            messagefield.addClass("gvoice-inbox-message-alt");
+                        }
+                    }
+                    
+                    if(messageIndex.isVoicemail) {
+                        str = messages[inIndex].VoicemailTranscript; 
+                    }
+                    else if(messages[inIndex].SentMessage) {
+                        str = messages[inIndex].SentMessage;
+                    }
+                    else {
+                        str = "Transcript not available.";
+                    }
+                    this.$.sentTime.setContent(messages[inIndex].SentTime);
+                    this.$.description.setContent(/*"("+messages[inIndex].SentTime + ") " +*/ str);
+    
+                    return true;
+                } 
+            } 
+        }
+        return false;  
+    }, // TODO: seriously optimize this function
+    overviewListRender: function(inSender, inRow)
+    {
+        if(!this.MessageIndex)
+            return false;
+        if(inRow == 0 && !this.MessageIndex[inRow])
+        {
+            this.overviewMsg = -1;
+            this.$.overviewTitle.hide();
+            if(inSender.messageId)
+                delete inSender.messageId;
+            return true; // pass this to overviewListRenderItem to draw a message stating that we are lonely
+        }
+        var title = "";
+        var messageIndex = this.MessageIndex[inRow];
+        if(this.MessageIndex[inRow]) {
+            this.overviewMsg = inRow;
+            if(this.MessageIndex[inRow].isMissedCall)
+                title += "MISSED CALL from ";
+            if(this.MessageIndex[inRow].isVoicemail)
+            {
+                if(messageIndex.isVoicemail)
+                    title += "VOICEMAIL from ";                    
+            }
+            title += this.displayNameOrNumber(this.overviewMsg);
+            if(this.MessageIndex[inRow].isBlockedCaller)
+                title += " (BLOCKED)";
+
+            
+            this.$.messageListRepeater.setMessageId(this.MessageIndex[inRow].id);
+            inSender.messageId = this.MessageIndex[inRow].id;
+            
+            if(messageIndex.Location != "")
+                title += " " + messageIndex.Location; 
+            title += " @ " + messageIndex.displayStartDateTime;
+            if(messageIndex.star)
+                this.$.overviewStar.setState("starred");
+            else
+                this.$.overviewStar.setState("unstarred");
+            this.$.overviewStar.setMessageId(messageIndex.id);
+            this.$.overviewStar.setMessageIndex(inRow);
+            this.$.overviewTitle.setCaption(title);
+            
+            return true;
+        } else {
+            this.overviewMsg = "";
+        }
+        return false;
+    },
+    ReplyButtonClick: function(inSender, inEvent)
+    {
+        var indexToSendTo = inEvent.rowIndex;
+        if(this.selectedID != "")
+            indexToSendTo = this.getMessageIndexById(this.selectedID);
+        
+        this.openComposePopup(this.MessageIndex[indexToSendTo].phoneNumber);
+    },
+    CallButtonClick: function(inSender, inEvent)
+    {
+        var index = inEvent.rowIndex;
+        if(this.selectedID != "")
+            index = this.getMessageIndexById(this.selectedID);
+        this.openPlaceCallPopup(this.MessageIndex[index].phoneNumber);
+    },
+    messagesSent: function(inSender, counter)
+    {
+        var mstr = (counter != 1) ? " messages" : " message";
+        //var sound = (counter == 1) ? "" : "/media/internal/ringtones/Triangle (short).mp3";
+        var sound = "";
+        enyo.windows.addBannerMessage(counter + mstr + " sent", '{}', "images/google-voice-icon24.png", "", sound);
+        this.RetrieveInbox();
+    },
+    sendSMSMessage: function(to, msg)
+    {
+        //this.$.outbox.sendSMSMessage(to, msg);
+        if(!msg || msg == "")
+            return;
+        this.$.outbox.queueMessage(to, msg);
+    },
+    placeOutgoingCall: function(recp, phone)
+    {
+        if(!recp || recp == "") {
+            enyo.windows.addBannerMessage("No Recipient Given", '{}', "images/google-voice-icon24.png", "")
+            return;
+        }
+        if(!this.selectedPhone)
+        {
+            enyo.windows.addBannerMessage("No Outgoing Phone Selected", '{}', "images/google-voice-icon24.png", "")
+            return;
+        }
+        var params = {
+            outgoingNumber:recp,
+            forwardingNumber:this.PrimaryData.phones[phone].phoneNumber,
+            subscriberNumber:"undefined",
+            phoneType:this.PrimaryData.phones[phone].type,
+            _rnr_se:this.PrimaryData._rnr_se
+        };
+        this.$.CallNumber.headers = { "Authorization":"GoogleLogin auth="+this.AuthCode };
+        //enyo.log("calling " +params.outgoingNumber + " from " + params.forwardingNumber);
+        this.$.CallNumber.call(params);
+        //this.closePlaceCallPopup(); // no longer auto close place call popup, let it do it itself
+        //this.$.callSendButton.setDisabled(true);
+        //this.$.callCancelButton.setCaption("End Call");
+        //this.RetrieveInbox();
+    },
+    cancelOutgoingCall: function(inSender, inEvent)
+    {
+        var params = {
+            outgoingNumber: "undefined",
+            forwardingNumber: "undefined",
+            cancelType: "C2C",
+            _rnr_se: this.PrimaryData._rnr_se
+        };
+        ////this.log("params=", params);
+        this.$.callCancel.call( { outgoingNumber:"undefined", forwardingNumber:"undefined",cancelType:"C2C",_rnr_se:this.PrimaryData._rnr_se });
+        //this.setHackWebURL("https://www.google.com/voice/m/callsms");
+        this.closePlaceCallPopup();
+    },
+    deleteConfirmed: function(inSender, permanent)
+    {
+        var index = this.$.deletePopup.msgindex;
+        this.deleteMessage(this.MessageIndex[index].id, permanent);
+        if(this.MessageIndex[index].id == this.selectedID)
+            this.resetSelectedID();
+        this.$.deletePopup.close();
+    },
+    deleteMessage: function(msgid, permanent)
+    {
+        var params = {
+            messages:msgid,
+            _rnr_se:this.PrimaryData._rnr_se
+        };
+        if(!permanent) params.trash = 1;
+        this.$.deleteMessage.headers = { "Authorization":"GoogleLogin auth="+this.AuthCode };
+        this.$.deleteForeverMessage.headers = { "Authorization":"GoogleLogin auth="+this.AuthCode };
+        this.$.deleteForeverMessage.setUrl(this.PrimaryData.baseUrl + "/inbox/deleteForeverMessages");
+        if(permanent) this.$.deleteForeverMessage.call(params);
+        else this.$.deleteMessage.call(params);
+    },
+    archiveMessage: function(inSender, inEvent)
+    {
+        var index = inEvent.rowIndex;
+        if(this.selectedID != "")
+            index = this.getMessageIndexById(this.selectedID);
+        var params = {
+            messages:this.MessageIndex[index].id,
+            archive:1,
+            _rnr_se:this.PrimaryData._rnr_se,
+        };
+        if(params.messages == this.selectedID)
+            this.resetSelectedID();
+        this.$.archiveMessages.headers = { "Authorization":"GoogleLogin auth="+this.AuthCode };
+        this.$.archiveMessages.call(params);
+        setTimeout(enyo.bind(this, this.RetrieveInbox), 100);
+    },
+    ListenButtonClick: function(inSender, inEvent)
+    {
+        var index = inEvent.rowIndex;
+        if(this.selectedID != "")
+            index = this.getMessageIndexById(this.selectedID);
+        this.$.vmDownload.headers = { "Authorization":"GoogleLogin auth="+this.AuthCode };
+        var params = {
+            messages:this.MessageIndex[index].id,
+            _rnr_se:this.PrimaryData._rnr_se
+        };
+        this.playVoicemail(this.MessageIndex[index].id);
+        if(this.$.voicemailStop)
+            this.$.voicemailStop.setDisabled(false);
+        //this.log();
+        inEvent.stopPropagation();
+        this.startScrim();
+        setTimeout(function(thisObj) { thisObj.endScrim(); }, 2000, this);
+    },
+    dashboardTap: function(inSender, dashProps, inEvent)
+    {
+        var title = "";
+        var index = this.getMessageIndexById(dashProps.id);
+        inSender.pop();
+        //enyo.log("dashboardTap ", "inSender", inSender, "inEvent", inEvent, "dashProps", dashProps);
+        enyo.windows.activateWindow(window);
+
+        this.displayConversation(index);        
+    },
+    PostNotification: function(msgid, msg, nonamemsg, msgtext)
+    {
+        //this.log("********************* POSTING NOTIFICATION **************** ");
+        enyo.application.launcher.PostNotification(msgid, msg, nonamemsg, msgtext);
+    },
+    dashboardActivated: function(dash) {
+        //dash.applyStyle("background-color", "black");
+        //this.log("**************** DASHBOARD ACTIVATED ***************** ");
+        for(l in dash)
+        {
+            var c = dash[l].dashboardContent;
+            if(c)
+            {
+                console.log(c);
+                c.$.topSwipeable.applyStyle("background-color", "black");
+                //dash[l].dashboardContent.$.layer0.applyStyle("background-color", "black");
+                //dash[l].dashboardContent.$.layer1.applyStyle("background-color", "black");
+                //dash[l].dashboardContent.$.layer2.applyStyle("background-color", "black");
+            }
+        }
+    },
+    openContactsView: function(inSender, inEvent)
+    {
+        if(typeof blackberry !== "undefined" && inEvent.cancelable)
+            return;
+        this.log(inEvent);
+        this.LeftPaneView = 1 - this.LeftPaneView;
+        //this.log("selecting " + this.LeftPaneView);
+        this.$.leftPane.selectViewByIndex(this.LeftPaneView);
+        if(!Platform.hasBack() && this.LeftPaneView == 1)
+        {
+            this.$.contactsButton.setCaption("Back");
+            this.$.contactsButton.setIcon("");
+        }
+        else {
+            this.$.contactsButton.setIcon((!window.PalmSystem) ? "mainApp/images/contacts2.png" : "images/contacts2.png");
+            this.$.contactsButton.setCaption("");
+        }
+        this.$.leftPane.render();
+        inEvent.preventDefault();
+        inEvent.stopPropagation();
+    },
+    getContacts: function(idx)
+    {
+        if(idx || idx === 0)
+            return this.PrimaryData.contacts[idx];
+        return this.PrimaryData.contacts;
+    },
+    getPhones: function()
+    {
+        return this.PrimaryData.phones;
+    },
+    selectPhone: function(phone)
+    {
+        this.selectedPhone = phone;
+        enyo.setCookie("selectedPhone", this.selectedPhone);
+    },
+    linkClicked: function(inSender, inUrl, inEvent)
+    {
+        //this.log(inSender, inUrl, inEvent);
+        url = inUrl.replace(/^tel:/, "");
+        if(url == inUrl)
+        {
+            this.$.AppManService.call( { target: inUrl } );
+        }
+        else
+        {
+            this.clickedPhoneNum = url.replace("%20", "");
+            this.$.phonePopupMenu.openAtEvent(inEvent);
+            this.$.phonePopupMenu.setTitle(formatPhoneNumber(url));
+        }
+    },
+    doPhoneMenu: function(inSender, inEvent, phone)
+    {
+        this.$.phonePopupMenu.openAtEvent(inEvent);
+        this.clickedPhoneNum = phone.phoneNumber;
+        this.$.phonePopupMenu.setTitle(formatPhoneNumber(phone.phoneNumber));
+    },
+    doEmailMenu: function(inSender, inEvent, email)
+    {
+        this.clickedEmail = email;
+        this.$.emailPopupMenu.openAtEvent(inEvent);
+    },
+    emailFromPopup: function(inSender)
+    {
+        this.$.AppManService.call( { target: "mailto:" + this.clickedEmail } );
+    },
+    popupCallClicked: function(inSender, inEvent)
+    {
+        this.openPlaceCallPopup(this.clickedPhoneNum);
+    },
+    popupTextClicked: function(inSender, inEvent)
+    {
+        this.openComposePopup(this.clickedPhoneNum);
+    },
+    playVoicemail: function(msgid)
+    {
+        //this.log(msgid);
+        //this.log(document.cookie);
+        
+        this.$.CreateVoicemailDir.call();
+        if(Platform.isWebOS() && parseFloat(Platform.platformVersion) >= 2)
+        {
+            this.$.newPlayVoicemail.call({
+                host: "www.google.com",
+                path: "/voice/b/0/media/send_voicemail/" + encodeURI(msgid),
+                method: "GET",
+                cookies: "GALX=" + enyo.application.api.GALX,
+                headers: {
+                    "Authorization":"GoogleLogin auth=" + this.AuthCode
+                },
+                savefile: "/media/internal/.voicemail/vm"+msgid+".mp3",
+                binary: true
+            });
+            return;
+        }
+        //console.error(Platform.isWebOS() + Platform.platformVersion);
+        if(!Platform.isLargeScreen())
+        {
+            var launchtarget = "http://ericbla.de/test.php?swfPath=" + encodeURIComponent(this.PrimaryData.swfPath) +
+                        "&baseUrl=" + encodeURIComponent(this.PrimaryData.baseUrl) + "&conv=" + encodeURIComponent(msgid);
+            enyo.windows.addBannerMessage("Launching Voicemail Browser", '{}', "images/google-voice-icon24.png", "")                    
+            this.$.AppManService.call( { target: launchtarget } );
+            return;
+        }
+        var flashStr = '<object id="gc-audioPlayer" name="gc-audioPlayer" height="20" width="100%"' +
+                ' type="application/x-shockwave-flash"' +
+                ' movie="' +
+                "https://www.google.com" +
+                this.PrimaryData.swfPath +
+                '"' +
+                ' data="' +
+                "https://www.google.com" +
+                this.PrimaryData.swfPath + 
+                '">' +
+                ' <param name="wmode" value="transparent"/>' +
+                ' <param name="' +
+                "https://www.google.com" +
+                this.PrimaryData.swfPath +
+                '"/>' +
+                '<param name="flashvars" value="messagePath=' +
+                encodeURIComponent(this.PrimaryData.baseUrl + '/media/send_voicemail/' + msgid + '?read=0') +
+                '&baseurl=' +
+                encodeURIComponent(this.PrimaryData.baseUrl) +
+                '&conv=' +
+                msgid +
+                '"/>' +
+                '</object>';
+        // SHOULD work, i think, but doesn't .. fixed in next webOS? maybe?
+        //this.$.vmAudio.setSrc("http://www.google.com/voice/m/playvoicemail?id="+msgid+"&auth="+this.AuthCode);
+        //this.$.vmAudio.play();
+        
+        // doesn't work, maybe fixed in future updates... ?
+        //this.$.AppManService.call( { target: "http://www.google.com/voice/m/playvoicemail?id="+msgid+"&auth="+this.AuthCode });
+        
+        // unfortunately, works
+        this.setHackWebHTML(flashStr);
+
+        ////this.log("trying to download", "http://www.google.com/voice/m/playvoicemail?id="+msgid+"&auth="+this.AuthCode)
+        
+        // neither of these work either
+        //this.$.vmDownload.setUrl("http://www.google.com/voice/m/playvoicemail");
+        //this.$.vmDownload.call( { id:msgid, auth: this.AuthCode} );
+        /*this.$.fileDownload.call( {
+            target: "https://www.google.com/voice/m/playvoicemail?ui=desktop&id="+msgid+"&auth="+this.AuthCode,
+            mime: "audio/mpeg3",
+            targetDir: "/media/internal",
+            cookieHeader: "GALX=" + this.GALX + ";SID="+this.SID+";LSID=grandcentral:"+this.LSID+"gv="+this.LSID,
+            targetFilename: "voicemail.mp3",
+            keepFilenameOnRedirect: true,
+            canHandlePause: true,
+            subscribe: true
+        })*/
+    },
+    downloadFinished: function(inSender, x, y)
+    {
+        //this.log();
+    },
+    stopPlayback: function(inSender, inEvent)
+    {
+        this.setHackWebHTML("");
+        if(this.$.voicemailStop)
+            this.$.voicemailStop.setDisabled(true);
+        inEvent.stopPropagation();
+    },
+    startScrim: function() {
+        //this.log();
+        enyo.scrim.show();
+        this.$.mainSpinner.show();
+        this.$.mainSpinner.setShowing(true);
+    },
+    endScrim: function() {
+        //this.log();
+        enyo.scrim.hide();
+        this.$.mainSpinner.hide();
+        this.$.mainSpinner.setShowing(false);
+    },
+    actionReply: function(inSender, inEvent, x)
+    {
+        //this.log(this.actionIndex+"."+this.actionId+"."+inSender+"."+inEvent+"."+x);
+        this.openComposePopup(this.MessageIndex[this.actionIndex].phoneNumber);
+    },
+    actionCall: function()
+    {
+        this.openPlaceCallPopup(this.MessageIndex[this.actionIndex].phoneNumber);
+    },
+    actionDelete: function()
+    {
+        this.openDeletePopup(this.actionIndex);
+    },
+    actionVoicemail: function()
+    {
+        if(this.$.voicemailStop)
+            this.$.voicemailStop.setDisabled(false);
+        this.startScrim();
+        setTimeout(function(thisObj) { thisObj.endScrim(); }, 2000, this);
+        //this.log(this.actionId);
+        this.playVoicemail(this.actionId);
+    }, // TODO: Actually bring up a pop-up to verify this!!!
+    confirmBlockUnblock: function(inSender)
+    {
+        this.displayConversation(this.actionIndex);
+        this.$.blockConfirmDialog.open();        
+    },
+    performBlockUnblock: function(inSender)
+    {
+        var params = {
+            messages:this.actionId,
+            blocked:this.MessageIndex[this.actionIndex].isBlockedCaller ? "0" : "1",
+            _rnr_se:this.PrimaryData._rnr_se,
+        };
+        this.$.blockCaller.setUrl(this.PrimaryData.baseUrl + "/inbox/block/");
+        this.$.blockCaller.call( params );        
+    },
+    callerBlocked: function(inSender, inResponse)
+    {
+        //this.log(inResponse);
+        this.resetSelectedID();
+        setTimeout(enyo.bind(this, this.RetrieveInbox), 100);        
+    },
+    actionArchive: function()
+    {
+        ////this.log(this, this.actionId);
+        var params = {
+            messages:this.actionId,
+            archive:1,
+            _rnr_se:this.PrimaryData._rnr_se,
+        };
+        if(params.messages == this.selectedID)
+            this.resetSelectedID();
+        this.$.archiveMessages.headers = { "Authorization":"GoogleLogin auth="+this.AuthCode };
+        this.$.archiveMessages.call(params);
+        setTimeout(enyo.bind(this, this.RetrieveInbox), 100);
+    },
+    doStar: function(inSender, inEvent)
+    {
+        if(typeof blackberry !== "undefined" && inEvent.cancelable)
+            return true;
+        if(!inSender.messageIndex && !inSender.messageId) {
+            inSender.messageIndex = this.getMessageIndexById(this.selectedID);
+            inSender.messageId = this.selectedID;
+        }
+        this.MessageIndex[inSender.messageIndex]["star"] = !this.MessageIndex[inSender.messageIndex]["star"];
+        var params = {
+            messages:inSender.messageId,
+            star:this.MessageIndex[inSender.messageIndex].star ? "1" : "0",
+            _rnr_se:this.PrimaryData._rnr_se,
+        };
+        this.$.archiveMessages.headers = { "Authorization":"GoogleLogin auth="+this.AuthCode };
+        this.$.starMessage.setUrl(this.PrimaryData.baseUrl + "/inbox/star/");
+        this.$.starMessage.call( params );
+        //this.log(params.star);
+        if (params.star == "1") {
+            //this.log("setting star");
+            inSender.setState("starred");
+        }
+        else {
+            //this.log("unsetting star");
+            inSender.setState("unstarred");
+        }
+    },
+    doAddToContacts: function(name, number, type)
+    {
+        var params = {
+            phoneNumber: number,
+            phoneType: type,
+            name: name,
+            _rnr_se: this.PrimaryData._rnr_se,
+        };
+        this.$.gvAddToContacts.call( params );
+    },
+    swipeArchive: function(inSender, index)
+    {        
+        this.actionIndex = index;
+        this.actionId = this.MessageIndex[index].id
+        //this.log(this, this.actionIndex, this.actionId);        
+        this.actionArchive();
+    },
+    swipeDelete: function(inSender, index)
+    {
+        this.actionIndex = index;
+        this.actionId = this.MessageIndex[index].id
+        enyo.application.mainApp.$.deletePopup.msgindex = index;
+        //this.log(this, this.actionIndex, this.actionId);
+        this.deleteConfirmed();
+    },
+    doQuickCompose: function(str)
+    {
+        if(str == "" || str.length == 0)
+            return;
+        var index = this.getMessageIndexById(this.selectedID);
+        this.sendSMSMessage(this.MessageIndex[index].phoneNumber, str);
+        this.$.quickComposeInput.setValue("");
+    },
+    quickComposeKeypress: function(inSender, inEvent)
+    {
+        var x = this.$.quickComposeInput.getValue();
+        if(inEvent && inEvent.keyCode == 13)
+        {
+            this.doQuickCompose(x);
+            return true;
+        }
+        this.$.quickComposeInput.forceFocus(null, true);
+        //this.$.quickComposeInput.setSelection( {start: x.length, end: x.length});
+        return false;
+    },
+    messageSearchKeypress: function(inSender, inEvent)
+    {
+        if(inEvent && inEvent.keyCode == 13)
+        {
+            this.doSearch(this.$.messageSearchInput.getValue());
+            return true;
+        }
+        return false;
+    },
+    doSearch: function(str, page)
+    {
+        if(!page) page = "1";
+        this.messageSearch = str;
+        //this.log("?q="+str+"&page=p"+page);
+        enyo.application.mainApp.$.messageSearch.call({ "q":str, page:"p"+page });
+        enyo.application.mainApp.$.boxPicker.setValue("Search");
+    },
+    messageSearchClick: function()
+    {
+        enyo.application.mainApp.$.boxPicker.setValue("Search");
+    },
+    openAddContactPopup: function(inSender)
+    {
+        this.$.contactAddPopup.setNumber(inSender.number);
+        //this.$.contactAddPopup.openAtCenter();
+        this.$.contactAddPopup.open();
+    },
+    addContact: function(inSender, inName, inNumber, inType)
+    {
+        if(!inName || inName == "")
+        {
+            enyo.windows.addBannerMessage("No Name Specified", '{}', "images/google-voice-icon24.png", "");
+            return;
+        }
+        if(!inNumber || inNumber == "")
+        {
+            enyo.windows.addBannerMessage("No Number Specified", '{}', "images/google-voice-icon24.png", "");
+            return;
+        }
+        if(!inType || inType == "")
+        {
+            enyo.windows.addBannerMessage("No Telephone Type Specified", '{}', "images/google-voice-icon24.png", "");
+            return;
+        }
+        ////this.log("a",a,"b",b,"c",c,"x",x,"y",y,"z",z);
+        this.$.contactAddPopup.close();
+        
+        var params = {
+            phoneNumber: inNumber.replace(/[^0-9]/g, ''),
+            phoneType: inType.toUpperCase(),
+            name: inName,
+            needsCheck: "1",
+            _rnr_se: this.PrimaryData._rnr_se
+        };
+        //this.log(params);
+        this.$.gvAddToContacts.setUrl(this.PrimaryData.baseUrl + "/phonebook/quickAdd/");
+        //this.log(this.$.gvAddToContacts.url);
+        this.$.gvAddToContacts.call( params );
+    },
+    addContactSuccess: function(inSender, inResponse)
+    {
+        enyo.windows.addBannerMessage("Contact Added", '{}', "images/google-voice-icon24.png", "");
+        enyo.application.api.RetrievePrimaryData();
+    },
+    addContactFailure: function(inSender, inResponse)
+    {
+        //this.log(inResponse);
+        enyo.windows.addBannerMessage("Contact Add Failed:"+inResponse, '{}', "images/google-voice-icon24.png", "");
+    },
+    deleteForeverSuccess: function(inSender, inResponse)
+    {
+        if(inResponse.ok == true)
+        {
+            enyo.windows.addBannerMessage("Conversation Permanently Deleted", '{}', "images/google-voice-icon24.png", "");
+            enyo.application.mainApp.RetrieveInbox();
+        } else {
+            enyo.windows.addBannerMessage("Delete Failed", '{}', "images/google-voice-icon24.png", "");
+            //this.log(inSender, inResponse);
+        }
+    },
+    deleteForeverFailed: function(inSender, inResponse)
+    {
+        //this.log(inSender, inResponse);
+    },
+    actionPlaceCall: function(inSender, num, phone) // called from the onPlaceCall event in the placeCallPopup
+    {
+        this.placeOutgoingCall(num, phone);
+    },
+    webviewTitleChange: function(x, y, z)
+    {
+        this.webViewTitle = y;
+        this.debugLog("webviewTitleChange: " + y);
+        //this.log(Platform.isLargeScreen(), y);
+        if(this.webViewTitle == "")
+        {
+            this.lastTitleWasBlank = true;
+        } else 
+        if(this.webViewTitle == "Google Voice - One phone number, online voicemail, and enhanced call features")
+        {
+            if(Platform.isLargeScreen() && this.$.rightPane.getViewName() != "webView")
+            {
+                this.$.rightPane.selectViewByName("webView");
+                //this.log("selecting webView");
+            }
+            this.forcedWebView = true;
+        } else if(this.webViewTitle == "Google Voice" && (this.forcedWebView || this.lastTitleWasBlank)) {
+            if(this.$.rightPane.getViewName() != "overviewView")
+            {
+                //this.log("selecting overview");
+                this.$.rightPane.selectViewByName("overviewView");
+                this.forcedWebView = false;
+            }
+        }
+    },
+    // TODO: Why do we have "openAddContact" and "openAddContactPopup"?
+    openAddContact: function() {
+        //this.$.contactAddPopup.openAtCenter();
+        this.$.contactAddPopup.open();
+    },
+    activatePhone: function(phoneid, active)
+    {
+        if(!IsNumeric(phoneid)) // someone passed us a phone name
+        {
+            var compare = phoneid.toLower();
+            for(var x in this.PrimaryData.phones)
+            {
+                if(this.PrimaryData.phones[x].name.toLower() == compare)
+                    phoneid = this.PrimaryData.phones[x].id;
+            }
+        }
+        var params = {
+            phoneId:phoneid,
+            enabled:active ? "1":"0",
+            _rnr_se:this.PrimaryData._rnr_se
+        };
+        this.$.editDefaultForwarding.call( params );
+    },
+	openAppMenuHandler: function(inSender, inEvent) {
+            this.log(enyo.application.mainApp);
+            this.log(enyo.application.mainApp.$.AppMenu);
+	    enyo.application.mainApp.$.AppMenu.open();
+            if(inEvent)
+                this.cancelEvent(inSender, inEvent);
+	},
+	closeAppMenuHandler: function() {
+	    this.$.AppMenu.close();
+	},
+        qcFocus: function(inSender, inEvent)
+        {
+            ////this.log();
+            if(!Platform.isLargeScreen()) // pre - toolinput scrolls app off screen, wth?
+            {
+                this.composeButtonClick();
+            } else {
+                this.$.composeButton.hide();
+                this.$.newCallButton.hide();
+                this.$.voicemailButton.hide();
+                if(this.$.voicemailStop)
+                    this.$.voicemailStop.hide();
+            }
+            inEvent.stopPropagation();
+            inEvent.preventDefault();
+            return -1;
+        },
+        qcBlur: function()
+        {
+            ////this.log();
+            this.$.composeButton.show();
+            this.$.newCallButton.show();
+            if(Platform.isLargeScreen())
+            {
+                this.$.voicemailButton.show();
+                if(this.$.voicemailStop)
+                    this.$.voicemailStop.show();
+            }
+        },
+    tabSelect: function(inSender, x)
+    {
+        ////enyo.log(inSender, x);
+        if(x == 0)
+        {
+            this.$.slidingPane.selectViewByName("left");
+            this.$.rightPane.selectViewByName("index");
+        } else if(x == 1)
+        {
+            this.$.slidingPane.selectViewByName("right");
+            this.$.rightPane.selectViewByName("overviewView");
+        } else if(x == 2)
+        {
+            this.$.slidingPane.selectViewByName("right");
+            this.$.rightPane.selectViewByName("conversationView");
+        }
+    },
+    viewChange: function(inSender, inNewView, inPrevView)
+    {
+        if(this.$.PhoneTabs && this.PrimaryData) {
+            if(inNewView.name == "left")
+            {
+                this.$.PhoneTabs.setValue(0);
+            } else if(inNewView.name == "right") {
+                var n = this.$.rightPane.getViewName();
+                switch(n)
+                {
+                    case "overviewView":
+                        this.$.PhoneTabs.setValue(1);
+                        break;
+                    case "conversationView":
+                        this.$.PhoneTabs.setValue(2);
+                        break;
+                    default:
+                        this.$.PhoneTabs.setValue(10);
+                        break;
+                }
+            } else if(this.$.slidingPane.getViewName() == "right" && inNewView.name == "overviewView") {
+                this.$.PhoneTabs.setValue(1);
+                this.$.quickComposeInput.hide();
+            } else if(inNewView.name == "conversationView") {
+                this.$.PhoneTabs.setValue(2);
+            }
+        }
+        if(inNewView == this.$.conversationView)
+        {
+            this.$.conversationScroller.scrollToBottom();
+        }
+    }
+    
+});
+
+enyo.kind({
+    name: "maklesoft.cross.ApplicationEvents",
+    kind: enyo.ApplicationEvents,
+    events: {
+        onSearch: ""
+    },
+    create: function() {
+        this.inherited(arguments);
+        
+        this.chromeWindowFocusChangedHandler = enyo.bind(this, this.chromeWindowFocusChangedHandler);
+        this.windowActivatedHandler = enyo.bind(this, this.doWindowActivated);
+        this.windowDeactivatedHandler = enyo.bind(this, this.doWindowDeactivated);
+        this.backHandler = enyo.bind(this, this.doBack);
+        this.openAppMenuHandler = enyo.bind(this, this.doOpenAppMenu);
+        this.searchHandler = enyo.bind(this, this.doSearch);
+        
+        if(typeof blackberry != 'undefined' && blackberry.app.event)
+        {
+            blackberry.app.event.onBackground(this.windowDeactivatedHandler);
+            blackberry.app.event.onForeground(this.windowActivatedHandler);
+            blackberry.app.event.onSwipeDown(this.openAppMenuHandler);
+        }
+        
+        if (typeof chrome != 'undefined' && chrome.windows) {
+            if (this.onWindowActivated || this.onWindowDeactivated) {
+	            chrome.windows.getCurrent(enyo.bind(this, function(window) {
+                        this.chromeWindowId = window.id;
+                        chrome.windows.onFocusChanged.addListener(this.chromeWindowFocusChangedHandler);  
+	            }))
+	        }
+	    } else if (typeof PhoneGap != 'undefined') {
+	        if (this.onWindowActivated) {
+	            document.addEventListener("pause", this.windowActivatedHandler, false);
+            }
+            if (this.onWindowDeactivated) {
+	            document.addEventListener("resume", this.windowDeactivatedHandler, false);
+            }
+            
+            if (this.onBack) {
+                document.addEventListener("backbutton", this.backHandler, false);
+            }
+            
+            if (this.onOpenAppMenu) {
+                document.addEventListener("menubutton", this.openAppMenuHandler, false);
+            }
+            
+            if (this.onSearch) {
+                document.addEventListener("searchbutton", this.searchHandler, false);
+            }
+	}
+    },
+    chromeWindowFocusChangedHandler: function(windowId) {
+        if (this.chromeWindowId == windowId) {
+            this.doWindowActivated();
+        } else {
+            this.doWindowDeactivated();
+        }
+    },
+    destroy: function() {
+        this.inherited(arguments);
+        if (typeof chrome != 'undefined' && chrome.windows) {
+            chrome.windows.onFocusChanged.removeListener(this.chromeWindowFocusChangedHandler);
+	    } else if (typeof PhoneGap != 'undefined') {
+            document.removeEventListener("pause", this.windowActivatedHandler);
+            document.removeEventListener("resume", this.windowDeactivatedHandler);
+            document.removeEventListener("backbutton", this.backHandler);
+            document.removeEventListener("menubutton", this.openAppMenuHandler);
+            document.removeEventListener("searchbutton", this.searchHandler);
+        }
+    }
+});
+
+// POST /accounts/ClientLogin accountType=GOOGLE&Email=[google account]&Passwd=[google password]&service=grandcentral&source=[your app name]
+// Placing Calls:
+// POST /voice/call/connect/ outgoingNumber=[number to call]&forwardingNumber=[forwarding number]&subscriberNumber=undefined&phoneType=[phone type]&remember=0&_rnr_se=[pull from page]
+/*Phone Types:
+ 1) Home
+ 2) Mobile
+ 3) Work
+ 7) Gizmo*/
+/*Canceling Calls:
+ POST /voice/call/cancel/ outgoingNumber=undefined&forwardingNumber=undefined&cancelType=C2C&_rnr_se=[pull from page]
+
+Sending an SMS:
+ POST /voice/sms/send/ id=&phoneNumber=[number to text]&text=[URL Encoded message]&_rnr_se=[pull from page]
+
+Inbox XML:
+https://www.google.com/voice/inbox/recent/inbox/
+
+Starred Calls XML:
+https://www.google.com/voice/inbox/recent/starred/
+
+All Calls XML:
+https://www.google.com/voice/inbox/recent/all/
+
+Spam XML:
+https://www.google.com/voice/inbox/recent/spam/
+
+Trash XML:
+https://www.google.com/voice/inbox/recent/trash/
+
+Voicemail XML:
+https://www.google.com/voice/inbox/recent/voicemail/
+
+SMS XML:
+https://www.google.com/voice/inbox/recent/sms/
+
+Recorded Calls XML:
+https://www.google.com/voice/inbox/recent/recorded/
+
+Placed Calls XML:
+https://www.google.com/voice/inbox/recent/placed/
+
+Received Calls XML:
+https://www.google.com/voice/inbox/recent/received/
+
+Missed Calls XML:
+https://www.google.com/voice/inbox/recent/missed/
+
+XML Pagination:
+ ?page=p2
+ ?page=p3
+ etc..
+
+Downloading a Voice Message:
+https://www.google.com/voice/media/send_voicemail/[message id]
+
+Deleting a Voice Message:
+ POST /voice/inbox/deleteMessages/ messages=[message id]&trash=1&_rnr_se=[pull from page]
+
+Mark a message as read:
+ POST /voice/inbox/mark/ messages=[message id]&read=1&_rnr_se=[pull from page]
+
+Mark a message as unread:
+ POST /voice/inbox/mark/ messages=[message id]&read=0&_rnr_se=[pull from page]
+
+Voicemail Transcript Timing:
+https://www.google.com/voice/media/transcriptWords?id=[message id]*/
+
+/*
+ [{"messages":
+    {"b61af8a73da92c3fdd0b8fb90866d4cc1140b3cd":
+        {"id":"b61af8a73da92c3fdd0b8fb90866d4cc1140b3cd",
+        "phoneNumber":"+17341111111",
+        "displayNumber":"(734) 111-1111",
+        "startTime":"1314472446198",
+        "displayStartDateTime":"8/27/11 3:14 PM",
+        "displayStartTime":"3:14 PM",
+        "relativeStartTime":"23 minutes ago",
+        "note":"",
+        "isRead":true,
+        "isSpam":false,
+        "isTrash":false,
+        "star":false,
+        "messageText":
+        "Im bring duck tonite.. Sorry..lol he asked for a ride and since im only a mile away i had a hard time saying no",
+        "labels":["inbox","sms","all"],
+        "type":10,
+        "children":""
+        },
+    "f75c8481ad2e660953c7be494224234f996bbbdc":
+        {"id":"f75c8481ad2e660953c7be494224234f996bbbdc",
+        "phoneNumber":"+17342222222",
+        "displayNumber":"(734) 222-2222",
+        "startTime":"1314333511107",
+        "displayStartDateTime":"8/26/11 12:38 AM",
+        "displayStartTime":"12:38 AM",
+        "relativeStartTime":"38 hours ago",
+        "note":"",
+        "isRead":true,
+        "isSpam":false,
+        "isTrash":false,
+        "star":false,
+        "messageText":"Ok what just happened?",
+        "labels":["inbox","sms","all"],
+        "type":11,"children":""
+        }
+    },
+    "totalSize":2,
+    "unreadCounts":
+    {"all":0,"inbox":0,"missed":0,"placed":0,"received":0,"recorded":0,"sms":0,"trash":1,"unread":0,"voicemail":0},
+    "resultsPerPage":10
+}]
+*/
+
+// <div id="gaia_loginbox" class="body"><form id="gaia_loginform" action="https://www.google.com/accounts/ServiceLoginAuth" method="post">
+// <input type="hidden" name="ltmpl" value="mobile" /><div align="left"><font color="red">  </font></div><div><span class="gaia le lbl">Email:</span></div>
+// <div><input type="hidden" name="continue" id="continue" value="https://www.google.com/voice/m" /><input type="hidden" name="service" id="service" value="grandcentral" />
+//<input type="hidden" name="dsh" id="dsh" value="1038218064575200280" /><input type="hidden" name="ltmpl" id="ltmpl" value="mobile" />
+// <input type="hidden" name="btmpl" id="btmpl" value="mobile" /><input type="hidden" name="ltmpl" id="ltmpl" value="mobile" /></div>
+// <input type="hidden" name="timeStmp" id="timeStmp" value=""/><input type="hidden" name="secTok" id="secTok" value=""/>
+// <input type="hidden" name="GALX" value="b42PwUUPU7E" /><input type="text" name="Email"  id="Email" size="18" value="" class="gaia le val"  />
+// <div align="left"><font color="red"></font></div><div><span class="gaia le lbl">Password:</span></div>
+// <input type="password" name="Passwd" id="Passwd" size="18" class="gaia le val" autocomplete="off"  /><div align="left"><font color="red"></font></div><div align="left">
+// <input type="checkbox" name="PersistentCookie" id="PersistentCookie" value="yes" checked="checked"/>
+// <label for="PersistentCookie" class="gaia le rem">Remember me</label><input type="hidden" name="rmShown" value="1" /></div><div align="left">
+// <input type="submit" class="gaia le button" name="signIn" value="Sign in" /></div></form>
+
+/*  ** From the Google Voice javascript itself
++    z1a = zm + "/invite/add",
++    z2a = zm + "/inbox/archiveMessages/",
++    z3a = zm + "/settings/billingcredit/",
++    z4a = zm + "/settings/billingtrans/",
++    z5a = zm + "/inbox/block/",
++    z6a = zm + "/call/connect/",
++    z7a = zm + "/call/cancel/",
++    z8a = zm + "/billing/cancelOrder/",
++    z9a = zm + "/settings/cancelUpgradeClient",
++    z$a = zm + "/settings/chargeUser/",
++    zab = zm + "/settings/checkCarrier/",
++    zbb = zm + "/settings/checkCreditOrder/",
++    zcb = zm + "/settings/checkIllegalSharing",
++    zdb = zm + "/settings/checkForwardingVerified",
++    zeb = zm + "/settings/checkVerifiedNoAccount",
++    zfb = zm + "/setup/checkMobileSetupOptions",
++    zgb = zm + "/settings/checkSpamFilterEnabled",
++    zhb = zm + "/inbox/deleteForeverMessages/",
++    zib = zm + "/settings/deleteForwarding/",
++    zjb = zm + "/inbox/deleteMessages/",
++    zkb = zm + "/inbox/deletenote/",
++    zlb = zm + "/settings/deleteWebCallButton/",
++    zmb = zm + "/settings/getDiversionCode",
++    znb = zm + "/settings/diversionCodeComplete",
++    zob = zm + "/inbox/donate/",
++    zpb = zm + "/billing/editSettings/",
++    zqb = zm + "/settings/editOrg/",
++    zrb = zm + "/contacts/editContact/",
++    zsb = zm + "/settings/editDefaultForwarding/",
++    ztb = zm + "/settings/editForwarding/",
++    zub = zm + "/settings/editForwardingSms/",
++    zvb = zm + "/settings/editGreetings/",
++    zwb = zm + "/settings/editGroup/",
++    zxb = zm + "/settings/editGeneralSettings/",
++    zyb = zm + "/settings/editTranscriptStatus/",
++    zzb = zm + "/settings/editVoicemailSms/",
++    zAb = zm + "/settings/editWebCallButton/",
++    zBb = zm + "/settings/setInVerification",
++    zCb = zm + "/embed/generateEmbedTag",
++    zDb = zm + "/contacts/getContactData/",
++    zEb = zm + "/settings/getDoNotDisturb/",
++    zFb = zm + "/setup/getNormalizedNumber/",
++    zGb = zm + "/help/helpText/",
++    zHb = zm + "/inbox/mark/",
++    zIb = zm + "/setup/searchnew/",
++    zJb = zm + "/porting",
++    zKb = zm + "/settings/purchasenumberchange",
++    zLb = zm + "/setup/purchasevanitynumber",
++    zMb = zm + "/phonebook/quickAdd/",
++    zNb = zm + "/inbox/ratecall/",
++    zOb = zm + "/inbox/rateTranscript/",
++    zPb = zm + "/call/recordGreeting/",
++    zQb = zm + "/call/recordName/",
++    zRb = zm + "/setup/reserve",
++    zSb = zm + "/inbox/restoreTranscript/",
++    zTb = zm + "/inbox/savenote/",
++    zUb = zm + "/inbox/saveTranscript/",
++    zVb = zm + "/inbox/reply/",
++    zWb = zm + "/sms/send/",
++    zXb = zm + "/settings/setDoNotDisturb/",
++    zYb = zm + "/setup/create/",
++    zZb = zm + "/setup/createclientonly/",
++    z_b = zm + "/setup/createvm/",
++    z0b = zm + "/setup/search/",
++    z1b = zm + "/setup/vanitysearch/",
++    z2b = zm + "/inbox/spam/",
++    z3b = zm + "/inbox/star/",
++    z4b = zm + "/setup/undonumberchange",
++    z5b = zm + "/setup/unreserve",
++    z6b = zm + "/settings/upgrade",
++    z7b = zm + "/call/verifyForwarding";
++*/
+
+// /settings/getDoNotDisturb/ GET
+
+// Some of these comments down here are probably not useful, as the information
+// they returned had to be scrubbed due to potentially identifying information
+// left from the author while he was developing :-)
+
+/*
+ Request URL:https://www.google.com/voice/b/0/settings/?v=23882014
+Request Method:GET
+
+** DnD timers are set from this page ** (click Your Number, and go from there)
+Request URL:https://www.google.com/voice/b/0/settings/tab/phones?v=23882014
+Request Method:GET
+
+Request URL:https://www.google.com/voice/b/0/settings/tab/groups?v=23882014
+Request Method:GET
+  <html><![CDATA[<div id="gc-settings-groups-pane">
+  
+Request URL:https://www.google.com/voice/b/0/settings/tab/billing?v=23882014
+Request Method:GET
+  <html><![CDATA[<div id="gc-settings-billing">
+  
+ */
+
+// /media/sendPhonebookName/+phoneNumber ?
+// /inbox/savenote POST id=msgid, _rnr_se=rnr_se, note=note text
+// /inbox/deletenote/ POST id=msgid _rnr_se
+// /inbox/block/ POST blocked=1/0, id=msgid, _rnr_se

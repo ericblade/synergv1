@@ -1,0 +1,31 @@
+{
+    "copyright": "Copyright 2011-2012 Eric Blade, All Rights Reserved.",
+    "icon": "mainApp/images/google-voice-icon64.png",
+    "miniIcon": "mainApp/images/google-voice-icon16.png",
+    "smallIcon": "mainApp/images/google-voice-icon32.png",
+    "splashIcon": "mainApp/images/splashicon.png",
+    "splashicon": "mainApp/images/splashicon.png",
+    "noDeprecatedStyles": true,
+    "keywords": [ "text", "sms", "voice", "phone", "dial", "google", "gvoice" ],
+    "vendor": "Eric Blade",
+    "vendorurl": "http://www.ericbla.de/gvoice-webos",
+    "type": "web",
+    "main": "index-webos.html",
+    "universalSearch": {
+        "action": {
+            "displayName": "Send Text with GVoice",
+            "url": "com.ericblade.googlevoiceapp",
+            "launchParam": {
+                "action": "compose", "text":"#{searchTerms}"
+            }
+        }
+    },
+    "noWindow": true,    
+    "title": "GVoice",
+    "uiRevision": "2",
+    "version": "1.0.1",
+    "id": "com.ericblade.googlevoiceapp",
+    "tapToShareSupported": false,
+    "appWorldId": "86606",
+    "plug-ins": true
+}

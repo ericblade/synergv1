@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+    <head>
+        <title>GVoice App</title>
+        <meta name="viewport" content="height=device-height,width=device-width" />
+        <script src="../../../enyo/1.0/framework/enyo.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <script type="text/javascript">
+            new MyApps.GVoice().renderInto(document.body);
+            if(!enyo)
+                window.close();
+        </script>
+    </body>
+</html>
+
+<!--
+        <div id="whatsnew" style="visibility:hidden;">
+            Hi! It looks like this is your first time running this version of GVoice.<BR>
+            Welcome to GVoice!<BR>
+            If you enjoy GVoice, please make sure you rate and review the application on the App Catalog!<br>
+            If you have any problems with GVoice, please visit our support site at <a href="http://www.ericbla.de/gvoice-webos">http://www.ericbla.de/gvoice-webos</a><br>
+            <p>
+            New in 0.9.5:<br>
+            * Text-To-Speech - Currently only supported for a startup notification, and other notifications (new message, messages sent, etc).  You may disable this in the App Menu by selecting Preferences.  Improvements in the future may allow for TTSing your messages.<br>
+            * Debug Log tweaks - Debug Log will be culled out if it gets to be large, and some of the constant things that were getting into it are no longer getting into it<br>
+            * Internal changes for themeing support - Some people dislike our color scheme.  I'm sorry to hear that, but I'm trying to make some changes that will make it possible to change it.<br>
+            * Scrolling shortcuts - Clicking on the top bar will scroll the right hand view to the top. Clicking on the toolbar at the bottom will scroll the right hand view to the bottom.<br>
+            * When opening a conversation, the view should scroll to the bottom, where new messages are - when opening the overview, the view should scroll to the top, where new conversations are. (blame google for that design...)<br>
+            * Username/Password boxes won't show up as "undefined" and the Username and Password should stay on record until you (a) Logout or (b) Uninstall/Reinstall or (c) Google expires the current login keys<br>
+            * this box :)<br>
+            <p>
+            Click anywhere in this box to close. Enjoy!
+        </div>
+-->
