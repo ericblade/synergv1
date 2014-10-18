@@ -29,9 +29,7 @@ to give credit where credit is due, and follow the LICENSE agreement.
 ** PLEASE keep in mind that Open Source projects work best for everyone when you
 actively contribute!  Pull Requests and Gerrithub Code Review requests are welcome!
 
-Original SynerGV 1 code through the initial commit to this repository is
-Copyright 2011 - 2014, Eric Blade.
-
+Original SynerGV 2 code through the initial commit to this repository is Copyright 2011 - 2014, Eric Blade. All additional code that is not mentioned below, is copyright the author of that code. All contributions to this code are considered to be released under the terms of the LICENSE file here.
 The SynerGV icon is Copyright iconshock.com.
 The search icon is Copyright Oxygen Team.
 Additional graphics and Icons are copyright Asle Hoeg-Mikkelsen.
