@@ -157,17 +157,29 @@ function ParsePrimaryData(html)
     enyo.log("Parsing Primary Data");
     html = enyo.string.trim(html);
     var i = html.indexOf("var _gcData = {") + 14;
+    //enyo.log("_gcData begins at " + i);
     var j = html.indexOf("};", i) + 1;
+    //enyo.log("_gcData ends at " + j);
     tmp = html.substring(i,j);
+
+    // Strip parts of Google's JSON that are broken
+    // These need to be parsed more intelligently, somehow or other, for the future.
     tmp = tmp.replace("<!-- TODO(pmoor): remove this as soon as the 9/12 release is cut -->", "");
+    // TODO: we should probably remove everything in the "settings" block of _gcData, because we don't know what any of that might be, and the first thing to ever pop in there is broken.
+    tmp = tmp.replace("'voicemailFeature1': false,", "");
+    //
+
     tmp = tmp.replace(/\'/g, '"');
+    //enyo.log("parsing json from: " + tmp);
     //enyo.log("tmp = " + tmp);
     try {
         var primarydata = JSON.parse(tmp);
+        enyo.log("json parsed!");
     } catch(err) {
+        enyo.log("failed to parse json :-(");
         //enyo.application.mainApp.$.ErrorPopup.openAtCenter();
         enyo.application.mainApp.$.rightPane.selectViewByName("errorView");
-        enyo.application.debuglog("ERROR: " + err);
+        enyo.application.debuglog("ERROR: " + err +"<br>tmp=" + tmp + "<br>html="+html);
         enyo.application.debuglog("tmp="+tmp);
         enyo.application.debuglog("html="+html);
         //enyo.application.mainApp.$.errorView.$.ErrorBox.content += "ERROR: " + err + " tmp="+tmp + " html="+html;
@@ -178,6 +190,7 @@ function ParsePrimaryData(html)
     var index = 0;
     var counter = 0;
     var tempcontacts = new Array();
+    enyo.log("parsing contacts");
     for(var id in primarydata.contacts)
     {
         counter++;
@@ -202,6 +215,7 @@ function ParsePrimaryData(html)
         }
     }*/
 
+    enyo.log(primarydata);
     return primarydata;
 }
 
