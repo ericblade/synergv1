@@ -41,4 +41,28 @@ source code.
 More information about gerrithub is available here:
 https://www.youtube.com/watch?v=jeWTvDad6VM
 
+*** THIS REPOSITORY CONTAINS SUBMODULES.
+*** MAKE SURE YOU INIT ALL SUBMODULES, OR THAT YOU HAVE DONE A RECURSIVE CHECKOUT.
 
+=== To run in Chrome ===
+
+(Windows) Create a new shortcut on your desktop to Chrome.  Edit that shortcut, and add "--disable-web-security" to the Target.
+Example: "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-web-security
+
+(Unix) run google-chrome --disable-web-security or chromium --disable-web-security (depending on wether you are using chrome or chromium)
+
+(Mac/others) I don't use a Mac, but you should be able to adapt the above instructions.
+
+This might work in Opera, if Opera 20+ supports the --disable-web-security command.
+
+Do NOT use the disable-web-security switch for active browsing!!! Only use it when working with known good files.
+
+Use that shortcut, and load the "index-chrome.html" in the repo into your Chrome window, such as:
+file:///D:/src/synergv1/app/index-chrome.html
+
+=== Deploying to various platforms ===
+
+The deploy system that I used during building is not currently in this repository.  As I sort out just how it worked (yes, after a year or more, I forget certain specifics), I will likely commit a new repository with the appropriate scripts to install to devices.
+
+You may be able to get away with simply deploying for webOS, using palm-package (HP webOS SDK) or ares-package (LG webOS SDK) on the directory.
+Some functions may not work in this case, as it looks like there was some additional service code required for full webOS functionality, which I will be committing as soon as I straighten out how that all worked.
