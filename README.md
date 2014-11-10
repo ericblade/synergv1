@@ -66,3 +66,5 @@ The deploy system that I used during building is not currently in this repositor
 
 You may be able to get away with simply deploying for webOS, using palm-package (HP webOS SDK) or ares-package (LG webOS SDK) on the directory.
 Some functions may not work in this case, as it looks like there was some additional service code required for full webOS functionality, which I will be committing as soon as I straighten out how that all worked.
+
+===== Official forums available at http://www.ericbla.de/
